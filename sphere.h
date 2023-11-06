@@ -10,24 +10,50 @@ class sphere : public hittable {
       : center(_center), radius(_radius), mat(_material) {}
 
     bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
-        vec3 oc = r.origin() - center;
-        auto a = r.direction().length_squared();
-        auto half_b = dot(oc, r.direction());
-        auto c = oc.length_squared() - radius*radius;
+        // vec3 oc = r.origin() - center;
+        // auto a = r.direction().length_squared();
+        // auto half_b = dot(oc, r.direction());
+        // auto c = oc.length_squared() - radius*radius;
 
-        auto discriminant = half_b*half_b - a*c;
-        if (discriminant < 0) return false;
-        auto sqrtd = sqrt(discriminant);
+        // auto discriminant = half_b*half_b - a*c;
+        // if (discriminant < 0) return false;
+        // auto sqrtd = sqrt(discriminant);
 
-        // Find the nearest root that lies in the acceptable range.
-        auto root = (-half_b - sqrtd) / a;
+        // // Find the nearest root that lies in the acceptable range.
+        // auto root = (-half_b - sqrtd) / a;
+        // if (!ray_t.surrounds(root)) {
+        //     root = (-half_b + sqrtd) / a;
+        //     if (!ray_t.surrounds(root))
+        //         return false;
+        // }
+
+        // rec.t = root;
+        // rec.p = r.at(rec.t);
+        // vec3 outward_normal = (rec.p - center) / radius;
+        // rec.set_face_normal(r, outward_normal);
+        // rec.mat = mat;
+
+        // return true;
+        
+        vec3 ro = r.origin();
+        vec3 rd = unit_vector(r.direction());
+        vec3 ce = center;
+        auto ra = radius;
+
+        vec3 oc = ro - ce;
+        float b = dot( oc, rd );
+        vec3 qc = oc - b*rd;
+        float h = ra*ra - dot( qc, qc );
+        if( h<0.0 ) return false; // no intersection
+        h = sqrt( h );
+        auto root = -b-h;
         if (!ray_t.surrounds(root)) {
-            root = (-half_b + sqrtd) / a;
-            if (!ray_t.surrounds(root))
-                return false;
+             root = -b+h;
+             if (!ray_t.surrounds(root))
+                 return false;
         }
 
-        rec.t = root;
+        rec.t = root / r.direction().length();
         rec.p = r.at(rec.t);
         vec3 outward_normal = (rec.p - center) / radius;
         rec.set_face_normal(r, outward_normal);

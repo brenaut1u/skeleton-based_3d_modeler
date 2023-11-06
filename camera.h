@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+#define MODE " "
+
 class camera {
   public:
     double aspect_ratio = 1.0;  // Ratio of image width over height
@@ -97,7 +99,17 @@ class camera {
             ray scattered;
             color attenuation;
             if (rec.mat->scatter(r, rec, attenuation, scattered))
-                return attenuation * ray_color(scattered, depth-1, world);
+                if (MODE == "normals") {
+                    vec3 N = rec.normal;
+                    return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
+                }
+                else if (MODE == "distances") {
+                    float dist = (rec.p.length() - 1) / 2;
+                    return color(dist, dist, dist);
+                }
+                else {
+                    return attenuation * ray_color(scattered, depth-1, world);
+                }
             return color(0,0,0);
         }
 

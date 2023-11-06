@@ -69,9 +69,9 @@ class cone : public hittable {
           }
       }
       
-      rec.t = t;
+      rec.t = t / r.direction().length();
       rec.p = r.at(rec.t);
-      rec.set_face_normal(r, outward_normal);
+      rec.set_face_normal(r, unit_vector(outward_normal));
       rec.mat = mat;
 
       return true;
