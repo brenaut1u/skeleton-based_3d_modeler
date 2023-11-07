@@ -1,0 +1,5 @@
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/build/CMakeFiles/sphere.dir
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/build/CMakeFiles/nanobind-static.dir
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/build/CMakeFiles/scene.dir
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/build/CMakeFiles/edit_cache.dir
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/build/CMakeFiles/rebuild_cache.dir
