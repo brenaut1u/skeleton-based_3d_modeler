@@ -30,7 +30,7 @@ class camera {
                     ray r = get_ray(i, j);
                     pixel_color += ray_color(r, max_depth, world);
                 }
-                write_color(std::cout, pixel_color, samples_per_pixel);
+                write_color(std::cout, pixel_color, samples_per_pixel);                
             }
         }
 

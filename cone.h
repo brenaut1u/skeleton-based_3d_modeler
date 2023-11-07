@@ -40,7 +40,6 @@ class cone : public hittable {
       float h = k1*k1 - k0*k2;
       if(h < 0.0) return false;
       float t = (-sqrt(h)-k1)/k2;
-      //if( t<0.0 ) return false;
 
       float y = m1 - ra*rr + t*m2;
       if( y>0.0 && y<d2 ) 
@@ -68,6 +67,8 @@ class cone : public hittable {
                 }
           }
       }
+      
+      if( t < 0.001 ) return false;
       
       rec.t = t / r.direction().length();
       rec.p = r.at(rec.t);
