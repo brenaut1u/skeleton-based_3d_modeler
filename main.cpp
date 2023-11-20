@@ -19,12 +19,19 @@ int main() {
 
     world.add(make_shared<cone>(point3(-1.5, 0.25, -2.0), point3(0.75, 0.25, -2.0), 0.2, 0.8, material_right));
 
+    light white_light = new_light(point3(-1.0, 0.5, -1.0));
+    light red_light = new_colored_light(point3(0.0, 0.5, -1), point3(0.7, 0.2, 0.2));
+    light blue_light = new_colored_light(point3(1.0, -0.25, -1), point3(0.0, 0.0, 0.8));
+    std::vector<light> lights {white_light};
+    //std::vector<light> lights {white_light, red_light, blue_light};
+
     camera cam;
 
     cam.aspect_ratio = 16.0 / 9.0;
     cam.image_width  = 400;
-    cam.samples_per_pixel = 100;
-    cam.max_depth = 50;
+    cam.samples_per_pixel = 1;
+    cam.max_depth = 1;
 
-    cam.render(world);
+    cam.render_with_point_lights(world, lights);
+    //cam.render(world);
 }

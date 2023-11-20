@@ -5,8 +5,10 @@
 #include "color.h"
 #include "hittable.h"
 #include "material.h"
+#include "light.h"
 
 #include <iostream>
+#include <vector>
 
 #define MODE " "
 
@@ -35,6 +37,26 @@ class camera {
         }
 
         std::clog << "\rDone.                 \n";
+    }
+
+    void render_with_point_lights(const hittable& world, std::vector<light> lights) {
+        initialize();
+
+        std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+
+        for (int j = 0; j < image_height; ++j) {
+            std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+            for (int i = 0; i < image_width; ++i) {
+                color pixel_color(0,0,0);
+                for (int sample = 0; sample < samples_per_pixel; ++sample) {
+                    ray r = get_ray(i, j);
+                    pixel_color += ray_color_with_point_lights(r, max_depth, world, lights);
+                }
+                write_color(std::cout, pixel_color, samples_per_pixel);                
+            }
+        }
+
+        std::clog << "\rDone.                 \n";        
     }
 
   private:
@@ -116,6 +138,38 @@ class camera {
         vec3 unit_direction = unit_vector(r.direction());
         auto a = 0.5*(unit_direction.y() + 1.0);
         return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+    }
+
+    
+    color ray_color_with_point_lights(const ray& r, int depth, const hittable& world, std::vector<light> lights) const {
+        hit_record rec;
+        vec3 intensity = {0, 0, 0};
+
+        // If we've exceeded the ray bounce limit, no more light is gathered.
+        if (depth <= 0)
+            return color(0,0,0);
+
+        if (world.hit(r, interval(0.001, infinity), rec)) {
+            for (int i = 0; i < lights.size(); i++) {
+                vec3 intensity_i = {1, 1, 1};
+
+                light l = lights.at(i);
+                vec3 light_ray = unit_vector(l.pos - rec.p);
+                vec3 reflected_ray = 2.0 * dot(rec.normal, light_ray) * rec.normal - light_ray;
+
+                double diffuse = max(0, dot(rec.normal, light_ray));
+                double specular = SPECULAR_COEFFICIENT * max(0, dot(reflected_ray, unit_vector(center - rec.p)));
+                intensity_i *=  diffuse + specular;
+                intensity_i = term_to_term_product(intensity_i, l.ray_color);
+
+                intensity += intensity_i;
+            }
+            return term_to_term_product(intensity, rec.mat->get_material_color());
+        }
+
+        vec3 unit_direction = unit_vector(r.direction());
+        auto a = 0.5*(unit_direction.y() + 1.0);
+        return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);       
     }
 };
 
