@@ -2,7 +2,6 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/stl/string.h>
 
-#include "rond.h"
 
 struct sphere {
     double rayon;
