@@ -11,5 +11,4 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE NB_DIR)
 list(APPEND CMAKE_PREFIX_PATH "${NB_DIR}")
 find_package(nanobind CONFIG REQUIRED)
-nanobind_add_module(sphere application.cpp)
-nanobind_add_module(scene application.cpp)
+nanobind_add_module(modeler application.cpp)

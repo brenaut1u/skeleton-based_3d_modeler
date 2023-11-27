@@ -1,7 +1,8 @@
 #!/bin/bash 
-g++ -std=c++20 main.cpp -o"resultat.out"
 
+cmake -S . -B build
 cmake --build build
+cp lise.py build/
 cd build
 python3 lise.py
 
