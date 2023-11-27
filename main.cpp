@@ -6,6 +6,7 @@
 #include "material.h"
 #include "sphere.h"
 #include "cone.h"
+#include "linked_spheres_group.h"
 
 int main() {
     hittable_list world;
