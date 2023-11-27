@@ -11,6 +11,7 @@
 #include <vector>
 
 #define MODE " "
+#define AMBIENT_OCCLUSION 0.1
 
 class camera {
   public:
@@ -105,8 +106,8 @@ class camera {
 
     vec3 pixel_sample_square() const {
         // Returns a random point in the square surrounding a pixel at the origin.
-        auto px = -0.5 + random_double();
-        auto py = -0.5 + random_double();
+        auto px = (samples_per_pixel > 1) * (-0.5 + random_double());
+        auto py = (samples_per_pixel > 1) * (-0.5 + random_double());
         return (px * pixel_delta_u) + (py * pixel_delta_v);
     }
 
@@ -159,7 +160,7 @@ class camera {
 
                 double diffuse = max(0, dot(rec.normal, light_ray));
                 double specular = SPECULAR_COEFFICIENT * max(0, dot(reflected_ray, unit_vector(center - rec.p)));
-                intensity_i *=  diffuse + specular;
+                intensity_i *=  diffuse + specular + AMBIENT_OCCLUSION;
                 intensity_i = term_to_term_product(intensity_i, l.ray_color);
 
                 intensity += intensity_i;

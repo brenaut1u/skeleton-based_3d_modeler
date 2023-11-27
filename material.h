@@ -5,7 +5,7 @@
 #include "color.h"
 #include "hittable.h"
 
-#define SPECULAR_COEFFICIENT 0.5
+#define SPECULAR_COEFFICIENT 0.2
 
 class material {
   public:
