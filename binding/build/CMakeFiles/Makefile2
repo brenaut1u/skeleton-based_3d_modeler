@@ -63,8 +63,7 @@ CMAKE_BINARY_DIR = /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/sphere.dir/all
-all: CMakeFiles/scene.dir/all
+all: CMakeFiles/modeler.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -72,36 +71,35 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/sphere.dir/clean
+clean: CMakeFiles/modeler.dir/clean
 clean: CMakeFiles/nanobind-static.dir/clean
-clean: CMakeFiles/scene.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/sphere.dir
+# Target rules for target CMakeFiles/modeler.dir
 
 # All Build rule for target.
-CMakeFiles/sphere.dir/all: CMakeFiles/nanobind-static.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/sphere.dir/build.make CMakeFiles/sphere.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/sphere.dir/build.make CMakeFiles/sphere.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build/CMakeFiles --progress-num=14,15 "Built target sphere"
-.PHONY : CMakeFiles/sphere.dir/all
+CMakeFiles/modeler.dir/all: CMakeFiles/nanobind-static.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modeler.dir/build.make CMakeFiles/modeler.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modeler.dir/build.make CMakeFiles/modeler.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build/CMakeFiles --progress-num=1,2 "Built target modeler"
+.PHONY : CMakeFiles/modeler.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/sphere.dir/rule: cmake_check_build_system
+CMakeFiles/modeler.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build/CMakeFiles 13
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/sphere.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/modeler.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build/CMakeFiles 0
-.PHONY : CMakeFiles/sphere.dir/rule
+.PHONY : CMakeFiles/modeler.dir/rule
 
 # Convenience name for target.
-sphere: CMakeFiles/sphere.dir/rule
-.PHONY : sphere
+modeler: CMakeFiles/modeler.dir/rule
+.PHONY : modeler
 
 # clean rule for target.
-CMakeFiles/sphere.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/sphere.dir/build.make CMakeFiles/sphere.dir/clean
-.PHONY : CMakeFiles/sphere.dir/clean
+CMakeFiles/modeler.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modeler.dir/build.make CMakeFiles/modeler.dir/clean
+.PHONY : CMakeFiles/modeler.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/nanobind-static.dir
@@ -110,7 +108,7 @@ CMakeFiles/sphere.dir/clean:
 CMakeFiles/nanobind-static.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11 "Built target nanobind-static"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13 "Built target nanobind-static"
 .PHONY : CMakeFiles/nanobind-static.dir/all
 
 # Build rule for subdir invocation for target.
@@ -128,32 +126,6 @@ nanobind-static: CMakeFiles/nanobind-static.dir/rule
 CMakeFiles/nanobind-static.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/clean
 .PHONY : CMakeFiles/nanobind-static.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/scene.dir
-
-# All Build rule for target.
-CMakeFiles/scene.dir/all: CMakeFiles/nanobind-static.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/scene.dir/build.make CMakeFiles/scene.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/scene.dir/build.make CMakeFiles/scene.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build/CMakeFiles --progress-num=12,13 "Built target scene"
-.PHONY : CMakeFiles/scene.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/scene.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build/CMakeFiles 13
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/scene.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build/CMakeFiles 0
-.PHONY : CMakeFiles/scene.dir/rule
-
-# Convenience name for target.
-scene: CMakeFiles/scene.dir/rule
-.PHONY : scene
-
-# clean rule for target.
-CMakeFiles/scene.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/scene.dir/build.make CMakeFiles/scene.dir/clean
-.PHONY : CMakeFiles/scene.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

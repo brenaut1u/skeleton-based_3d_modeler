@@ -2,64 +2,65 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/stl/string.h>
 
+namespace nb = nanobind;
+
 
 struct sphere {
-    double rayon;
-    std::array<double,2> center;
+    int rayon;
+    int x;
+    int y;
     
 
-    void setCenter(double x1 , double x2){
-        center[0] = x1;
-        center[1] = x2;
+    void setCenter(int x1 , int x2){
+        x = x1;
+        y = x2;
     }
 
-    double getx(){
-        return center[0];
+    int getx(){
+        return x;
     }
 
-    double gety(){
-        return center[1];
+    int gety(){
+        return y;
     }
 
 };
 
-namespace nb = nanobind;
 
-NB_MODULE(sphere, m) {
-    nb::class_<sphere>(m, "sph")
+struct scene {
+    std::vector<sphere> listeSpheres;
+
+    int nbSphere(){
+        return listeSpheres.size();
+    }
+
+    void addSphere(sphere s){
+        listeSpheres.push_back(s);
+    }
+
+    sphere getsphere(int i){
+        return listeSpheres[i];
+    }
+    
+};
+
+
+NB_MODULE(modeler, m) {
+    nb::class_<sphere>(m,"sphere")
         .def(nb::init<>())
         .def_rw("ray",&sphere::rayon)
         .def("x",&sphere::getx)
         .def("y",&sphere::gety)
         .def("setCenter", &sphere::setCenter)
         ;
-}
-
-struct scene {
-    std::vector<sphere> listeSpheres;
-
-    double nbSphere(){
-        return listeSpheres.size();
-    }
-
-    void addSphere(sphere s){
-        listeSpheres.insert(listeSpheres.cend(),s);
-    }
-
-};
-
-NB_MODULE(scene, m) {
     nb::class_<scene>(m, "sce")
         .def(nb::init<>())
         .def("nbSphere",&scene::nbSphere)
         .def_rw("listeSpheres", &scene::listeSpheres)
         .def("addSphere",&scene::addSphere)
+        .def("getSphere",&scene::getsphere)
         ;
 }
-
-
-
-
 
 
 

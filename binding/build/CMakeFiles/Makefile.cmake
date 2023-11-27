@@ -32,11 +32,11 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/Applications/CMake.app/Contents/share/cmake-3.28/Modules/Platform/Darwin-Initialize.cmake"
   "/Applications/CMake.app/Contents/share/cmake-3.28/Modules/Platform/Darwin.cmake"
   "/Applications/CMake.app/Contents/share/cmake-3.28/Modules/Platform/UnixPaths.cmake"
-  "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/cmake/nanobind-config.cmake"
   "/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/CMakeLists.txt"
   "CMakeFiles/3.28.0-rc1/CMakeCCompiler.cmake"
   "CMakeFiles/3.28.0-rc1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.28.0-rc1/CMakeSystem.cmake"
+  "/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/cmake/nanobind-config.cmake"
   )
 
 # The corresponding makefile is:
@@ -52,7 +52,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/sphere.dir/DependInfo.cmake"
+  "CMakeFiles/modeler.dir/DependInfo.cmake"
   "CMakeFiles/nanobind-static.dir/DependInfo.cmake"
-  "CMakeFiles/scene.dir/DependInfo.cmake"
   )

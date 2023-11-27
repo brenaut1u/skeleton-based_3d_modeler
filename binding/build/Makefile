@@ -117,17 +117,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named sphere
+# Target rules for targets named modeler
 
 # Build rule for target.
-sphere: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sphere
-.PHONY : sphere
+modeler: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 modeler
+.PHONY : modeler
 
 # fast build rule for target.
-sphere/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/sphere.dir/build.make CMakeFiles/sphere.dir/build
-.PHONY : sphere/fast
+modeler/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modeler.dir/build.make CMakeFiles/modeler.dir/build
+.PHONY : modeler/fast
 
 #=============================================================================
 # Target rules for targets named nanobind-static
@@ -142,266 +142,252 @@ nanobind-static/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/build
 .PHONY : nanobind-static/fast
 
-#=============================================================================
-# Target rules for targets named scene
-
-# Build rule for target.
-scene: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 scene
-.PHONY : scene
-
-# fast build rule for target.
-scene/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/scene.dir/build.make CMakeFiles/scene.dir/build
-.PHONY : scene/fast
-
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.o: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.o
 
 # target to build an object file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.o
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.i: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.i: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.i
 
 # target to preprocess a source file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.i
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.s: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.s: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.s
 
 # target to generate assembly for a file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.cpp.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.s
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.o: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.o
 
 # target to build an object file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.o
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.i: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.i: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.i
 
 # target to preprocess a source file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.i
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.s: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.s: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.s
 
 # target to generate assembly for a file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.cpp.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.cpp.s
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.o: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.o
 
 # target to build an object file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.o
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.i: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.i: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.i
 
 # target to preprocess a source file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.i
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.s: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.s: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.s
 
 # target to generate assembly for a file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.cpp.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.cpp.s
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.o: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.o
 
 # target to build an object file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.o
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.i: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.i: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.i
 
 # target to preprocess a source file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.i
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.s: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.s: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.s
 
 # target to generate assembly for a file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.cpp.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.cpp.s
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.o: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.o
 
 # target to build an object file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.o
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.i: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.i: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.i
 
 # target to preprocess a source file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.i
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.s: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.s: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.s
 
 # target to generate assembly for a file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.cpp.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.cpp.s
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.o: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.o
 
 # target to build an object file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.o
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.i: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.i: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.i
 
 # target to preprocess a source file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.i
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.s: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.s: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.s
 
 # target to generate assembly for a file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.cpp.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.cpp.s
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.o: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.o
 
 # target to build an object file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.o
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.i: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.i: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.i
 
 # target to preprocess a source file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.i
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.s: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.s: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.s
 
 # target to generate assembly for a file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.cpp.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.cpp.s
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.o: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.o
 
 # target to build an object file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.o
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.i: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.i: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.i
 
 # target to preprocess a source file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.i
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.s: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.s: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.s
 
 # target to generate assembly for a file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.cpp.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.cpp.s
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.o: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.o
 
 # target to build an object file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.o
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.i: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.i: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.i
 
 # target to preprocess a source file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.i
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.s: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.s: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.s
 
 # target to generate assembly for a file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.cpp.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.cpp.s
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.o: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.o
 
 # target to build an object file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.o
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.o
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.o
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.o
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.i: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.i: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.i
 
 # target to preprocess a source file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.i
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.i
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.i
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.i
 
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.s: Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.s: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.s
 
 # target to generate assembly for a file
-Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.s
-.PHONY : Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.cpp.s
+Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.s
+.PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.s
 
 application.o: application.cpp.o
 .PHONY : application.o
 
 # target to build an object file
 application.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/sphere.dir/build.make CMakeFiles/sphere.dir/application.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/scene.dir/build.make CMakeFiles/scene.dir/application.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modeler.dir/build.make CMakeFiles/modeler.dir/application.cpp.o
 .PHONY : application.cpp.o
 
 application.i: application.cpp.i
@@ -409,8 +395,7 @@ application.i: application.cpp.i
 
 # target to preprocess a source file
 application.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/sphere.dir/build.make CMakeFiles/sphere.dir/application.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/scene.dir/build.make CMakeFiles/scene.dir/application.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modeler.dir/build.make CMakeFiles/modeler.dir/application.cpp.i
 .PHONY : application.cpp.i
 
 application.s: application.cpp.s
@@ -418,8 +403,7 @@ application.s: application.cpp.s
 
 # target to generate assembly for a file
 application.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/sphere.dir/build.make CMakeFiles/sphere.dir/application.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/scene.dir/build.make CMakeFiles/scene.dir/application.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modeler.dir/build.make CMakeFiles/modeler.dir/application.cpp.s
 .PHONY : application.cpp.s
 
 # Help Target
@@ -430,39 +414,38 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... modeler"
 	@echo "... nanobind-static"
-	@echo "... scene"
-	@echo "... sphere"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.o"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.i"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/common.s"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.o"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.i"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/error.s"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.o"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.i"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/implicit.s"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.o"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.i"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_enum.s"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.o"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.i"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_func.s"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.o"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.i"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_internals.s"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.o"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.i"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_ndarray.s"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.o"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.i"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_static_property.s"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.o"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.i"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/nb_type.s"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.o"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.i"
-	@echo "... Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/src/trampoline.s"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.o"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.i"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.s"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.o"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.i"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/error.s"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.o"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.i"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/implicit.s"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.o"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.i"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_enum.s"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.o"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.i"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_func.s"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.o"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.i"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_internals.s"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.o"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.i"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_ndarray.s"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.o"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.i"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_static_property.s"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.o"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.i"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/nb_type.s"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.o"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.i"
+	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.s"
 	@echo "... application.o"
 	@echo "... application.i"
 	@echo "... application.s"

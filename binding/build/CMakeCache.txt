@@ -18,16 +18,16 @@
 CMAKE_ADDR2LINE:FILEPATH=CMAKE_ADDR2LINE-NOTFOUND
 
 //Path to a program.
-CMAKE_AR:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar
+CMAKE_AR:FILEPATH=/usr/bin/ar
 
-//Choose the type of build.
-CMAKE_BUILD_TYPE:STRING=Release
+//No help, variable specified on the command line.
+CMAKE_BUILD_TYPE:STRING=Debug
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
-//CXX compiler
-CMAKE_CXX_COMPILER:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++
+//No help, variable specified on the command line.
+CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++
 
 //Flags used by the CXX compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=
@@ -44,8 +44,8 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 //Flags used by the CXX compiler during RELWITHDEBINFO builds.
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
-//C compiler
-CMAKE_C_COMPILER:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc
+//No help, variable specified on the command line.
+CMAKE_C_COMPILER:FILEPATH=/usr/bin/clang
 
 //Flags used by the C compiler during all build types.
 CMAKE_C_FLAGS:STRING=
@@ -80,20 +80,20 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=
 //Flags used by the linker during RELWITHDEBINFO builds.
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//Enable/Disable output of compile commands during generation.
-CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=
+//No help, variable specified on the command line.
+CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
 
 //Value Computed by CMake.
 CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build/CMakeFiles/pkgRedirects
 
 //Path to a program.
-CMAKE_INSTALL_NAME_TOOL:FILEPATH=/usr/bin/install_name_tool
+CMAKE_INSTALL_NAME_TOOL:FILEPATH=/Users/lise/anaconda3/bin/install_name_tool
 
 //Install path prefix, prepended onto install directories.
 CMAKE_INSTALL_PREFIX:PATH=/usr/local
 
 //Path to a program.
-CMAKE_LINKER:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld
+CMAKE_LINKER:FILEPATH=/usr/bin/ld
 
 //Path to a program.
 CMAKE_MAKE_PROGRAM:FILEPATH=/usr/bin/make
@@ -119,24 +119,24 @@ CMAKE_MODULE_LINKER_FLAGS_RELEASE:STRING=
 CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
 //Path to a program.
-CMAKE_NM:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm
+CMAKE_NM:FILEPATH=/usr/bin/nm
 
 //Path to a program.
 CMAKE_OBJCOPY:FILEPATH=CMAKE_OBJCOPY-NOTFOUND
 
 //Path to a program.
-CMAKE_OBJDUMP:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/objdump
+CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //Build architectures for OSX
 CMAKE_OSX_ARCHITECTURES:STRING=
 
 //Minimum OS X version to target for deployment (at runtime); newer
 // APIs weak linked. Set to empty string for default value.
-CMAKE_OSX_DEPLOYMENT_TARGET:STRING=
+CMAKE_OSX_DEPLOYMENT_TARGET:STRING=13.6
 
 //The product will be built against the headers and libraries located
 // inside the indicated SDK.
-CMAKE_OSX_SYSROOT:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk
+CMAKE_OSX_SYSROOT:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk
 
 //Value Computed by CMake
 CMAKE_PROJECT_DESCRIPTION:STATIC=
@@ -148,7 +148,7 @@ CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 CMAKE_PROJECT_NAME:STATIC=my_project
 
 //Path to a program.
-CMAKE_RANLIB:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib
+CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
 
 //Path to a program.
 CMAKE_READELF:FILEPATH=CMAKE_READELF-NOTFOUND
@@ -201,7 +201,7 @@ CMAKE_STATIC_LINKER_FLAGS_RELEASE:STRING=
 CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
 //Path to a program.
-CMAKE_STRIP:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/strip
+CMAKE_STRIP:FILEPATH=/usr/bin/strip
 
 //Path to a program.
 CMAKE_TAPI:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/tapi
@@ -222,7 +222,7 @@ my_project_IS_TOP_LEVEL:STATIC=ON
 my_project_SOURCE_DIR:STATIC=/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding
 
 //The directory containing a CMake configuration file for nanobind.
-nanobind_DIR:PATH=/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind/cmake
+nanobind_DIR:PATH=/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/cmake
 
 
 ########################
@@ -233,8 +233,6 @@ nanobind_DIR:PATH=/Library/Frameworks/Python.framework/Versions/3.12/lib/python3
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
-//STRINGS property for variable: CMAKE_BUILD_TYPE
-CMAKE_BUILD_TYPE-STRINGS:INTERNAL=Debug;Release;MinSizeRel;RelWithDebInfo
 //This is the directory where this CMakeCache.txt was created
 CMAKE_CACHEFILE_DIR:INTERNAL=/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/binding/build
 //Major version of cmake used to create the current loaded cache
@@ -291,8 +289,6 @@ CMAKE_EXE_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
 CMAKE_EXE_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CMAKE_EXPORT_COMPILE_COMMANDS
-CMAKE_EXPORT_COMPILE_COMMANDS-ADVANCED:INTERNAL=1
 //Name of external makefile project generator.
 CMAKE_EXTRA_GENERATOR:INTERNAL=
 //Name of generator.
@@ -371,24 +367,24 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding Python
-FIND_PACKAGE_MESSAGE_DETAILS_Python:INTERNAL=[/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12][/Library/Frameworks/Python.framework/Versions/3.12/include/python3.12][cfound components: Interpreter Development.Module ][v3.12.0(3.8)]
-NB_DIR:INTERNAL=/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/nanobind
+FIND_PACKAGE_MESSAGE_DETAILS_Python:INTERNAL=[/Users/lise/anaconda3/bin/python3.11][/Users/lise/anaconda3/include/python3.11][cfound components: Interpreter Development.Module ][v3.11.5(3.8)]
+NB_DIR:INTERNAL=/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind
 NB_OPT:INTERNAL=$<OR:$<CONFIG:Release>,$<CONFIG:MinSizeRel>>
 NB_OPT_SIZE:INTERNAL=$<OR:$<CONFIG:Release>,$<CONFIG:MinSizeRel>,$<CONFIG:RelWithDebInfo>>
-NB_SUFFIX:INTERNAL=.cpython-312-darwin.so
+NB_SUFFIX:INTERNAL=.cpython-311-darwin.so
 NB_SUFFIX_S:INTERNAL=.abi3.so
 //Compiler reason failure
 _Python_Compiler_REASON_FAILURE:INTERNAL=
-_Python_DEVELOPMENT_MODULE_SIGNATURE:INTERNAL=b913b42cfeffa598a7b70650921de561
+_Python_DEVELOPMENT_MODULE_SIGNATURE:INTERNAL=0cfd7eeeb63d64648746f252ee994044
 //Development reason failure
 _Python_Development_REASON_FAILURE:INTERNAL=
 //Path to a program.
-_Python_EXECUTABLE:INTERNAL=/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
+_Python_EXECUTABLE:INTERNAL=/Users/lise/anaconda3/bin/python3.11
 //Path to a file.
-_Python_INCLUDE_DIR:INTERNAL=/Library/Frameworks/Python.framework/Versions/3.12/include/python3.12
+_Python_INCLUDE_DIR:INTERNAL=/Users/lise/anaconda3/include/python3.11
 //Python Properties
-_Python_INTERPRETER_PROPERTIES:INTERNAL=Python;3;12;0;64;;cpython-312-darwin;abi3;/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12;/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12;/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages;/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages
-_Python_INTERPRETER_SIGNATURE:INTERNAL=2549c9a45fc0b393727191f2dfe4c82c
+_Python_INTERPRETER_PROPERTIES:INTERNAL=Python;3;11;5;64;;cpython-311-darwin;abi3;/Users/lise/anaconda3/lib/python3.11;/Users/lise/anaconda3/lib/python3.11;/Users/lise/anaconda3/lib/python3.11/site-packages;/Users/lise/anaconda3/lib/python3.11/site-packages
+_Python_INTERPRETER_SIGNATURE:INTERNAL=1e0c9bd763b6e2c2c2829d1e43895135
 //Interpreter reason failure
 _Python_Interpreter_REASON_FAILURE:INTERNAL=
 //NumPy reason failure
