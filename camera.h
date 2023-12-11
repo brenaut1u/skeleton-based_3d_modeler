@@ -41,9 +41,9 @@ class camera {
     }
     
 
-    vector<vec3> render(const hittable& world) {
+    std::vector<vec3> render(const hittable& world) {
         initialize();
-        vector<vec3> rendered_image;
+        std::vector<vec3> rendered_image;
 
         for (int j = 0; j < image_height; ++j) {
             std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
@@ -79,9 +79,9 @@ class camera {
         std::clog << "\rDone.                 \n";        
     }
 
-    vector<vec3> render_phong(const hittable& world, std::vector<light> lights) {
+    std::vector<vec3> render_phong(const hittable& world, std::vector<light> lights) {
         initialize();
-        vector<vec3> rendered_image;
+        std::vector<vec3> rendered_image;
 
         for (int j = 0; j < image_height; ++j) {
             std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
