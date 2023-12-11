@@ -2,7 +2,7 @@ import modelerVrai
 import tkinter as tk
 
 
-vec = modelerVrai.vec3()
+modeler = modelerVrai.modeler
 
 
 
