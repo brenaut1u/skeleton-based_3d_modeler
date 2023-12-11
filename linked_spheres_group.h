@@ -7,6 +7,7 @@
 
 using std::vector;
 using std::pair;
+using std::tuple;
 
 class linked_spheres_group {
 public:
@@ -75,6 +76,28 @@ public:
                 return true;
         }
         return false;
+    }
+
+    tuple<int, vec3, shared_ptr<material>> find_hit_sphere(const ray& r, interval ray_t) {
+        int index = -1;
+        hit_record rec;
+
+        for (int i = 0; i < spheres.size(); i++) {
+            hit_record tmp_rec;
+            if (spheres[i].hit(r, ray_t, tmp_rec)) {
+                if (tmp_rec.t < rec.t) {
+                    rec = tmp_rec;
+                    index = i;
+                }
+            }
+        }
+
+        if (index != -1) {
+            return tuple<int, vec3, shared_ptr<material>>{index, rec.p, rec.mat};
+        }
+        else {
+            return tuple<int, vec3, shared_ptr<material>>{-1, {0, 0, 0}, NULL};
+        }
     }
 
 private:
