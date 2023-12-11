@@ -14,6 +14,7 @@ class hittable_list : public hittable {
     std::vector<shared_ptr<hittable>> objects;
 
     hittable_list() {}
+    
     hittable_list(shared_ptr<hittable> object) { add(object); }
 
     void clear() { objects.clear(); }
