@@ -14,6 +14,15 @@ namespace nb = nanobind;
 #include "sphere.h"
 #include "cone.h"
 
+class modeler {
+    public:
+        hittable_list world;
+        std::vector<vec3> vectorImage
+
+    void addSphere(int x, int y){
+
+    }
+};
 
 int modeler() {
     hittable_list world;
@@ -34,24 +43,17 @@ int modeler() {
     cam.samples_per_pixel = 100;
     cam.max_depth = 50;
 
-    cam.render(world);
+    
+
 }
+
+
+
+
 
 
 NB_MODULE(modelerVrai, m) {
     
-
-    nb::class_<hittable_list>(m,"hittable_list")
-        .def(nb::init<>())
-        .def("clear",&hittable_list::clear)
-        .def("add",&hittable_list::add)
-        .def("hit", &hittable_list::hit)
-    ;
-
-    nb::class_<hittable>(m,"hittable")
-        .def(nb::init<>())
-    ;
-
     nb::class_<vec3>(m,"vec3")
         .def(nb::init<>())
         .def("x",&vec3::x)

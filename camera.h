@@ -39,6 +39,7 @@ class camera {
 
         std::clog << "\rDone.                 \n";
     }
+    
 
     void render_with_point_lights(const hittable& world, std::vector<light> lights) {
         initialize();

@@ -810,9 +810,14 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stdint.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/camera.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/color.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/cone.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/hittable.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/hittable_list.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/interval.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/light.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/material.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/ray.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/rtweekend.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/sphere.h \
@@ -1108,6 +1113,8 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
 /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/interval.h:
 
 /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/hittable_list.h:
+
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/color.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stddef.h:
 
@@ -1717,6 +1724,8 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__ranges/view_interface.h:
 
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/material.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__ranges/subrange.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__ranges/enable_view.h:
@@ -2060,6 +2069,8 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__algorithm/ranges_sort.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__concepts/movable.h:
+
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/cone.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/arm/endian.h:
 
@@ -2557,6 +2568,8 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
 
 /Users/lise/anaconda3/include/python3.11/import.h:
 
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/camera.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__ranges/enable_borrowed_range.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__algorithm/ranges_move.h:
@@ -2766,6 +2779,8 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__algorithm/copy_backward.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__algorithm/ranges_partition.h:
+
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/light.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/_wctype.h:
 

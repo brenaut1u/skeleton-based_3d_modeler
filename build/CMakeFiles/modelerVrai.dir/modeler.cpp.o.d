@@ -942,4 +942,9 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/cstdarg \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/rtweekend.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/interval.h \
-  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/sphere.h
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/sphere.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/camera.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/color.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/material.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/light.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/cone.h
