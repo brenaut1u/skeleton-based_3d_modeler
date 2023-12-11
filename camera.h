@@ -20,7 +20,7 @@ class camera {
     int    samples_per_pixel = 10;   // Count of random samples for each pixel
     int    max_depth         = 10;   // Maximum number of ray bounces into scene
 
-    void render(const hittable& world) {
+    void render_file(const hittable& world) {
         initialize();
 
         std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
@@ -41,7 +41,25 @@ class camera {
     }
     
 
-    void render_with_point_lights(const hittable& world, std::vector<light> lights) {
+    vector<vec3> render(const hittable& world) {
+        initialize();
+        vector<vec3> rendered_image;
+
+        for (int j = 0; j < image_height; ++j) {
+            std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+            for (int i = 0; i < image_width; ++i) {
+                color pixel_color(0,0,0);
+                for (int sample = 0; sample < samples_per_pixel; ++sample) {
+                    ray r = get_ray(i, j);
+                    pixel_color += ray_color(r, max_depth, world);
+                }
+                rendered_image.push_back(pixel_color);              
+            }
+        }
+        return rendered_image;
+    }
+
+    void render_phong_file(const hittable& world, std::vector<light> lights) {
         initialize();
 
         std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
@@ -60,6 +78,24 @@ class camera {
 
         std::clog << "\rDone.                 \n";        
     }
+
+    vector<vec3> render_phong(const hittable& world, std::vector<light> lights) {
+        initialize();
+        vector<vec3> rendered_image;
+
+        for (int j = 0; j < image_height; ++j) {
+            std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+            for (int i = 0; i < image_width; ++i) {
+                color pixel_color(0,0,0);
+                for (int sample = 0; sample < samples_per_pixel; ++sample) {
+                    ray r = get_ray(i, j);
+                    pixel_color += ray_color_with_point_lights(r, max_depth, world, lights);
+                }
+                rendered_image.push_back(pixel_color);              
+            }
+        }  
+        return rendered_image;    
+    }    
 
   private:
     int    image_height;   // Rendered image height

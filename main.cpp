@@ -29,10 +29,10 @@ int main() {
     camera cam;
 
     cam.aspect_ratio = 16.0 / 9.0;
-    cam.image_width  = 400;
+    cam.image_width  = 800;
     cam.samples_per_pixel = 1;
     cam.max_depth = 1;
 
-    cam.render_with_point_lights(world, lights);
-    //cam.render(world);
+    cam.render_phong_file(world, lights);
+    //cam.render_file(world);
 }
