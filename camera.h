@@ -94,7 +94,19 @@ class camera {
             }
         }  
         return rendered_image;    
-    }    
+    }   
+
+    ray get_ray(int i, int j) const {
+        // Get a randomly sampled camera ray for the pixel at location i,j.
+
+        auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
+        auto pixel_sample = pixel_center + pixel_sample_square();
+
+        auto ray_origin = center;
+        auto ray_direction = pixel_sample - ray_origin;
+
+        return ray(ray_origin, ray_direction);
+    } 
 
   private:
     int    image_height;   // Rendered image height
@@ -126,18 +138,6 @@ class camera {
         auto viewport_upper_left =
             center - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
         pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
-    }
-
-    ray get_ray(int i, int j) const {
-        // Get a randomly sampled camera ray for the pixel at location i,j.
-
-        auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
-        auto pixel_sample = pixel_center + pixel_sample_square();
-
-        auto ray_origin = center;
-        auto ray_direction = pixel_sample - ray_origin;
-
-        return ray(ray_origin, ray_direction);
     }
 
     vec3 pixel_sample_square() const {
