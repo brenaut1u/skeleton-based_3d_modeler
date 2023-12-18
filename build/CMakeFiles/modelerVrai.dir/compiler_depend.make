@@ -949,10 +949,14 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
   /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/nb_traits.h \
   /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/nb_tuple.h \
   /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/nb_types.h \
-  /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/string.h
+  /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/detail/nb_list.h \
+  /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/string.h \
+  /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/vector.h
 
 
 /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/string.h:
+
+/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/detail/nb_list.h:
 
 /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/nb_tuple.h:
 
@@ -2495,6 +2499,8 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
 /Users/lise/anaconda3/include/python3.11/cpython/code.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/sys/_pthread/_pthread_rwlock_t.h:
+
+/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/vector.h:
 
 /Users/lise/anaconda3/include/python3.11/patchlevel.h:
 

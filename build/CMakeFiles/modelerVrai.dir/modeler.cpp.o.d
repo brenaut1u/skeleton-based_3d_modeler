@@ -895,6 +895,8 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: \
   /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/nb_class.h \
   /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/nb_misc.h \
   /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/string.h \
+  /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/vector.h \
+  /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/detail/nb_list.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/hittable_list.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/hittable.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/ray.h \

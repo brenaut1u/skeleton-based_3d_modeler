@@ -950,5 +950,7 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o
  /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/nb_traits.h
  /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/nb_tuple.h
  /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/nb_types.h
+ /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/detail/nb_list.h
  /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/string.h
+ /Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include/nanobind/stl/vector.h
 

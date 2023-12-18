@@ -1,6 +1,7 @@
 #include <string>
 #include <nanobind/nanobind.h>
 #include <nanobind/stl/string.h>
+#include <nanobind/stl/vector.h>
 #include <vector>
 
 namespace nb = nanobind;
@@ -25,7 +26,7 @@ struct modeler {
     light blue_light = new_colored_light(point3(1.0, -0.25, -1), point3(0.0, 0.0, 0.8));
     std::vector<light> lights {white_light};
 
-    void initializedWorld(hittable_list world){
+    void initializedWorld(){
         auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
         auto material_center = make_shared<lambertian>(color(0.7, 0.3, 0.3));
         auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
@@ -37,23 +38,36 @@ struct modeler {
         world.add(make_shared<cone>(point3(-1.5, 0.25, -2.0), point3(0.75, 0.25, -2.0), 0.2, 0.8, material_right));
 
     }
-    
 
-    void intializedCam(camera cam){
+    std::vector<vec3> getVector(){
+        return cam.render_phong(world, lights);
+    }  
+
+    void intializedCam(){
         light white_light = new_light(point3(-1.0, 0.5, -1.0));
         light red_light = new_colored_light(point3(0.0, 0.5, -1), point3(0.7, 0.2, 0.2));
         light blue_light = new_colored_light(point3(1.0, -0.25, -1), point3(0.0, 0.0, 0.8));
         std::vector<light> lights {white_light};
         cam.aspect_ratio = 16.0 / 9.0;
         cam.image_width  = 400;
-        cam.samples_per_pixel = 100;
-        cam.max_depth = 50;
+        cam.samples_per_pixel = 1;
+        cam.max_depth = 1;
+        imageVector = getVector();
     }
 
-    std::vector<vec3> getVector(hittable_list wolrd, camera cam){
-        return cam.render_phong(world, lights);
+
+
+    double getRed(int i){
+        return imageVector[i].x();
     }
 
+    double getGreen(int i){
+        return imageVector[i].y();
+    }
+
+    double getBlue(int i){
+        return imageVector[i].z();
+    }
 
 
 };
@@ -65,8 +79,13 @@ NB_MODULE(modelerVrai, m) {
         .def(nb::init<>())
         .def("initializedWorld", &modeler::initializedWorld)
         .def("initializedCam",&modeler::intializedCam)
-        .def("getVector",&modeler::getVector)
+        .def("getRed",&modeler::getRed)
+        .def("getGreen",&modeler::getGreen)
+        .def("getBlue",&modeler::getBlue)
     ;
+
+
+
 }
 
 
