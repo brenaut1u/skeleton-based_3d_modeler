@@ -22,6 +22,18 @@ class hittable_list : public hittable {
         objects.push_back(object);
     }
 
+    void remove(shared_ptr<hittable> object) {
+        int index = -1;
+        for (int i = 0; i < objects.size(); i++) {
+            if (objects[i] == object) {
+                index = i;
+            }
+        }
+
+        if (index != -1) objects.erase(objects.begin() + index);
+        //TODO: is the pointer correctly suppresses?
+    }
+
     bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
         hit_record temp_rec;
         bool hit_anything = false;
