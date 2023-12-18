@@ -9,29 +9,51 @@ using std::vector;
 using std::pair;
 using std::tuple;
 
+struct cone_ref {
+    shared_ptr<cone> cone;
+    int sphere_id1;
+    int sphere_id2;
+}; typedef struct cone_ref cone_ref;
+
 class linked_spheres_group {
 public:
-    linked_spheres_group(sphere first_sphere) {
+    linked_spheres_group(hittable_list* _world, shared_ptr<sphere> first_sphere) : world(_world) {
         spheres.push_back(first_sphere);
+        world->add(first_sphere);
     }
 
     int get_number_of_spheres() {
         return spheres.size();
     }
 
-    sphere get_sphere_at(int i) {
+    shared_ptr<sphere> get_sphere_at(int i) {
         return spheres[i];
     }
 
-    void add_sphere(sphere new_sphere, int linked_to) {
-        links.push_back({spheres.size() - 1, linked_to});
+    void add_sphere(shared_ptr<sphere> new_sphere, int linked_to) {
         spheres.push_back(new_sphere);
+        links.push_back({spheres.size() - 1, linked_to});
+        shared_ptr<cone> new_cone = cone_from_spheres(new_sphere, spheres[linked_to], new_sphere->get_material());
+        cones.push_back(cone_ref {new_cone, linked_to, (int) spheres.size() - 1});
+        world->add(new_cone);
+        world->remove(spheres[linked_to]); //to avoid having the old sphere (if it exists) at the same position as the new cone overlapping each other
     }
 
     void delete_sphere(int sphere_id) {
         spheres.erase(spheres.begin() + sphere_id);
-        
+
         int i = 0;
+        while (i < cones.size()) {
+            if (cones[i].sphere_id1 == sphere_id || cones[i].sphere_id2 == sphere_id) {
+                world->remove(cones[i].cone);
+                cones.erase(cones.begin() + i);
+            }
+            else {
+                i++;
+            }
+        }
+        
+        i = 0;
         while (i < links.size()) {
             if (links[i].first == sphere_id || links[i].second == sphere_id) {
                 links.erase(links.begin() + i);
@@ -66,8 +88,12 @@ public:
             }
         }
 
-        if (sphere1_unlinked) spheres.erase(spheres.begin() + id1);
-        if (sphere2_unlinked) spheres.erase(spheres.begin() + id2);
+        if (sphere1_unlinked) {
+            delete_sphere(id1);
+        }
+        if (sphere2_unlinked) {
+            delete_sphere(id2);
+        }
     }
 
     bool linked(int id1, int id2) {
@@ -84,8 +110,8 @@ public:
 
         for (int i = 0; i < spheres.size(); i++) {
             hit_record tmp_rec;
-            if (spheres[i].hit(r, ray_t, tmp_rec)) {
-                if (tmp_rec.t < rec.t) {
+            if (spheres[i]->hit(r, ray_t, tmp_rec)) {
+                if (index == - 1 || tmp_rec.t < rec.t) {
                     rec = tmp_rec;
                     index = i;
                 }
@@ -102,7 +128,9 @@ public:
 
 private:
     vector<pair<int, int>> links;
-    vector<sphere> spheres;
+    vector<shared_ptr<sphere>> spheres;
+    vector<cone_ref> cones;
+    hittable_list* world;
 };
 
 #endif

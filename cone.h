@@ -86,4 +86,8 @@ class cone : public hittable {
     shared_ptr<material> mat;
 };
 
+static shared_ptr<cone> cone_from_spheres(shared_ptr<sphere> sphere1, shared_ptr<sphere> sphere2, shared_ptr<material> material) {
+  return make_shared<cone>(sphere1->get_center(), sphere2->get_center(), sphere1->get_radius(), sphere2->get_radius(), material);
+}
+
 #endif
