@@ -85,7 +85,7 @@ public:
         for (int i = 0; i < spheres.size(); i++) {
             hit_record tmp_rec;
             if (spheres[i].hit(r, ray_t, tmp_rec)) {
-                if (tmp_rec.t < rec.t) {
+                if (index == - 1 || tmp_rec.t < rec.t) {
                     rec = tmp_rec;
                     index = i;
                 }

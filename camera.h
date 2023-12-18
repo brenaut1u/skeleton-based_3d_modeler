@@ -20,9 +20,13 @@ class camera {
     int    samples_per_pixel = 10;   // Count of random samples for each pixel
     int    max_depth         = 10;   // Maximum number of ray bounces into scene
 
-    void render_file(const hittable& world) {
+    camera(double _aspect_ratio, int _image_width, int _samples_per_pixel, int _max_depth) :
+                                    aspect_ratio(_aspect_ratio), image_width(_image_width),
+                                    samples_per_pixel(_samples_per_pixel), max_depth(_max_depth) {
         initialize();
+    }
 
+    void render_file(const hittable& world) {
         std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
         for (int j = 0; j < image_height; ++j) {
@@ -41,7 +45,6 @@ class camera {
     }
 
     std::vector<vec3> render(const hittable& world) {
-        initialize();
         std::vector<vec3> rendered_image;
 
         for (int j = 0; j < image_height; ++j) {
@@ -59,8 +62,6 @@ class camera {
     }
 
     void render_phong_file(const hittable& world, std::vector<light> lights) {
-        initialize();
-
         std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
         for (int j = 0; j < image_height; ++j) {
@@ -79,7 +80,6 @@ class camera {
     }
 
     std::vector<vec3> render_phong(const hittable& world, std::vector<light> lights) {
-        initialize();
         std::vector<vec3> rendered_image;
 
         for (int j = 0; j < image_height; ++j) {
