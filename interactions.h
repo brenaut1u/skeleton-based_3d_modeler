@@ -8,6 +8,8 @@
 
 class interactions {
     public:
+        interactions(){}
+        
         interactions(linked_spheres_group _spheres_group, hittable_list* _world, camera _cam) :
         spheres_group(_spheres_group), world(_world), cam(_cam) {}
 

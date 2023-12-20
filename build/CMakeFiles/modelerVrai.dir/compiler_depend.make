@@ -815,8 +815,10 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/cone.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/hittable.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/hittable_list.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/interactions.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/interval.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/light.h \
+  /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/linked_spheres_group.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/material.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/ray.h \
   /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/rtweekend.h \
@@ -1151,6 +1153,8 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/sys/_types/_wint_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/sys/_types/_wchar_t.h:
+
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/interactions.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/xlocale.h:
 
@@ -2609,6 +2613,8 @@ CMakeFiles/modelerVrai.dir/modeler.cpp.o: /Users/lise/Desktop/MINES/dep_info/pro
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__chrono/day.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/c++/v1/__type_traits/remove_pointer.h:
+
+/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/linked_spheres_group.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/usr/include/_types/_uintmax_t.h:
 

@@ -15,28 +15,30 @@ namespace nb = nanobind;
 #include "material.h"
 #include "sphere.h"
 #include "cone.h"
+#include "interactions.h"
 
 
 struct modeler {
     hittable_list world;
+    linked_spheres_group spheres;
     camera cam;
     std::vector<vec3> imageVector;
-    light white_light = new_light(point3(-1.0, 0.5, -1.0));
-    light red_light = new_colored_light(point3(0.0, 0.5, -1), point3(0.7, 0.2, 0.2));
-    light blue_light = new_colored_light(point3(1.0, -0.25, -1), point3(0.0, 0.0, 0.8));
-    std::vector<light> lights {white_light};
+    std::vector<light> lights;
+    interactions inter;
 
     void initializedWorld(){
         auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
         auto material_center = make_shared<lambertian>(color(0.7, 0.3, 0.3));
         auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
         auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
-
-        world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
+        auto first_sphere = make_shared<sphere>(point3( 0.0, -100.5, -1.0),100.0, material_ground);
+        
+        linked_spheres_group spheres(&world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, material_right));
+        interactions inter(spheres, &world, cam);
+        spheres.add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, material_right), 0);
+        
         //world.add(make_shared<sphere>(point3( 0.0, 0.25, -2.0),   0.8, material_center));
-
-        world.add(make_shared<cone>(point3(-1.5, 0.25, -2.0), point3(0.75, 0.25, -2.0), 0.2, 0.8, material_right));
-
+        //world.add(make_shared<cone>(point3(-1.5, 0.25, -2.0), point3(0.75, 0.25, -2.0), 0.2, 0.8, material_right));
     }
 
     std::vector<vec3> getVector(){
@@ -55,7 +57,11 @@ struct modeler {
         imageVector = getVector();
     }
 
-
+    void addSphere(){
+        double screen_pos_x = 100 ;
+        double screen_pos_y = 100 ;
+        inter.add_sphere_at_pos(screen_pos_x,screen_pos_y);
+    }
 
     double getRed(int i){
         return imageVector[i].x();
@@ -67,11 +73,8 @@ struct modeler {
 
     double getBlue(int i){
         return imageVector[i].z();
-    }
-
-
+    }   
 };
-
 
 
 NB_MODULE(modelerVrai, m) {
@@ -82,10 +85,8 @@ NB_MODULE(modelerVrai, m) {
         .def("getRed",&modeler::getRed)
         .def("getGreen",&modeler::getGreen)
         .def("getBlue",&modeler::getBlue)
+        .def("add",&modeler::addSphere)
     ;
-
-
-
 }
 
 

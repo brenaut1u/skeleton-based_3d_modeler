@@ -17,6 +17,8 @@ struct cone_ref {
 
 class linked_spheres_group {
 public:
+    linked_spheres_group() {}
+
     linked_spheres_group(hittable_list* _world, shared_ptr<sphere> first_sphere) : world(_world) {
         spheres.push_back(first_sphere);
         world->add(first_sphere);

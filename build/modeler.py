@@ -23,23 +23,23 @@ def _from_rgb(rgb):
     return "#%02X%02X%02X" % rgb 
 
 def printImage(event):
-    canvs.delete("all")
+    #canvs.delete("all")
     for i in range(width +1 ):
         for j in range(height+1):
-            #print(i,j)
             r = int(modeler.getRed(i+j*400)*255)
             g = int(modeler.getGreen(i+j*400)*255)
             b = int(modeler.getBlue(i+j*400)*255)
-            #print(r,g,b)
             color = _from_rgb((r,g,b))
-            #print(color)
             changePixel(i,j,color)
-    #canvs.create_rectangle(10,10,10+2,10+2,fill = "#000055", width=0)
-    #canvs.update()
     w.update()
 
+"""
+def addSphere(event):
+    modeler.add()
+"""
 
-w.bind("<Button-1>",printImage)
+#w.bind("<Button-1>",addSphere)
+w.bind("f",printImage)
 
 w.mainloop()
 
