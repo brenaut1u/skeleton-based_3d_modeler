@@ -1151,7 +1151,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "[/Users/lise/anaconda3/bin/python3.11][/Users/lise/anaconda3/include/python3.11][cfound components: Interpreter Development.Module ][v3.11.5(3.8)]"
+			"value" : "[/Users/lise/anaconda3/bin/python3.11][/Users/lise/anaconda3/include/python3.11][/Users/lise/anaconda3/lib/libpython3.11.dylib][cfound components: Interpreter Development Development.Module Development.Embed ][v3.11.5(3.8)]"
 		},
 		{
 			"name" : "NB_DIR",
@@ -1224,6 +1224,18 @@
 			],
 			"type" : "INTERNAL",
 			"value" : ""
+		},
+		{
+			"name" : "_Python_DEVELOPMENT_EMBED_SIGNATURE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "8b32567d89c6e26e63f9c80a36b3edbd"
 		},
 		{
 			"name" : "_Python_DEVELOPMENT_MODULE_SIGNATURE",
@@ -1308,6 +1320,18 @@
 			],
 			"type" : "INTERNAL",
 			"value" : ""
+		},
+		{
+			"name" : "_Python_LIBRARY_RELEASE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "/Users/lise/anaconda3/lib/libpython3.11.dylib"
 		},
 		{
 			"name" : "_Python_NumPy_REASON_FAILURE",

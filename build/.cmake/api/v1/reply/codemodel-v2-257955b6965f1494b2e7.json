@@ -16,7 +16,8 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2
 					]
 				}
 			],
@@ -32,7 +33,8 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2
 					]
 				}
 			],
@@ -41,15 +43,22 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "modelerVrai::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-modelerVrai-Debug-8f8b94353676b50679ed.json",
+					"jsonFile" : "target-modelerVrai-Debug-f073dc2332e2a516feac.json",
 					"name" : "modelerVrai",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "nanobind-static::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-nanobind-static-Debug-9bd2b1bbdc4df089fad5.json",
+					"jsonFile" : "target-nanobind-static-Debug-0c3980411c198a204931.json",
 					"name" : "nanobind-static",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "viewer::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-viewer-Debug-018382c9908075c13ec7.json",
+					"name" : "viewer",
 					"projectIndex" : 0
 				}
 			]

@@ -169,6 +169,9 @@
 		{
 			"isExternal" : true,
 			"path" : "/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/cmake/nanobind-config.cmake"
+		},
+		{
+			"path" : "modeler.py"
 		}
 	],
 	"kind" : "cmakeFiles",

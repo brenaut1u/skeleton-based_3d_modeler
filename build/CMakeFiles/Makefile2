@@ -64,6 +64,7 @@ CMAKE_BINARY_DIR = /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/
 
 # The main recursive "all" target.
 all: CMakeFiles/modelerVrai.dir/all
+all: CMakeFiles/viewer.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -73,6 +74,7 @@ preinstall:
 # The main recursive "clean" target.
 clean: CMakeFiles/modelerVrai.dir/clean
 clean: CMakeFiles/nanobind-static.dir/clean
+clean: CMakeFiles/viewer.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -126,6 +128,32 @@ nanobind-static: CMakeFiles/nanobind-static.dir/rule
 CMakeFiles/nanobind-static.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/clean
 .PHONY : CMakeFiles/nanobind-static.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/viewer.dir
+
+# All Build rule for target.
+CMakeFiles/viewer.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/viewer.dir/build.make CMakeFiles/viewer.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/viewer.dir/build.make CMakeFiles/viewer.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/build/CMakeFiles --progress-num=14,15 "Built target viewer"
+.PHONY : CMakeFiles/viewer.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/viewer.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/viewer.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/build/CMakeFiles 0
+.PHONY : CMakeFiles/viewer.dir/rule
+
+# Convenience name for target.
+viewer: CMakeFiles/viewer.dir/rule
+.PHONY : viewer
+
+# clean rule for target.
+CMakeFiles/viewer.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/viewer.dir/build.make CMakeFiles/viewer.dir/clean
+.PHONY : CMakeFiles/viewer.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

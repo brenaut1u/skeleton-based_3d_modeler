@@ -36,6 +36,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.28.0-rc1/CMakeCCompiler.cmake"
   "CMakeFiles/3.28.0-rc1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.28.0-rc1/CMakeSystem.cmake"
+  "/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/modeler.py"
   "/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/cmake/nanobind-config.cmake"
   )
 
@@ -47,6 +48,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
+  "modeler.py"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
@@ -54,4 +56,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/modelerVrai.dir/DependInfo.cmake"
   "CMakeFiles/nanobind-static.dir/DependInfo.cmake"
+  "CMakeFiles/viewer.dir/DependInfo.cmake"
   )

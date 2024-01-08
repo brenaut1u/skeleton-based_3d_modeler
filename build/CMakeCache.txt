@@ -371,7 +371,7 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding Python
-FIND_PACKAGE_MESSAGE_DETAILS_Python:INTERNAL=[/Users/lise/anaconda3/bin/python3.11][/Users/lise/anaconda3/include/python3.11][cfound components: Interpreter Development.Module ][v3.11.5(3.8)]
+FIND_PACKAGE_MESSAGE_DETAILS_Python:INTERNAL=[/Users/lise/anaconda3/bin/python3.11][/Users/lise/anaconda3/include/python3.11][/Users/lise/anaconda3/lib/libpython3.11.dylib][cfound components: Interpreter Development Development.Module Development.Embed ][v3.11.5(3.8)]
 NB_DIR:INTERNAL=/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind
 NB_OPT:INTERNAL=$<OR:$<CONFIG:Release>,$<CONFIG:MinSizeRel>>
 NB_OPT_SIZE:INTERNAL=$<OR:$<CONFIG:Release>,$<CONFIG:MinSizeRel>,$<CONFIG:RelWithDebInfo>>
@@ -379,6 +379,7 @@ NB_SUFFIX:INTERNAL=.cpython-311-darwin.so
 NB_SUFFIX_S:INTERNAL=.abi3.so
 //Compiler reason failure
 _Python_Compiler_REASON_FAILURE:INTERNAL=
+_Python_DEVELOPMENT_EMBED_SIGNATURE:INTERNAL=8b32567d89c6e26e63f9c80a36b3edbd
 _Python_DEVELOPMENT_MODULE_SIGNATURE:INTERNAL=0cfd7eeeb63d64648746f252ee994044
 //Development reason failure
 _Python_Development_REASON_FAILURE:INTERNAL=
@@ -391,6 +392,8 @@ _Python_INTERPRETER_PROPERTIES:INTERNAL=Python;3;11;5;64;;cpython-311-darwin;abi
 _Python_INTERPRETER_SIGNATURE:INTERNAL=1e0c9bd763b6e2c2c2829d1e43895135
 //Interpreter reason failure
 _Python_Interpreter_REASON_FAILURE:INTERNAL=
+//Path to a library.
+_Python_LIBRARY_RELEASE:INTERNAL=/Users/lise/anaconda3/lib/libpython3.11.dylib
 //NumPy reason failure
 _Python_NumPy_REASON_FAILURE:INTERNAL=
 

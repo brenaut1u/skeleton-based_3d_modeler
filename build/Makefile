@@ -142,6 +142,19 @@ nanobind-static/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/build
 .PHONY : nanobind-static/fast
 
+#=============================================================================
+# Target rules for targets named viewer
+
+# Build rule for target.
+viewer: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 viewer
+.PHONY : viewer
+
+# fast build rule for target.
+viewer/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/viewer.dir/build.make CMakeFiles/viewer.dir/build
+.PHONY : viewer/fast
+
 Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.o: Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.cpp.o
 .PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.o
 
@@ -382,6 +395,30 @@ Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.s
 .PHONY : Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.cpp.s
 
+main.o: main.cpp.o
+.PHONY : main.o
+
+# target to build an object file
+main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/viewer.dir/build.make CMakeFiles/viewer.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
+.PHONY : main.i
+
+# target to preprocess a source file
+main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/viewer.dir/build.make CMakeFiles/viewer.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/viewer.dir/build.make CMakeFiles/viewer.dir/main.cpp.s
+.PHONY : main.cpp.s
+
 modeler.o: modeler.cpp.o
 .PHONY : modeler.o
 
@@ -416,6 +453,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... modelerVrai"
 	@echo "... nanobind-static"
+	@echo "... viewer"
 	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.o"
 	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.i"
 	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/common.s"
@@ -446,6 +484,9 @@ help:
 	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.o"
 	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.i"
 	@echo "... Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/src/trampoline.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 	@echo "... modeler.o"
 	@echo "... modeler.i"
 	@echo "... modeler.s"

@@ -64,5 +64,11 @@
   "command": "/usr/bin/clang++ -DmodelerVrai_EXPORTS -I/Users/lise/anaconda3/include/python3.11 -I/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk -mmacosx-version-min=13.6 -fPIC -fvisibility=hidden -o CMakeFiles/modelerVrai.dir/modeler.cpp.o -c /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/modeler.cpp",
   "file": "/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/modeler.cpp",
   "output": "CMakeFiles/modelerVrai.dir/modeler.cpp.o"
+},
+{
+  "directory": "/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/build",
+  "command": "/usr/bin/clang++   -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk -mmacosx-version-min=13.6 -o CMakeFiles/viewer.dir/main.cpp.o -c /Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/main.cpp",
+  "file": "/Users/lise/Desktop/MINES/dep_info/projet_dep/Projet_DepInfo/main.cpp",
+  "output": "CMakeFiles/viewer.dir/main.cpp.o"
 }
 ]

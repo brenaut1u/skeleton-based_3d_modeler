@@ -2,6 +2,7 @@
 #define LINKED_SPHERE_GROUP_H
 
 #include "sphere.h"
+#include "cone.h"
 
 #include <vector>
 
@@ -106,7 +107,7 @@ public:
         return false;
     }
 
-    tuple<int, vec3, shared_ptr<material>> find_hit_sphere(const ray& r, interval ray_t) {
+    tuple<int, hit_record> find_hit_sphere(const ray& r, interval ray_t) {
         int index = -1;
         hit_record rec;
 
@@ -121,13 +122,12 @@ public:
         }
 
         if (index != -1) {
-            return tuple<int, vec3, shared_ptr<material>>{index, rec.p, rec.mat};
+            return tuple<int, hit_record>{index, rec};
         }
         else {
-            return tuple<int, vec3, shared_ptr<material>>{-1, {0, 0, 0}, NULL};
+            return tuple<int, hit_record>{-1, rec};
         }
     }
-
 private:
     vector<pair<int, int>> links;
     vector<shared_ptr<sphere>> spheres;
