@@ -1,7 +1,7 @@
 project(my_project) # Replace 'my_project' with the name of your project
 cmake_minimum_required(VERSION 3.15...3.27)
+find_package(Python 3.8 COMPONENTS Interpreter Development.Module REQUIRED)
 
-find_package(Python 3.8 COMPONENTS Interpreter Development REQUIRED)
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
@@ -13,9 +13,7 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE NB_DIR)
 list(APPEND CMAKE_PREFIX_PATH "${NB_DIR}")
 find_package(nanobind CONFIG REQUIRED)
-#add_subdirectory(ext/nanobind)
 
-# CZ add all files used by the bindings
 nanobind_add_module(modelerVrai modeler.cpp
     camera.h
     color.h

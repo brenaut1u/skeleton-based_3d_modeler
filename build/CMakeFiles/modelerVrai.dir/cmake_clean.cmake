@@ -1,7 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/modelerVrai.dir/modeler.cpp.o"
-  "CMakeFiles/modelerVrai.dir/modeler.cpp.o.d"
-  "modelerVrai.cpython-311-darwin.so"
+  "CMakeFiles/modelerVrai.dir/modeler.cpp.obj"
+  "CMakeFiles/modelerVrai.dir/modeler.cpp.obj.d"
+  "libmodelerVrai.dll.a"
+  "modelerVrai.cp310-win_amd64.pyd"
+  "modelerVrai.cp310-win_amd64.pyd.manifest"
   "modelerVrai.pdb"
 )
 

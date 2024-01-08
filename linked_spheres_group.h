@@ -154,7 +154,7 @@ private:
         }
 
         // delete the cone
-        int i = 0;
+        i = 0;
         while (i < cones.size()) {
             if ((cones[i].sphere_id1 == id1 && cones[i].sphere_id2 == id2) ||
                         (cones[i].sphere_id1 == id2 && cones[i].sphere_id2 == id1)) {

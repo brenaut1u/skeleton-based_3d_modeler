@@ -1,1 +1,3 @@
-/usr/bin/clang++ -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk -mmacosx-version-min=13.6 -bundle -Wl,-headerpad_max_install_names -Wl,@/Users/lise/anaconda3/lib/python3.11/site-packages/nanobind/cmake/darwin-ld-cpython.sym -o modelerVrai.cpython-311-darwin.so CMakeFiles/modelerVrai.dir/modeler.cpp.o  libnanobind-static.a 
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\modelerVrai.dir/objects.a
+C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\modelerVrai.dir/objects.a @CMakeFiles\modelerVrai.dir\objects1.rsp
+C:\msys64\ucrt64\bin\c++.exe -O3 -DNDEBUG -shared -o modelerVrai.cp310-win_amd64.pyd -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\modelerVrai.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\modelerVrai.dir\linkLibs.rsp

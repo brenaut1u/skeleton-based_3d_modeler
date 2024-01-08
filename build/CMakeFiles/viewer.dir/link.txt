@@ -1,1 +1,3 @@
-/usr/bin/clang++ -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk -mmacosx-version-min=13.6 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/viewer.dir/main.cpp.o -o viewer 
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\viewer.dir/objects.a
+C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\viewer.dir/objects.a @CMakeFiles\viewer.dir\objects1.rsp
+C:\msys64\ucrt64\bin\c++.exe -O3 -DNDEBUG -Wl,--whole-archive CMakeFiles\viewer.dir/objects.a -Wl,--no-whole-archive -o viewer.exe -Wl,--out-implib,libviewer.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\viewer.dir\linkLibs.rsp

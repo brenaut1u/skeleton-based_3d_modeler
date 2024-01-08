@@ -27,7 +27,7 @@ class interactions {
 
         void delete_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
             ray r = cam.get_ray(screen_pos_x, screen_pos_y);
-            tuple<int, vec3, shared_ptr<material>> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
+            tuple<int, hit_record> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
             if (std::get<0>(find_sphere) != -1) {
                 spheres_group.delete_sphere(std::get<0>(find_sphere));
             }
@@ -35,7 +35,7 @@ class interactions {
 
         int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
             ray r = cam.get_ray(screen_pos_x, screen_pos_y);
-            tuple<int, vec3, shared_ptr<material>> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
+            tuple<int, hit_record> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
             return std::get<0>(find_sphere);
         }
 

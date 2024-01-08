@@ -1,7 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/viewer.dir/main.cpp.o"
-  "CMakeFiles/viewer.dir/main.cpp.o.d"
-  "viewer"
+  "CMakeFiles/viewer.dir/main.cpp.obj"
+  "CMakeFiles/viewer.dir/main.cpp.obj.d"
+  "libviewer.dll.a"
+  "viewer.exe"
+  "viewer.exe.manifest"
   "viewer.pdb"
 )
 
