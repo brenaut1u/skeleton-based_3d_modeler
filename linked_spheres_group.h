@@ -35,11 +35,17 @@ public:
 
     void add_sphere(shared_ptr<sphere> new_sphere, int linked_to) {
         spheres.push_back(new_sphere);
-        links.push_back({spheres.size() - 1, linked_to});
-        shared_ptr<cone> new_cone = cone_from_spheres(new_sphere, spheres[linked_to], new_sphere->get_material());
-        cones.push_back(cone_ref {new_cone, linked_to, (int) spheres.size() - 1});
-        world->add(new_cone);
-        world->remove(spheres[linked_to]); //to avoid having the old sphere (if it exists) at the same position as the new cone overlapping each other
+        add_link(spheres.size() - 1, linked_to);
+    }
+
+    void add_sphere_split_cone(shared_ptr<sphere> new_sphere, int linked_to1, int linked_to2) {
+        if (linked(linked_to1, linked_to2)) {
+            delete_link(linked_to1, linked_to2);   
+
+            spheres.push_back(new_sphere);
+            add_link(spheres.size() - 1, linked_to1);
+            add_link(spheres.size() - 1, linked_to2);
+        }
     }
 
     void delete_sphere(int sphere_id) {
@@ -68,15 +74,7 @@ public:
     }
 
     void unlink(int id1, int id2) {
-        int i = 0;
-        while (i < links.size()) {
-            if ((links[i].first == id1 && links[i].second == id2) || (links[i].first == id2 && links[i].second == id1))  {
-                links.erase(links.begin() + i);
-            }
-            else {
-                i++;
-            }
-        }    
+        delete_link(id1, id2); 
 
         // delete isolated spheres
         bool sphere1_unlinked = true;
@@ -97,6 +95,15 @@ public:
         if (sphere2_unlinked) {
             delete_sphere(id2);
         }
+    }
+
+    void add_link(int id1, int id2) {
+        links.push_back({id1, id2});
+        shared_ptr<cone> new_cone = cone_from_spheres(spheres[id1], spheres[id2], spheres[id1]->get_material());
+        cones.push_back(cone_ref {new_cone, id1, id2});
+        world->add(new_cone);
+        world->remove(spheres[id1]); //to avoid having the old sphere (if it exists) at the same position as the new cone overlapping each other
+        world->remove(spheres[id2]);
     }
 
     bool linked(int id1, int id2) {
@@ -133,6 +140,32 @@ private:
     vector<shared_ptr<sphere>> spheres;
     vector<cone_ref> cones;
     hittable_list* world;
+
+    void delete_link(int id1, int id2) {
+        // delete the link
+        int i = 0;
+        while (i < links.size()) {
+            if ((links[i].first == id1 && links[i].second == id2) || (links[i].first == id2 && links[i].second == id1))  {
+                links.erase(links.begin() + i);
+            }
+            else {
+                i++;
+            }
+        }
+
+        // delete the cone
+        int i = 0;
+        while (i < cones.size()) {
+            if ((cones[i].sphere_id1 == id1 && cones[i].sphere_id2 == id2) ||
+                        (cones[i].sphere_id1 == id2 && cones[i].sphere_id2 == id1)) {
+                world->remove(cones[i].cone);
+                cones.erase(cones.begin() + i);
+            }
+            else {
+                i++;
+            }
+        }
+    }
 };
 
 #endif
