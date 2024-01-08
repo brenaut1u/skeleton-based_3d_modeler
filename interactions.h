@@ -13,9 +13,9 @@ class interactions {
 
         void add_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
             ray r = cam.get_ray(screen_pos_x, screen_pos_y);
-            tuple<int, vec3, shared_ptr<material>> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
+            tuple<int, hit_record> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
             if (std::get<0>(find_sphere) != -1) {
-                shared_ptr<sphere> new_sphere = make_shared<sphere>(std::get<1>(find_sphere), 0.3, std::get<2>(find_sphere));
+                shared_ptr<sphere> new_sphere = make_shared<sphere>(std::get<1>(find_sphere).p, 0.3, std::get<1>(find_sphere).mat);
                 spheres_group.add_sphere(new_sphere, std::get<0>(find_sphere));
             }
         }
