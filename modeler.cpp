@@ -1,10 +1,11 @@
 #include <string>
-#include <nanobind/nanobind.h>
+#include <pybind11/pybind11.h>
+/*#include <nanobind/nanobind.h>
 #include <nanobind/stl/string.h>
-#include <nanobind/stl/vector.h>
+#include <nanobind/stl/vector.h>*/
 #include <vector>
 
-namespace nb = nanobind;
+namespace pyb = pybind11;
 
 #include "hittable_list.h"
 #include "sphere.h"
@@ -95,9 +96,9 @@ struct modeler {
 };
 
 
-NB_MODULE(modelerVrai, m) {
-    nb::class_<modeler>(m,"modeler")
-        .def(nb::init<>())
+PYBIND11_MODULE(modelerVrai, m) {
+    pyb::class_<modeler>(m,"modeler")
+        .def(pyb::init<>())
         .def("initializedWorld", &modeler::initializedWorld)
         .def("initializedCam", &modeler::initializedCam)
         .def("computeImage",&modeler::computeImage)
@@ -107,7 +108,7 @@ NB_MODULE(modelerVrai, m) {
         .def("add",&modeler::addSphere)
         .def("delete",&modeler::deleteSphere)
         .def("detect",&modeler::detectSphere)
-        .def_rw("index",&modeler::indexLinkedSphere)
+        .def_readwrite("index",&modeler::indexLinkedSphere)
     ;
 }
 
