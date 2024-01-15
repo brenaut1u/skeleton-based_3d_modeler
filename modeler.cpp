@@ -27,6 +27,7 @@ struct modeler {
     std::vector<light> lights;
     interactions inter;
     int indexLinkedSphere;
+    point3 gravity_center;
 
     void initializedWorld(){
       auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
@@ -55,6 +56,7 @@ struct modeler {
       // in the scene : translate and rotate)
       cam = camera(16.0 / 9.0, 400, 1, 1);
       inter = interactions(spheres, &world, cam);
+      gravity_center = point3(0.5, 0.25, -1);
     }
 
     void initializedCam()
@@ -97,6 +99,10 @@ struct modeler {
     void change_radius(double radius, int id_sphere){
         return inter.change_radius(radius, id_sphere);
     }
+
+    void rotate_camera(double horizontal_angle,double vertical_angle){
+        return inter.rotate_camera(horizontal_angle,vertical_angle,gravity_center);
+    }
 };
 
 
@@ -114,6 +120,7 @@ PYBIND11_MODULE(modelerVrai, m) {
         .def("delete",&modeler::deleteSphere)
         .def("detect",&modeler::detectSphere)
         .def_readwrite("index",&modeler::indexLinkedSphere)
+        .def("rotate_camera",&modeler::rotate_camera)
     ;
 }
 
