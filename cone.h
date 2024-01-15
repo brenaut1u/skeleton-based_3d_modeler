@@ -3,6 +3,7 @@
 
 #include "hittable.h"
 #include "vec3.h"
+#include "sphere.h"
 
 class cone : public hittable {
   public:

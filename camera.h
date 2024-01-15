@@ -20,6 +20,8 @@ class camera {
     int    samples_per_pixel = 10;   // Count of random samples for each pixel
     int    max_depth         = 10;   // Maximum number of ray bounces into scene
 
+    camera(){}
+    
     camera(double _aspect_ratio, int _image_width, int _samples_per_pixel, int _max_depth) :
                                     aspect_ratio(_aspect_ratio), image_width(_image_width),
                                     samples_per_pixel(_samples_per_pixel), max_depth(_max_depth) {
@@ -43,6 +45,7 @@ class camera {
 
         std::clog << "\rDone.                 \n";
     }
+    
 
     std::vector<vec3> render(const hittable& world) {
         std::vector<vec3> rendered_image;

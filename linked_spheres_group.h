@@ -2,6 +2,7 @@
 #define LINKED_SPHERE_GROUP_H
 
 #include "sphere.h"
+#include "cone.h"
 
 #include <vector>
 
@@ -17,6 +18,8 @@ struct cone_ref {
 
 class linked_spheres_group {
 public:
+    linked_spheres_group() {}
+
     linked_spheres_group(hittable_list* _world, shared_ptr<sphere> first_sphere) : world(_world) {
         spheres.push_back(first_sphere);
         world->add(first_sphere);
@@ -132,6 +135,17 @@ public:
             return tuple<int, hit_record>{-1, rec};
         }
     }
+
+    void change_sphere_at(shared_ptr<sphere> new_sphere, int id_sphere){
+        spheres[id_sphere] = new_sphere;
+        for (const pair<int, int> &val : links){
+            if (std::get<0>(val) == id_sphere || std::get<1>(val) == id_sphere){
+                delete_link(std::get<0>(val),std::get<1>(val));
+                add_link(std::get<0>(val),std::get<1>(val));
+            }
+        }
+    }
+
 
 private:
     vector<pair<int, int>> links;
