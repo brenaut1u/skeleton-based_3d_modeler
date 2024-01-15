@@ -51,4 +51,3 @@ add_executable(viewer main.cpp
     rtweekend.h
     sphere.h
     vec3.h
-)

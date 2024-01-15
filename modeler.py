@@ -61,8 +61,7 @@ def changeRayon(event):
 def detectSphere(event):
     global detected
     detected = modeler.detect(event.x,event.y)
-
-
+    
 def actions(event):
     global mode
     global detected
@@ -91,7 +90,6 @@ modeButton.pack(pady=20)
 # CZ : Initialize the image when starting the application
 modeler.computeImage()
 printImage()
-print("cette version est utilisée")
 
 w.bind("<Button-2>",deleteSphere)
 w.bind("c",on_button_click)
