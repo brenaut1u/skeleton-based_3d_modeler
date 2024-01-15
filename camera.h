@@ -109,12 +109,45 @@ class camera {
         auto ray_direction = pixel_sample - ray_origin;
 
         return ray(ray_origin, ray_direction);
-    } 
+    }
+
+    void set_center_position(point3 new_pos) {
+        center = new_pos;
+
+        vec3 v = viewport_width * unit_vector(center - pixel00_loc);
+        viewport_u = vec3 {v.x(), 0.0, v.z()}; //TODO : probleme ici
+        //TODO: viewport_v = vec3(0, -viewport_height, 0);
+
+        // Calculate the horizontal and vertical delta vectors from pixel to pixel.
+        pixel_delta_u = viewport_u / image_width;
+        //pixel_delta_v = viewport_v / image_height;
+    }
+
+    void set_pixell00_position(point3 new_pos) {
+        pixel00_loc = new_pos;
+    }
+
+    point3 get_center_position() const {
+        return center;
+    }
+
+    point3 get_pixell00_position() const {
+        return pixel00_loc;
+    }
 
   private:
     int    image_height;   // Rendered image height
     point3 center;         // Camera center
     point3 pixel00_loc;    // Location of pixel 0, 0
+
+    double focal_length;
+    double viewport_height;
+    double viewport_width;
+
+    // the vectors across the horizontal and down the vertical viewport edges.
+    vec3 viewport_u;
+    vec3 viewport_v;
+
     vec3   pixel_delta_u;  // Offset to pixel to the right
     vec3   pixel_delta_v;  // Offset to pixel below
 
@@ -125,13 +158,13 @@ class camera {
         center = point3(0, 0, 0);
 
         // Determine viewport dimensions.
-        auto focal_length = 1.0;
-        auto viewport_height = 2.0;
-        auto viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
+        focal_length = 1.0;
+        viewport_height = 2.0;
+        viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
 
         // Calculate the vectors across the horizontal and down the vertical viewport edges.
-        auto viewport_u = vec3(viewport_width, 0, 0);
-        auto viewport_v = vec3(0, -viewport_height, 0);
+        viewport_u = vec3(viewport_width, 0, 0);
+        viewport_v = vec3(0, -viewport_height, 0);
 
         // Calculate the horizontal and vertical delta vectors from pixel to pixel.
         pixel_delta_u = viewport_u / image_width;

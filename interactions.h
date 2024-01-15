@@ -13,11 +13,11 @@ class interactions {
     public:
         interactions(){}
         
-        interactions(linked_spheres_group _spheres_group, hittable_list* _world, camera _cam) :
+        interactions(linked_spheres_group _spheres_group, hittable_list* _world, camera* _cam) :
         spheres_group(_spheres_group), world(_world), cam(_cam) {}
 
         void add_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
-            ray r = cam.get_ray(screen_pos_x, screen_pos_y);
+            ray r = cam->get_ray(screen_pos_x, screen_pos_y);
             tuple<int, hit_record> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
             if (std::get<0>(find_sphere) != -1) {
                 shared_ptr<sphere> new_sphere = make_shared<sphere>(std::get<1>(find_sphere).p, 0.3, std::get<1>(find_sphere).mat);
@@ -26,7 +26,7 @@ class interactions {
         }
 
         void delete_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
-            ray r = cam.get_ray(screen_pos_x, screen_pos_y);
+            ray r = cam->get_ray(screen_pos_x, screen_pos_y);
             tuple<int, hit_record> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
             if (std::get<0>(find_sphere) != -1) {
                 spheres_group.delete_sphere(std::get<0>(find_sphere));
@@ -34,7 +34,7 @@ class interactions {
         }
 
         int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
-            ray r = cam.get_ray(screen_pos_x, screen_pos_y);
+            ray r = cam->get_ray(screen_pos_x, screen_pos_y);
             tuple<int, hit_record> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
             return std::get<0>(find_sphere);
         }
@@ -48,10 +48,24 @@ class interactions {
             spheres_group.change_sphere_at(new_sphere,id_sphere);
         }
 
+        void rotate_camera(double horizontal_angle, double vertical_angle, point3 center) {
+            auto cam_center = cam->get_center_position();
+            point3 p = cam_center - center;
+            cam->set_center_position(center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, p),
+                                                     p.y(),
+                                                     dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, p)});
+
+            auto cam_pix00 = cam->get_pixell00_position();
+            p = cam_pix00 - center;                                       
+            cam->set_pixell00_position(center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, p),
+                                                     p.y(),
+                                                     dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, p)});
+        }
+
     private:
         linked_spheres_group spheres_group;
         hittable_list* world;
-        camera cam;
+        camera* cam;
 };
 
 #endif

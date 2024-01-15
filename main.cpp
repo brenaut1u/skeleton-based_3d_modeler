@@ -31,8 +31,20 @@ int main() {
 
     camera cam(16.0 / 9.0, 800, 1, 1);
 
-    interactions inter(spheres, &world, cam);
+    interactions inter(spheres, &world, &cam);
     inter.add_sphere_at_pos(500, 100);
+
+    // world.add(make_shared<sphere>(point3(0.0, 0.0, -1.0), 0.2, material_right));
+    // point3 center = {0.0, 0.0, -1.0};
+    // point3 p = point3 {0.0, 0.0, -0.5} - center;
+    // double horizontal_angle = 6.2;
+    // world.add(make_shared<sphere>(center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, p),
+    //                                                 p.y(),
+    //                                                 dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, p)},
+    //                             0.05, material_right));
+
+    point3 center = {0.0, 0.25, -2.0};
+    inter.rotate_camera(0.0, 0, center);
 
     cam.render_phong_file(world, lights);
     //cam.render_file(world);
