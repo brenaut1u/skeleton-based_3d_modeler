@@ -41,9 +41,8 @@ def printImage(event=None):
 def addSphere(event):
     modeler.add(event.x, event.y)
     # CZ : for testing directly update the displayed image
-    #modeler.computeImage()
-    #printImage()
-    #detected = -1
+    modeler.computeImage()
+    printImage()
         
 def deleteSphere(event):
     modeler.delete(event.x,event.y)
@@ -55,13 +54,14 @@ def changeRayon(event):
     if detected != -1 :
         modeler.changeRayon(0.9,detected)
         detected = -1
-    #modeler.computeImage()
-    #printImage()
-    #detected = -1
+    modeler.computeImage()
+    printImage()
+    detected = -1
 
 def detectSphere(event):
     global detected
     detected = modeler.detect(event.x,event.y)
+
 
 def actions(event):
     global mode
@@ -91,38 +91,15 @@ modeButton.pack(pady=20)
 # CZ : Initialize the image when starting the application
 modeler.computeImage()
 printImage()
+print("cette version est utilisée")
 
 w.bind("<Button-2>",deleteSphere)
 w.bind("c",on_button_click)
 w.bind("<ButtonPress-1>",detectSphere)
-w.bind("<ButtonRelease-1>",actions)
+w.bind("<ButtonRelease-1>",changeRayon)
 
 w.bind("f",printImage)
 
 w.mainloop()
 
 exit()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
