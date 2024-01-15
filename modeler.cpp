@@ -94,8 +94,8 @@ struct modeler {
         return imageVector[i].z();
     }  
 
-    void change_rayon(double rayon,int id_sphere){
-        return inter.change_rayon(rayon,id_sphere);
+    void change_radius(double radius, int id_sphere){
+        return inter.change_radius(radius, id_sphere);
     }
 };
 
@@ -110,7 +110,7 @@ PYBIND11_MODULE(modelerVrai, m) {
         .def("getGreen",&modeler::getGreen)
         .def("getBlue",&modeler::getBlue)
         .def("add",&modeler::addSphere)
-        .def("changeRayon",&modeler::change_rayon)
+        .def("changeRadius",&modeler::change_radius)
         .def("delete",&modeler::deleteSphere)
         .def("detect",&modeler::detectSphere)
         .def_readwrite("index",&modeler::indexLinkedSphere)

@@ -49,10 +49,10 @@ def deleteSphere(event):
     modeler.computeImage()
     printImage()
 
-def changeRayon(event):
+def changeRadius(event):
     global detected 
     if detected != -1 :
-        modeler.changeRayon(0.9,detected)
+        modeler.changeRadius(0.9,detected)
         detected = -1
     modeler.computeImage()
     printImage()
@@ -68,7 +68,7 @@ def actions(event):
     if mode == "creation" :
         addSphere(event)
     elif mode == "modification" :
-        w.bind("<ButtonRelease-1>",changeRayon)
+        w.bind("<ButtonRelease-1>",changeRadius)
     modeler.computeImage()
     printImage()
     detected = -1
@@ -94,7 +94,7 @@ printImage()
 w.bind("<Button-2>",deleteSphere)
 w.bind("c",on_button_click)
 w.bind("<ButtonPress-1>",detectSphere)
-w.bind("<ButtonRelease-1>",changeRayon)
+w.bind("<ButtonRelease-1>",changeRadius)
 
 w.bind("f",printImage)
 
