@@ -1,6 +1,7 @@
 #ifndef INTERACTIONS
 #define INTERACTIONS
 
+#include <iostream>
 #include "ray.h"
 #include "camera.h"
 #include "hittable_list.h"
@@ -24,7 +25,6 @@ class interactions {
             }
         }
 
-
         void delete_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
             ray r = cam.get_ray(screen_pos_x, screen_pos_y);
             tuple<int, hit_record> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
@@ -37,6 +37,15 @@ class interactions {
             ray r = cam.get_ray(screen_pos_x, screen_pos_y);
             tuple<int, hit_record> find_sphere = spheres_group.find_hit_sphere(r, interval(0.001, infinity));
             return std::get<0>(find_sphere);
+        }
+
+        void change_rayon(double rayon,int id_sphere){
+            shared_ptr<sphere> old_sphere = spheres_group.get_sphere_at(id_sphere);
+            vec3 center = old_sphere->get_center();
+            //double new_rayon = 0.9;
+            //double new_rayon = std::sqrt(std::pow(screen_pos_x - center.x(), 2) + std::pow(screen_pos_y - center.x(), 2))/200;
+            shared_ptr<sphere> new_sphere = make_shared<sphere>(center, rayon,old_sphere->get_material());  
+            spheres_group.change_sphere_at(new_sphere,id_sphere);
         }
 
     private:

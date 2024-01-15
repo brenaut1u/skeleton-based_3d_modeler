@@ -135,6 +135,18 @@ public:
             return tuple<int, hit_record>{-1, rec};
         }
     }
+
+    void change_sphere_at(shared_ptr<sphere> new_sphere, int id_sphere){
+        spheres[id_sphere] = new_sphere;
+        for (const pair<int, int> &val : links){
+            if (std::get<0>(val) == id_sphere || std::get<1>(val) == id_sphere){
+                delete_link(std::get<0>(val),std::get<1>(val));
+                add_link(std::get<0>(val),std::get<1>(val));
+            }
+        }
+    }
+
+
 private:
     vector<pair<int, int>> links;
     vector<shared_ptr<sphere>> spheres;
