@@ -48,18 +48,8 @@ class interactions {
             spheres_group.change_sphere_at(new_sphere,id_sphere);
         }
 
-        void rotate_camera(double horizontal_angle, double vertical_angle, point3 center) {
-            auto cam_center = cam->get_center_position();
-            point3 p = cam_center - center;
-            cam->set_center_position(center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, p),
-                                                     p.y(),
-                                                     dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, p)});
-
-            auto cam_pix00 = cam->get_pixell00_position();
-            p = cam_pix00 - center;                                       
-            cam->set_pixell00_position(center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, p),
-                                                     p.y(),
-                                                     dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, p)});
+        void rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center) {
+            cam->rotate_camera(horizontal_angle, vertical_angle, rot_center);
         }
 
     private:

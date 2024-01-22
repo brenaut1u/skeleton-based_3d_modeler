@@ -64,7 +64,7 @@ class camera {
         return rendered_image;
     }
 
-    void render_phong_file(const hittable& world, std::vector<light> lights) {
+    void render_phong_file(const hittable& world, const std::vector<light>& lights) {
         std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
         for (int j = 0; j < image_height; ++j) {
@@ -73,6 +73,7 @@ class camera {
                 color pixel_color(0,0,0);
                 for (int sample = 0; sample < samples_per_pixel; ++sample) {
                     ray r = get_ray(i, j);
+                    ray_color_with_point_lights(r, max_depth, world, lights);
                     pixel_color += ray_color_with_point_lights(r, max_depth, world, lights);
                 }
                 write_color(std::cout, pixel_color, samples_per_pixel);                
@@ -82,7 +83,7 @@ class camera {
         std::clog << "\rDone.                 \n";        
     }
 
-    std::vector<vec3> render_phong(const hittable& world, std::vector<light> lights) {
+    std::vector<vec3> render_phong(const hittable& world, const std::vector<light>& lights) {
         std::vector<vec3> rendered_image;
 
         for (int j = 0; j < image_height; ++j) {
@@ -111,34 +112,27 @@ class camera {
         return ray(ray_origin, ray_direction);
     }
 
-    void set_center_position(point3 new_pos) {
-        center = new_pos;
+    void rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center) {
+        point3 p = center - rot_center;
+        center = rot_center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, p),
+                                        p.y(),
+                                        dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, p)};
 
-        vec3 v = viewport_width * unit_vector(center - pixel00_loc);
-        viewport_u = vec3 {v.x(), 0.0, v.z()}; //TODO : probleme ici
-        //TODO: viewport_v = vec3(0, -viewport_height, 0);
+        p = pixel00_loc - rot_center;                                       
+        pixel00_loc = rot_center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, p),
+                                            p.y(),
+                                            dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, p)};
 
-        // Calculate the horizontal and vertical delta vectors from pixel to pixel.
+        viewport_u = point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, viewport_u),
+                                viewport_u.y(),
+                                dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, viewport_u)};
         pixel_delta_u = viewport_u / image_width;
-        //pixel_delta_v = viewport_v / image_height;
-    }
-
-    void set_pixell00_position(point3 new_pos) {
-        pixel00_loc = new_pos;
-    }
-
-    point3 get_center_position() const {
-        return center;
-    }
-
-    point3 get_pixell00_position() const {
-        return pixel00_loc;
     }
 
   private:
     int    image_height;   // Rendered image height
     point3 center;         // Camera center
-    point3 pixel00_loc;    // Location of pixel 0, 0
+    point3 pixel00_loc;    // Location of pixel 0, 0 (top left corner)
 
     double focal_length;
     double viewport_height;
@@ -214,7 +208,7 @@ class camera {
     }
 
     
-    color ray_color_with_point_lights(const ray& r, int depth, const hittable& world, std::vector<light> lights) const {
+    color ray_color_with_point_lights(const ray& r, int depth, const hittable& world, const std::vector<light>& lights) const {
         hit_record rec;
         vec3 intensity = {0, 0, 0};
 

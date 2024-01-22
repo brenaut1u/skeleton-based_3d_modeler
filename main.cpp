@@ -16,9 +16,8 @@ int main() {
     auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
     auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
 
+    // ground
     world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
-
-    //world.add(make_shared<cone>(point3(-1.5, 0.25, -2.0), point3(0.75, 0.25, -2.0), 0.2, 0.8, material_right));
     
     linked_spheres_group spheres(&world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, material_right));
     spheres.add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, material_right), 0);
@@ -33,15 +32,6 @@ int main() {
 
     interactions inter(spheres, &world, &cam);
     inter.add_sphere_at_pos(500, 100);
-
-    // world.add(make_shared<sphere>(point3(0.0, 0.0, -1.0), 0.2, material_right));
-    // point3 center = {0.0, 0.0, -1.0};
-    // point3 p = point3 {0.0, 0.0, -0.5} - center;
-    // double horizontal_angle = 6.2;
-    // world.add(make_shared<sphere>(center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, p),
-    //                                                 p.y(),
-    //                                                 dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, p)},
-    //                             0.05, material_right));
 
     point3 center = {0.0, 0.25, -2.0};
     inter.rotate_camera(0.0, 0, center);
