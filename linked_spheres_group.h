@@ -38,14 +38,19 @@ public:
         add_link(spheres.size() - 1, linked_to);
     }
 
-    void add_sphere_split_cone(shared_ptr<sphere> new_sphere, int linked_to1, int linked_to2) {
-        if (linked(linked_to1, linked_to2)) {
-            delete_link(linked_to1, linked_to2);   
-
-            spheres.push_back(new_sphere);
-            add_link(spheres.size() - 1, linked_to1);
-            add_link(spheres.size() - 1, linked_to2);
-        }
+    void add_sphere_split_cone(int cone_id, point3 p, vec3 n, shared_ptr<material> mat) {
+        point3 c1 = spheres[cones[cone_id].sphere_id1]->get_center();
+        point3 c2 = spheres[cones[cone_id].sphere_id2]->get_center();
+        vec3 v = c2 - c1;
+        //double t = (p.y() + n.y() * (c1.x() - p.x()) / n.x() - c1.y()) / ((c2.y() - c1.y()) * (1 - n.y() * (c2.x() - c1.x()) / n.x()));
+        double t = (p.y() - c1.y() + (n.y() / n.x()) * (c1.x() - p.x())) / (v.y() - v.x() * n.y() / n.x());
+        point3 center = c1 + t * v;
+        double radius = (p - center).length();
+        shared_ptr<sphere> new_sphere = make_shared<sphere>(center, radius, mat);
+        spheres.push_back(new_sphere);
+        add_link(spheres.size() - 1, cones[cone_id].sphere_id1);
+        add_link(spheres.size() - 1, cones[cone_id].sphere_id2);
+        delete_link(cones[cone_id].sphere_id1, cones[cone_id].sphere_id2);
     }
 
     void delete_sphere(int sphere_id) {
@@ -121,6 +126,28 @@ public:
         for (int i = 0; i < spheres.size(); i++) {
             hit_record tmp_rec;
             if (spheres[i]->hit(r, ray_t, tmp_rec)) {
+                if (index == - 1 || tmp_rec.t < rec.t) {
+                    rec = tmp_rec;
+                    index = i;
+                }
+            }
+        }
+
+        if (index != -1) {
+            return tuple<int, hit_record>{index, rec};
+        }
+        else {
+            return tuple<int, hit_record>{-1, rec};
+        }
+    }
+
+    tuple<int, hit_record> find_hit_cone(const ray& r, interval ray_t) {
+        int index = -1;
+        hit_record rec;
+
+        for (int i = 0; i < cones.size(); i++) {
+            hit_record tmp_rec;
+            if (cones[i].cone->hit(r, ray_t, tmp_rec)) {
                 if (index == - 1 || tmp_rec.t < rec.t) {
                     rec = tmp_rec;
                     index = i;

@@ -30,11 +30,12 @@ int main() {
 
     camera cam(16.0 / 9.0, 800, 1, 1);
 
-    interactions inter(spheres, &world, &cam);
+    interactions inter(&spheres, &world, &cam);
     inter.add_sphere_at_pos(500, 100);
+    inter.segment_cone_at_pos(300, 200);
 
     point3 center = {0.0, 0.25, -2.0};
-    inter.rotate_camera(0.0, 0, center);
+    //inter.rotate_camera(0.0, 0, center);
 
     cam.render_phong_file(world, lights);
     //cam.render_file(world);
