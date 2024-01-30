@@ -39,7 +39,8 @@ int main() {
     point3 center = {0.0, 0.25, -2.0};
     inter.rotate_camera(1.5, 0, center);
     inter.set_sphere_position_on_screen(0, 250, 200);
-    inter.rotate_camera(-1.5, 0, center);
+    inter.rotate_camera(-1.5, 0.0, center);
+    inter.rotate_camera(0.5, -1.0, center);
 
     cam.render_phong_file(world, lights);
     //cam.render_file(world);

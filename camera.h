@@ -113,20 +113,32 @@ class camera {
     }
 
     void rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center) {
-        point3 p = center - rot_center;
-        center = rot_center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, p),
-                                        p.y(),
-                                        dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, p)};
+        // horizontal rotation
+        vec3 pc = center - rot_center;
+        center = rot_center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, pc),
+                                      pc.y(),
+                                      dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, pc)};
 
-        p = pixel00_loc - rot_center;                                       
-        pixel00_loc = rot_center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, p),
-                                            p.y(),
-                                            dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, p)};
+        vec3 pl = pixel00_loc - rot_center;
+        pixel00_loc = rot_center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, pl),
+                                           pl.y(),
+                                           dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, pl)};
 
         viewport_u = point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, viewport_u),
                                 viewport_u.y(),
                                 dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, viewport_u)};
         pixel_delta_u = viewport_u / image_width;
+
+        // vertical rotation
+        vec3 axis = unit_vector(viewport_u);
+        pc = center - rot_center;
+        pl = pixel00_loc - rot_center;
+        vec3 pc_rot = cos(vertical_angle) * pc + sin(vertical_angle) * cross(axis, pc) + (1 - cos(vertical_angle)) * dot(axis, pc) * axis;
+        center = rot_center + pc_rot;
+        vec3 pl_rot = cos(vertical_angle) * pl + sin(vertical_angle) * cross(axis, pl) + (1 - cos(vertical_angle)) * dot(axis, pl) * axis;
+        pixel00_loc = rot_center + pl_rot;
+        viewport_v = cos(vertical_angle) * viewport_v + sin(vertical_angle) * cross(axis, viewport_v) + (1 - cos(vertical_angle)) * dot(axis, viewport_v) * axis;
+        pixel_delta_v = viewport_v / image_height;
     }
 
     point3 get_center() const {
