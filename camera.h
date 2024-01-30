@@ -114,30 +114,25 @@ class camera {
 
     void rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center) {
         // horizontal rotation
+        vec3 h_axis = vec3(0.0, 1.0, 0.0);
         vec3 pc = center - rot_center;
-        center = rot_center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, pc),
-                                      pc.y(),
-                                      dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, pc)};
-
         vec3 pl = pixel00_loc - rot_center;
-        pixel00_loc = rot_center + point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, pl),
-                                           pl.y(),
-                                           dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, pl)};
-
-        viewport_u = point3 {dot(point3 {cos(horizontal_angle), 0, sin(horizontal_angle)}, viewport_u),
-                                viewport_u.y(),
-                                dot(point3 {-sin(horizontal_angle), 0, cos(horizontal_angle)}, viewport_u)};
+        vec3 pc_rot = cos(horizontal_angle) * pc + sin(horizontal_angle) * cross(h_axis, pc) + (1 - cos(horizontal_angle)) * dot(h_axis, pc) * h_axis;
+        center = rot_center + pc_rot;
+        vec3 pl_rot = cos(horizontal_angle) * pl + sin(horizontal_angle) * cross(h_axis, pl) + (1 - cos(horizontal_angle)) * dot(h_axis, pl) * h_axis;
+        pixel00_loc = rot_center + pl_rot;
+        viewport_u = cos(horizontal_angle) * viewport_u + sin(horizontal_angle) * cross(h_axis, viewport_u) + (1 - cos(horizontal_angle)) * dot(h_axis, viewport_u) * h_axis;
         pixel_delta_u = viewport_u / image_width;
 
         // vertical rotation
-        vec3 axis = unit_vector(viewport_u);
+        vec3 v_axis = unit_vector(viewport_u);
         pc = center - rot_center;
         pl = pixel00_loc - rot_center;
-        vec3 pc_rot = cos(vertical_angle) * pc + sin(vertical_angle) * cross(axis, pc) + (1 - cos(vertical_angle)) * dot(axis, pc) * axis;
+        pc_rot = cos(vertical_angle) * pc + sin(vertical_angle) * cross(v_axis, pc) + (1 - cos(vertical_angle)) * dot(v_axis, pc) * v_axis;
         center = rot_center + pc_rot;
-        vec3 pl_rot = cos(vertical_angle) * pl + sin(vertical_angle) * cross(axis, pl) + (1 - cos(vertical_angle)) * dot(axis, pl) * axis;
+        pl_rot = cos(vertical_angle) * pl + sin(vertical_angle) * cross(v_axis, pl) + (1 - cos(vertical_angle)) * dot(v_axis, pl) * v_axis;
         pixel00_loc = rot_center + pl_rot;
-        viewport_v = cos(vertical_angle) * viewport_v + sin(vertical_angle) * cross(axis, viewport_v) + (1 - cos(vertical_angle)) * dot(axis, viewport_v) * axis;
+        viewport_v = cos(vertical_angle) * viewport_v + sin(vertical_angle) * cross(v_axis, viewport_v) + (1 - cos(vertical_angle)) * dot(v_axis, viewport_v) * v_axis;
         pixel_delta_v = viewport_v / image_height;
     }
 
