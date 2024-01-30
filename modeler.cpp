@@ -111,6 +111,10 @@ struct modeler {
     void rotate_camera(double horizontal_angle,double vertical_angle){
         return inter.rotate_camera(horizontal_angle,vertical_angle,gravity_center);
     }
+
+    void move_camera_forward(double delta_pos) {
+        return inter.move_camera_forward(delta_pos);
+    }
 };
 
 
@@ -125,10 +129,13 @@ PYBIND11_MODULE(modelerVrai, m) {
         .def("getBlue",&modeler::getBlue)
         .def("add",&modeler::addSphere)
         .def("changeRadius",&modeler::change_radius)
+        .def("increaseRadius", &modeler::increase_radius)
         .def("delete",&modeler::deleteSphere)
         .def("detect",&modeler::detectSphere)
         .def_readwrite("index",&modeler::indexLinkedSphere)
+        .def("set_sphere_position", &modeler::set_sphere_position_on_screen)
         .def("rotate_camera",&modeler::rotate_camera)
+        .def("move_camera_forward", &modeler::move_camera_forward)
     ;
 }
 

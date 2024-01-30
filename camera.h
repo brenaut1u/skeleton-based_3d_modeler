@@ -136,6 +136,13 @@ class camera {
         pixel_delta_v = viewport_v / image_height;
     }
 
+    void move_camera_forward(double delta_pos) {
+        point3 view_center = pixel00_loc + 0.5 * viewport_u + 0.5 * viewport_v;
+        vec3 v = unit_vector(view_center - center);
+        center += delta_pos * v;
+        pixel00_loc += delta_pos * v;
+    }
+
     point3 get_center() const {
         return center;
     }

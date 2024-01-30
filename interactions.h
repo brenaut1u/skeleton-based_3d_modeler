@@ -85,6 +85,10 @@ class interactions {
             cam->rotate_camera(horizontal_angle, vertical_angle, rot_center);
         }
 
+        void move_camera_forward(double delta_pos) {
+            cam->move_camera_forward(delta_pos);
+        }
+
     private:
         linked_spheres_group* spheres_group;
         hittable_list* world;

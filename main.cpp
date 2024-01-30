@@ -41,6 +41,7 @@ int main() {
     inter.set_sphere_position_on_screen(0, 250, 200);
     inter.rotate_camera(-1.5, 0.0, center);
     inter.rotate_camera(0.5, -1.0, center);
+    inter.move_camera_forward(0.5);
 
     cam.render_phong_file(world, lights);
     //cam.render_file(world);
