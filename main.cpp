@@ -33,8 +33,8 @@ int main() {
     interactions inter(&spheres, &world, &cam);
     inter.add_sphere_at_pos(500, 100);
     inter.segment_cone_at_pos(300, 200);
-    inter.increase_radius(300, 170, 0.2);
-    inter.change_radius(500, 67, 0.15);
+    inter.increase_radius(inter.detect_sphere_at_pos(300, 170), 0.2);
+    inter.change_radius(inter.detect_sphere_at_pos(500, 67), 0.15);
 
     point3 center = {0.0, 0.25, -2.0};
     inter.rotate_camera(1.5, 0, center);

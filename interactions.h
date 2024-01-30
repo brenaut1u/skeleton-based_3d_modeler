@@ -35,12 +35,8 @@ class interactions {
             }
         }
 
-        void delete_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
-            tuple<int, hit_record> find_sphere = sphere_at_pos(screen_pos_x, screen_pos_y);
-            int sphere_id = std::get<0>(find_sphere);
-            if (sphere_id != -1) {
-                spheres_group->delete_sphere(sphere_id);
-            }
+        void delete_sphere(int sphere_id) {
+            spheres_group->delete_sphere(sphere_id);
         }
 
         int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
@@ -49,18 +45,12 @@ class interactions {
             return std::get<0>(find_sphere);
         }
 
-        void change_radius(int screen_pos_x, int screen_pos_y, double radius){
-            int sphere_id = std::get<0>(sphere_at_pos(screen_pos_x, screen_pos_y));
-            if (sphere_id != -1) {
-                spheres_group->change_sphere_radius(sphere_id, radius);
-            }
+        void change_radius(int sphere_id, double radius){
+            spheres_group->change_sphere_radius(sphere_id, radius);
         }
 
-        void increase_radius(int screen_pos_x, int screen_pos_y, double radius){
-            int sphere_id = std::get<0>(sphere_at_pos(screen_pos_x, screen_pos_y));
-            if (sphere_id != -1) {
-                spheres_group->increase_sphere_radius(sphere_id, radius);
-            }
+        void increase_radius(int sphere_id, double radius){
+            spheres_group->increase_sphere_radius(sphere_id, radius);
         }
 
 //        void change_radius(double radius, int id_sphere){

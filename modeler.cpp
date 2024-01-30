@@ -76,8 +76,8 @@ struct modeler {
         inter.add_sphere_at_pos(screen_pos_x,screen_pos_y);
     }
 
-    void deleteSphere(int screen_pos_x, int screen_pos_y){
-        inter.delete_sphere_at_pos(screen_pos_x,screen_pos_y);
+    void deleteSphere(int sphere_id){
+        inter.delete_sphere(sphere_id);
     }
 
     int detectSphere(int screen_pos_x, int screen_pos_y){
@@ -94,10 +94,18 @@ struct modeler {
 
     double getBlue(int i){
         return imageVector[i].z();
-    }  
+    }
 
-    void change_radius(int screen_pos_x, int screen_pos_y, double radius) {
-        return inter.change_radius(screen_pos_x, screen_pos_y, radius);
+    void change_radius(int sphere_id, double radius) {
+        return inter.change_radius(sphere_id, radius);
+    }
+
+    void increase_radius(int sphere_id, double radius) {
+        return inter.increase_radius(sphere_id, radius);
+    }
+
+    void set_sphere_position_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y) {
+        return inter.set_sphere_position_on_screen(sphere_id, screen_pos_x, screen_pos_y);
     }
 
     void rotate_camera(double horizontal_angle,double vertical_angle){
