@@ -55,7 +55,7 @@ struct modeler {
       // a set camera in interactions will be useful later (move viewpoint
       // in the scene : translate and rotate)
       cam = camera(16.0 / 9.0, 400, 1, 1);
-      inter = interactions(spheres, &world, &cam);
+      inter = interactions(&spheres, &world, &cam);
       gravity_center = point3(0.5, 0.25, -1);
     }
 
@@ -96,8 +96,8 @@ struct modeler {
         return imageVector[i].z();
     }  
 
-    void change_radius(double radius, int id_sphere){
-        return inter.change_radius(radius, id_sphere);
+    void change_radius(int screen_pos_x, int screen_pos_y, double radius) {
+        return inter.change_radius(screen_pos_x, screen_pos_y, radius);
     }
 
     void rotate_camera(double horizontal_angle,double vertical_angle){

@@ -129,6 +129,22 @@ class camera {
         pixel_delta_u = viewport_u / image_width;
     }
 
+    point3 get_center() const {
+        return center;
+    }
+
+    point3 get_pixel00_loc() const {
+        return pixel00_loc;
+    }
+
+    vec3 get_viewport_u() const {
+        return viewport_u;
+    }
+
+    vec3 get_viewport_v() const {
+        return viewport_v;
+    }
+
   private:
     int    image_height;   // Rendered image height
     point3 center;         // Camera center

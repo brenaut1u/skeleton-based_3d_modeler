@@ -173,6 +173,41 @@ public:
         }
     }
 
+    void change_sphere_radius(int id, double radius) {
+        spheres[id]->set_radius(radius);
+        for (const cone_ref &c : cones) {
+            if (c.sphere_id1 == id) {
+                c.cone->set_radius1(radius);
+            }
+            if (c.sphere_id2 == id) {
+                c.cone->set_radius2(radius);
+            }
+        }
+    }
+
+    void increase_sphere_radius(int id, double radius) {
+        spheres[id]->increase_radius(radius);
+        for (const cone_ref &c : cones) {
+            if (c.sphere_id1 == id) {
+                c.cone->increase_radius1(radius);
+            }
+            if (c.sphere_id2 == id) {
+                c.cone->increase_radius2(radius);
+            }
+        }
+    }
+
+    void set_sphere_position(int id, point3 pos) {
+        spheres[id]->set_center(pos);
+        for (const cone_ref &c : cones) {
+            if (c.sphere_id1 == id) {
+                c.cone->set_center1(pos);
+            }
+            if (c.sphere_id2 == id) {
+                c.cone->set_center2(pos);
+            }
+        }
+    }
 
 private:
     vector<pair<int, int>> links;

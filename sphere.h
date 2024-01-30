@@ -49,6 +49,22 @@ class sphere : public hittable {
       return mat;
     }
 
+    void set_center(point3 new_center) {
+        center = new_center;
+    }
+
+    void move_center(vec3 delta_center) {
+        center += delta_center;
+    }
+
+    void set_radius(double new_radius) {
+        radius = new_radius;
+    }
+
+    void increase_radius(double delta_radius) {
+        radius += delta_radius;
+    }
+
   private:
     point3 center;
     double radius;

@@ -79,6 +79,38 @@ class cone : public hittable {
       return true;
     }
 
+    void set_center1(point3 new_center) {
+        center1 = new_center;
+    }
+
+    void move_center1(vec3 delta_center) {
+        center1 += delta_center;
+    }
+
+    void set_center2(point3 new_center) {
+        center2 = new_center;
+    }
+
+    void move_center2(vec3 delta_center) {
+        center2 += delta_center;
+    }
+
+    void set_radius1(double new_radius) {
+        radius1 = new_radius;
+    }
+
+    void set_radius2(double new_radius) {
+        radius2 = new_radius;
+    }
+
+    void increase_radius1(double delta_radius) {
+        radius1 += delta_radius;
+    }
+
+    void increase_radius2(double delta_radius) {
+        radius2 += delta_radius;
+    }
+
   private:
     point3 center1;
     point3 center2;
