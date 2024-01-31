@@ -4,6 +4,11 @@
 #include "ray.h"
 #include "color.h"
 #include "hittable.h"
+#include <vector>
+
+using std::string;
+using std::vector;
+using std::pair;
 
 #define SPECULAR_COEFFICIENT 0.2
 
@@ -15,6 +20,7 @@ class material {
         const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const = 0;
 
     virtual color get_material_color() const = 0;
+    virtual pair<string, vector<double>> descriptor() const = 0;
 };
 
 class lambertian : public material {
@@ -36,6 +42,12 @@ class lambertian : public material {
 
     color get_material_color() const override {return albedo;}
 
+    pair<string, vector<double>> descriptor() const override {
+        string mat_type = "lambertian";
+        vector<double> data = {albedo.x(), albedo.y(), albedo.z()};
+        return {mat_type, data};
+    }
+
   private:
     color albedo;
 };
@@ -53,6 +65,12 @@ class metal : public material {
     }
 
     color get_material_color() const override {return albedo;}
+
+    pair<string, vector<double>> descriptor() const override {
+        string mat_type = "metal";
+        vector<double> data = {albedo.x(), albedo.y(), albedo.z(), fuzz};
+        return {mat_type, data};
+    }
 
   private:
     color albedo;

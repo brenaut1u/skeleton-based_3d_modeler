@@ -8,6 +8,7 @@
 #include "linked_spheres_group.h"
 #include "sphere.h"
 #include "hittable.h"
+#include "save_load.h"
 
 class interactions {
     public:
@@ -52,15 +53,6 @@ class interactions {
         void increase_radius(int sphere_id, double radius){
             spheres_group->increase_sphere_radius(sphere_id, radius);
         }
-
-//        void change_radius(double radius, int id_sphere){
-//            shared_ptr<sphere> old_sphere = spheres_group->get_sphere_at(id_sphere);
-//            vec3 center = old_sphere->get_center();
-//            //double new_radius = 0.9;
-//            //double new_radius = std::sqrt(std::pow(screen_pos_x - center.x(), 2) + std::pow(screen_pos_y - center.x(), 2))/200;
-//            shared_ptr<sphere> new_sphere = make_shared<sphere>(center, radius, old_sphere->get_material());
-//            spheres_group->change_sphere_at(new_sphere,id_sphere);
-//        }
 
         void set_sphere_position_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y) {
             shared_ptr<sphere> sph = spheres_group->get_sphere_at(sphere_id);
