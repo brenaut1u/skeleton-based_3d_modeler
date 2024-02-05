@@ -10,16 +10,16 @@
 #include "interactions.h"
 
 int main() {
-    hittable_list world;
+    shared_ptr<hittable_list> world = make_shared<hittable_list>();
     auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
     auto material_center = make_shared<lambertian>(color(0.7, 0.3, 0.3));
     auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
     auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
 
     // ground
-    // world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
+    // world->add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
     
-    linked_spheres_group spheres(&world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, material_right));
+    linked_spheres_group spheres(world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, material_right));
     spheres.add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, material_right), 0);
 
     light white_light = new_light(point3(-1.0, 0.5, -1.0));
@@ -30,7 +30,7 @@ int main() {
 
     camera cam(16.0 / 9.0, 800, 1, 1);
 
-    interactions inter(&spheres, &world, &cam);
+    interactions inter(&spheres, world, &cam);
     inter.add_sphere_at_pos(500, 100);
     inter.segment_cone_at_pos(300, 200);
     inter.increase_radius(inter.detect_sphere_at_pos(300, 170), 0.2);
@@ -43,6 +43,12 @@ int main() {
     inter.rotate_camera(0.5, -1.0, center);
     inter.move_camera_forward(0.5);
 
-    cam.render_phong_file(world, lights);
+    inter.save("save.txt");
+
+//    auto res = load_from_file("save.txt");
+//    linked_spheres_group spheres2 = res.first;
+//    shared_ptr<hittable_list> world2 = res.second;
+
+    cam.render_phong_file(*world, lights);
     //cam.render_file(world);
 }

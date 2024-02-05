@@ -4,8 +4,8 @@
 #include "sphere.h"
 #include "cone.h"
 
+#include <string>
 #include <vector>
-#include <string.h>
 
 using std::vector;
 using std::pair;
@@ -33,7 +33,7 @@ class linked_spheres_group {
 public:
     linked_spheres_group() {}
 
-    linked_spheres_group(hittable_list* _world, shared_ptr<sphere> first_sphere) : world(_world) {
+    linked_spheres_group(shared_ptr<hittable_list> _world, shared_ptr<sphere> first_sphere) : world(_world) {
         materials.push_back({first_sphere->get_material(), 1});
         spheres.push_back({first_sphere, 0});
         world->add(first_sphere);
@@ -47,7 +47,7 @@ public:
         return spheres[i].sphere;
     }
 
-    void add_sphere(shared_ptr<sphere> new_sphere, int linked_to) {
+    void add_sphere(shared_ptr<sphere> new_sphere) {
         int mat_id = -1;
         for (int i = 0; i < materials.size() && mat_id == -1; i++) {
             if (materials[i].mat == new_sphere->get_material()) {
@@ -60,6 +60,10 @@ public:
             mat_id = materials.size() - 1;
         }
         spheres.push_back({new_sphere, mat_id});
+    }
+
+    void add_sphere(shared_ptr<sphere> new_sphere, int linked_to) {
+        add_sphere(new_sphere);
         add_link(spheres.size() - 1, linked_to);
     }
 
@@ -237,11 +241,38 @@ public:
         }
     }
 
+    string save() {
+        string txt = "";
+        txt += "materials\n";
+        for (const material_ref &mat : materials) {
+            auto mat_descr = mat.mat->descriptor();
+            txt += mat_descr.first;
+            for (double i : mat_descr.second) {
+                txt += " " + to_string(i);
+            }
+            txt += "\n";
+        }
+
+        txt += "\nspheres\n";
+        for (const sphere_ref &s : spheres) {
+            txt += to_string(s.sphere->get_center().x()) + " " + to_string(s.sphere->get_center().y()) + " " + to_string(s.sphere->get_center().z()) + " ";
+            txt += to_string(s.sphere->get_radius()) + " ";
+            txt += to_string(s.material_id) + "\n";
+        }
+
+        txt += "\nlinks\n";
+        for (const pair<int, int> &l : links) {
+            txt += to_string(l.first) + " " + to_string(l.second) + "\n";
+        }
+
+        return txt;
+    }
+
 private:
     vector<pair<int, int>> links;
     vector<sphere_ref> spheres;
     vector<cone_ref> cones;
-    hittable_list* world;
+    shared_ptr<hittable_list> world;
     vector<material_ref> materials;
 
     void delete_link(int id1, int id2) {

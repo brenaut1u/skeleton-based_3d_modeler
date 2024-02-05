@@ -52,6 +52,10 @@ class hittable_list : public hittable {
 
         return hit_anything;
     }
+
+    int nb_objects() {
+        return objects.size();
+    }
 };
 
 #endif

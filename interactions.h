@@ -14,7 +14,7 @@ class interactions {
     public:
         interactions(){}
         
-        interactions(linked_spheres_group* _spheres_group, hittable_list* _world, camera* _cam) :
+        interactions(linked_spheres_group* _spheres_group, shared_ptr<hittable_list> _world, camera* _cam) :
         spheres_group(_spheres_group), world(_world), cam(_cam) {}
 
         void add_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
@@ -81,9 +81,13 @@ class interactions {
             cam->move_camera_forward(delta_pos);
         }
 
+        void save(string filename) {
+            save_in_file(*spheres_group, filename);
+        }
+
     private:
         linked_spheres_group* spheres_group;
-        hittable_list* world;
+        shared_ptr<hittable_list> world;
         camera* cam;
 
     tuple<int, hit_record> sphere_at_pos(int screen_pos_x, int screen_pos_y) {
