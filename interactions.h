@@ -85,6 +85,12 @@ class interactions {
             save_in_file(*spheres_group, filename);
         }
 
+        static interactions load(string filename) {
+            auto [spheres, world] = load_from_file(filename);
+            camera cam(16.0 / 9.0, 800, 1, 1);
+            return interactions(&spheres, world, &cam);
+        }
+
     private:
         linked_spheres_group* spheres_group;
         shared_ptr<hittable_list> world;
