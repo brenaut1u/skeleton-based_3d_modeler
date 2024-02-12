@@ -33,6 +33,9 @@ class linked_spheres_group {
 public:
     linked_spheres_group() {}
 
+    linked_spheres_group(const linked_spheres_group &other) = default;
+    linked_spheres_group& operator=(const linked_spheres_group &other) = default;
+
     linked_spheres_group(shared_ptr<hittable_list> _world, shared_ptr<sphere> first_sphere) : world(_world) {
         materials.push_back({first_sphere->get_material(), 1});
         spheres.push_back({first_sphere, 0});

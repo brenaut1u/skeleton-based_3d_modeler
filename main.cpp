@@ -45,10 +45,8 @@ int main() {
 
     inter.save("save.txt");
 
-//    auto res = load_from_file("save.txt");
-//    linked_spheres_group spheres2 = res.first;
-//    shared_ptr<hittable_list> world2 = res.second;
+    auto [spheres2, world2] = load_from_file("save.txt");
 
-    cam.render_phong_file(*world, lights);
+    cam.render_phong_file(*world2, lights);
     //cam.render_file(world);
 }
