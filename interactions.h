@@ -86,9 +86,15 @@ class interactions {
         }
 
         static interactions load(string filename) {
-            auto [spheres, world] = load_from_file(filename);
             camera cam(16.0 / 9.0, 800, 1, 1);
-            return interactions(&spheres, world, &cam);
+            try {
+                auto [spheres, world] = load_from_file(filename);
+                return interactions(&spheres, world, &cam);
+            }
+            catch (const std::exception e) {
+                linked_spheres_group spheres = linked_spheres_group();
+                return interactions(&spheres, make_shared<hittable_list>(), &cam);
+            }
         }
 
     private:

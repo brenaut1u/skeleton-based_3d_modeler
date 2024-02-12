@@ -65,6 +65,9 @@ pair<linked_spheres_group, shared_ptr<hittable_list>> load_from_file(string file
                 else if (mat_type == "metal") {
                     materials.push_back(make_shared<metal>(col, stod(l[4])));
                 }
+                else {
+                    throw std::exception();
+                }
             }
             else if (category == "spheres") {
                 vector<string> l = split(line);
@@ -83,6 +86,9 @@ pair<linked_spheres_group, shared_ptr<hittable_list>> load_from_file(string file
             else if (category == "links") {
                 vector<string> l = split(line);
                 spheres_group.add_link(stoi(l[0]), stoi(l[1]));
+            }
+            else {
+                throw std::exception();
             }
         }
     }
