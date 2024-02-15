@@ -6,6 +6,8 @@
 #include "hittable.h"
 #include "material.h"
 #include "light.h"
+#include "span3D.h"
+
 
 #include <iostream>
 #include <vector>
@@ -98,7 +100,25 @@ class camera {
             }
         }  
         return rendered_image;    
+    }
+
+    void computePhong(const hittable& world, const std::vector<light>& lights, span3D image) {
+        for (int j = 0; j < image_height; ++j) {
+            std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+            for (int i = 0; i < image_width; ++i) {
+                color pixel_color(0,0,0);
+                for (int sample = 0; sample < samples_per_pixel; ++sample) {
+                    ray r = get_ray(i, j);
+                    pixel_color += ray_color_with_point_lights(r, max_depth, world, lights);
+                }
+                image(i,image_height-j-1,0) = pixel_color.x();
+                image(i,image_height-j-1,1) = pixel_color.y();
+                image(i,image_height-j-1,2) = pixel_color.z();              
+            }
+        }    
     }   
+
+    
 
     ray get_ray(int i, int j) const {
         // Get a randomly sampled camera ray for the pixel at location i,j.
@@ -179,7 +199,7 @@ class camera {
         image_height = static_cast<int>(image_width / aspect_ratio);
         image_height = (image_height < 1) ? 1 : image_height;
 
-        center = point3(0, 0, 0);
+        center = point3(0, 0, 2);
 
         // Determine viewport dimensions.
         focal_length = 1.0;

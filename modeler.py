@@ -1,10 +1,24 @@
 import modelerVrai
 import tkinter as tk
 import math as m
+import numpy as np
+
+from tkinter.simpledialog import askstring
+from tkinter import filedialog
 
 modeler = modelerVrai.modeler()
 
 modeler.initializedWorld()
+
+n = 10
+pixels = np.ndarray((n,n,3), dtype='f')
+
+
+print(pixels[n-1,n-1,0])
+print(pixels[n-1,n-1,1])
+print(pixels[n-1,n-1,2])
+
+
 
 w = tk.Tk()
 w.title("scene")
@@ -87,6 +101,13 @@ def on_button_click(event=None):
         mode = "creation"
     modeButton.config(text=mode)
 
+def save_button(event=None):
+    filepath = filedialog.askopenfilename(title="Ouvrir un fichier texte", filetypes=(("fichiers texte","*.txt"), ("tous les fichiers","*.*")))
+    modeler.save(filepath)
+
+def load_button(event=None):
+    filepath = filedialog.askopenfilename(title="Ouvrir un fichier texte", filetypes=(("fichiers texte","*.txt"), ("tous les fichiers","*.*")))
+    modeler.load(filepath)
 
 
 
@@ -104,18 +125,21 @@ def rotate_right(event):
 
 def rotate_top(event):
     print("rotate_top")
-    #modeler.rotate_camera(0,angle_step)
+    modeler.rotate_camera(0,angle_step)
     modeler.computeImage()
     printImage()
 
 def rotate_bottom(event):
     print("rotate_bottom")
-    #modeler.rotate_camera(0,-1*angle_step)
+    modeler.rotate_camera(0,-1*angle_step)
     modeler.computeImage()
     printImage()
     
 modeButton = tk.Button(w, text=mode,command= on_button_click)
 modeButton.pack(pady=20)  
+
+saveButton = tk.Button(w, text="save",command= save_button)
+saveButton.pack(pady=40)  
 
 # CZ : Initialize the image when starting the application
 modeler.computeImage()
@@ -137,3 +161,15 @@ w.bind("f",printImage)
 w.mainloop()
 
 exit()
+
+
+
+
+
+
+
+
+
+
+
+
