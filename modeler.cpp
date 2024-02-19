@@ -64,7 +64,7 @@ struct modeler
         // in the scene : translate and rotate)
         cam = camera(16.0 / 9.0, 400, 1, 1);
         inter = interactions(&spheres, world, &cam);
-        gravity_center = point3(0.75, 0.25, -2.0);
+        gravity_center = point3(0.0, 0.25, -2.0);
 
         std::cout<<cam.image_width/cam.aspect_ratio<<"/n";
         //computeImageSpan(output);

@@ -143,6 +143,8 @@ class camera {
         pixel00_loc = rot_center + pl_rot;
         viewport_u = cos(horizontal_angle) * viewport_u + sin(horizontal_angle) * cross(h_axis, viewport_u) + (1 - cos(horizontal_angle)) * dot(h_axis, viewport_u) * h_axis;
         pixel_delta_u = viewport_u / image_width;
+        viewport_v = cos(horizontal_angle) * viewport_v + sin(horizontal_angle) * cross(h_axis, viewport_v) + (1 - cos(horizontal_angle)) * dot(h_axis, viewport_v) * h_axis;
+        pixel_delta_v = viewport_v / image_height;
 
         // vertical rotation
         vec3 v_axis = unit_vector(viewport_u);
@@ -202,7 +204,7 @@ class camera {
         center = point3(0, 0, 2);
 
         // Determine viewport dimensions.
-        focal_length = 1.0;
+        focal_length = 1.5;
         viewport_height = 2.0;
         viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
 
