@@ -30,6 +30,7 @@ pybind11_add_module(modelerVrai modeler.cpp
     sphere.h
     vec3.h
     save_load.h
+    span3D.h
 )
 
 # copy python file in build folder
@@ -53,4 +54,5 @@ add_executable(viewer main.cpp
     sphere.h
     vec3.h
     save_load.h
+    span3D.h
 )
