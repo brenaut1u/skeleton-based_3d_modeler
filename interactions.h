@@ -60,15 +60,12 @@ class interactions {
             point3 lb = sph->get_center();
             vec3 lab = lb - la;
             point3 p0 = cam->get_pixel00_loc();
-            vec3 p1 = cam->get_viewport_u();
-            vec3 p2 = cam->get_viewport_v();
-
-            vec3 p01 = p1 - p0;
-            vec3 p02 = p2 - p0;
+            vec3 p01 = cam->get_viewport_u();
+            vec3 p02 = cam->get_viewport_v();
 
             double t = dot(cross(p01, p02), la - p0) / dot(-lab, cross(p01, p02));
-            point3 pos_on_screen = p0 + ((double) screen_pos_x / cam->image_width) * p1
-                                      + ((double) screen_pos_y / (static_cast<int>(cam->image_width / cam->aspect_ratio))) * p2;
+            point3 pos_on_screen = p0 + ((double) screen_pos_x / cam->image_width) * p01
+                                      + ((double) screen_pos_y / (static_cast<int>(cam->image_width / cam->aspect_ratio))) * p02;
             point3 new_pos = (pos_on_screen - la * (1 - t)) / t;
             spheres_group->set_sphere_position(sphere_id, new_pos);
         }

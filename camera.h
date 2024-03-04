@@ -201,7 +201,7 @@ class camera {
         image_height = static_cast<int>(image_width / aspect_ratio);
         image_height = (image_height < 1) ? 1 : image_height;
 
-        center = point3(0, 0, 2);
+        center = point3(0, 0, 0);
 
         // Determine viewport dimensions.
         focal_length = 1.5;

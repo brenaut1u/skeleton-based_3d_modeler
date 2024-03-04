@@ -1,4 +1,4 @@
-import modelerVrai
+import build.modelerVrai as modelerVrai
 import taichi as ti
 import taichi.math as tm
 import math as m
@@ -11,8 +11,8 @@ import time
 
 ti.init(arch=ti.gpu)
 
-n = 400
-m = 225
+n = 800
+m = 450
 
 image = ti.field(dtype=float, shape=(n,m))
 
@@ -21,9 +21,6 @@ pixels = np.ndarray((n,m,3), dtype='f')
 modeler = modelerVrai.modeler()
 
 modeler.initializedWorld()
-
-"modeler.computeImageSpan(pixels)"
-
 
 gui = ti.GUI("Modeler", res=(n, m))
 
