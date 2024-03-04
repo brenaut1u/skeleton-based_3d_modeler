@@ -17,8 +17,8 @@ filetype = [("All files", "*.*")]
 
 
 ti.init(arch=ti.gpu)
-n = 400
-m = 225
+n = 800
+m = 450
 
 image = ti.field(dtype=float, shape=(n,m))
 
@@ -45,13 +45,13 @@ while gui.running:
 
     mouse_clicked = False
 
-    with gui2.sub_window("Sub Window", x=10, y=10, width=300, height=100):
-        gui2.text("text")
-        is_clicked = gui2.button("name")
-        if is_clicked :
-            filename = fd.askopenfilename(title='Open a file',initialdir='/', filetypes=filetype)
+    # with gui2.sub_window("Sub Window", x=10, y=10, width=300, height=100):
+    #     gui2.text("text")
+    #     is_clicked = gui2.button("name")
+    #     if is_clicked :
+    #         filename = fd.askopenfilename(title='Open a file',initialdir='/', filetypes=filetype)
 
-    """
+
     if gui.get_event(ti.ui.PRESS) :
         if gui.event.key == ti.GUI.LMB :
             mouse_clicked = True
@@ -89,7 +89,7 @@ while gui.running:
             modeler.move_camera_forward(-0.1)
         else : 
             modeler.rotate_camera(0,-0.1)
-
+    """
     if gui2.button("menu"):
         print("menu")"""
 
