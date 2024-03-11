@@ -18,8 +18,8 @@ class ray {
     }
 
   private:
-    point3 orig;
-    vec3 dir;
+    point3 orig = {0.0, 0.0, 0.0};
+    vec3 dir = {1.0, 0.0, 0.0};
 };
 
 #endif

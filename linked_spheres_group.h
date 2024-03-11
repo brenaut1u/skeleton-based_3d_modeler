@@ -3,6 +3,8 @@
 
 #include "sphere.h"
 #include "cone.h"
+#include "hittable_list.h"
+#include "material.h"
 
 #include <string>
 #include <vector>
