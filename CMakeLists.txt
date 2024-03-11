@@ -1,7 +1,7 @@
 project(my_project) # Replace 'my_project' with the name of your project
 cmake_minimum_required(VERSION 3.15...3.27)
 
-SET(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Python 3.8 COMPONENTS Interpreter Development REQUIRED)

@@ -13,7 +13,7 @@
 #include <vector>
 
 #define MODE " "
-#define AMBIENT_OCCLUSION 0.1
+inline constexpr double AMBIENT_OCCLUSION = 0.1;
 
 class camera {
   public:
