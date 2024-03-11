@@ -13,40 +13,46 @@ endif()
 add_subdirectory(extern/pybind11)
 
 add_library(skeleton_modeler STATIC
+        camera.cpp
         camera.h
+        color.cpp
         color.h
-        command.h
+        cone.cpp
         cone.h
+        hittable.cpp
         hittable.h
+        hittable_list.cpp
         hittable_list.h
         interactions.cpp
         interactions.h
         interval.h
+        light.cpp
         light.h
+        linked_spheres_group.cpp
         linked_spheres_group.h
+        material.cpp
         material.h
         ray.h
         rtweekend.h
+        sphere.cpp
         sphere.h
+        vec3.cpp
         vec3.h
         save_load.cpp
         save_load.h
+        span3D.cpp
         span3D.h
 )
 
 # CZ add all files used by the bindings
-pybind11_add_module(modelerVrai
+pybind11_add_module(main_modeler
         modeler.cpp
 )
 
-target_link_libraries(modelerVrai PUBLIC skeleton_modeler)
-
-# copy python file in build folder
-configure_file(modeler.py ${CMAKE_BINARY_DIR}/modeler.py COPYONLY)
+target_link_libraries(main_modeler PUBLIC skeleton_modeler)
 
 # CZ add the C++ executable
 add_executable(viewer
         main.cpp
 )
-
 target_link_libraries(viewer PUBLIC skeleton_modeler)

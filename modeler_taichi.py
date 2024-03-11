@@ -1,4 +1,4 @@
-import build.modeler as modeler
+import build.main_modeler as main_modeler
 import taichi as ti
 import taichi.math as tm
 import math as m
@@ -24,7 +24,7 @@ image = ti.field(dtype=float, shape=(n,m))
 
 pixels = np.ndarray((n,m,3), dtype='f')
 
-modeler = modeler.modeler()
+modeler = main_modeler.modeler()
 modeler.initializedWorld()
 
 gui = ti.ui.Window("Modeler", res=(n, m),vsync=True)

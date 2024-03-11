@@ -203,7 +203,7 @@ void add_arrays(pyb::array_t<float> output)
     compute(ptr1, buf1.shape[0], buf1.shape[1]);
 };
 
-PYBIND11_MODULE(modeler, m)
+PYBIND11_MODULE(main_modeler, m)
 {
     pyb::class_<modeler>(m, "modeler")
         .def(pyb::init<>())
