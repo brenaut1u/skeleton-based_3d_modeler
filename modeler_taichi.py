@@ -35,7 +35,7 @@ selected_id = -1
 hovered_id = -1
 
 
-
+old_pos = (0, 0)
 
 while gui.running:
     print("new loop")
@@ -70,7 +70,7 @@ while gui.running:
         else :
             modeler.segment_cone(int(pos[0]*n),int((1-pos[1])*m))
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') : 
-        modeler.set_sphere_position(selected_id,int(pos[0]*n),int((1-pos[1])*m))
+        modeler.move_sphere(selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
         print("move")
 
     
@@ -125,12 +125,14 @@ while gui.running:
         print("you moved the mouse")
         pos = gui.get_cursor_pos()
         selected_id = modeler.detect(int(pos[0]*n),int((1-pos[1])*m))
-        modeler.set_sphere_position(selected_id,int(pos[0]*n),int((1-pos[1])*m))
+        modeler.move_sphere(selected_id,int(pos[0]*n),int((1-pos[1])*m))
 
     if gui.is_pressed(ti.GUI.SHIFT and ti.GUI.MOVE and ti.GUI.LMB):
         pos = gui.get_cursor_pos()
         selected_id = modeler.detect(int(pos[0]*n),int((1-pos[1])*m))
         modeler.changeRadius(selected_id,1)"""
+
+    old_pos = (int(pos[0]*n),int((1-pos[1])*m))
 
     modeler.computeImageSpan(pixels)
     canvas.set_image(pixels)

@@ -49,7 +49,12 @@ public:
     }
 
     shared_ptr<sphere> get_sphere_at(int i) {
-        return spheres[i].sphere;
+        if (i >= 0 && i < spheres.size()) {
+            return spheres[i].sphere;
+        }
+        else {
+            return nullptr;
+        }
     }
 
     void add_sphere(shared_ptr<sphere> new_sphere);

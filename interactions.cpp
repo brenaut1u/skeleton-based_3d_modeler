@@ -9,44 +9,47 @@
 #include "interactions.h"
 
 void interactions::add_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
-    tuple<int, hit_record> find_sphere = sphere_at_pos(screen_pos_x, screen_pos_y);
-    int sphere_id = std::get<0>(find_sphere);
-    hit_record rec = std::get<1>(find_sphere);
+    auto [sphere_id, rec] = sphere_at_pos(screen_pos_x, screen_pos_y);
     if (sphere_id != -1) {
         shared_ptr<sphere> new_sphere = make_shared<sphere>(rec.p, 0.3, rec.mat);
-        spheres_group->add_sphere(new_sphere, std::get<0>(find_sphere));
+        spheres_group->add_sphere(new_sphere, sphere_id);
     }
 }
 
 void interactions::segment_cone_at_pos(int screen_pos_x, int screen_pos_y) {
-    tuple<int, hit_record> find_cone = cone_at_pos(screen_pos_x, screen_pos_y);
-    int cone_id = std::get<0>(find_cone);
-    hit_record rec = std::get<1>(find_cone);
+    auto [cone_id, rec] = cone_at_pos(screen_pos_x, screen_pos_y);
     if (cone_id != -1) {
         spheres_group->add_sphere_split_cone(cone_id, rec.p, rec.normal, rec.mat);
     }
 }
 
-int interactions::detect_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
-    ray r = cam->get_ray(screen_pos_x, screen_pos_y);
-    tuple<int, hit_record> find_sphere = spheres_group->find_hit_sphere(r, interval(0.001, infinity));
-    return std::get<0>(find_sphere);
-}
-
-void interactions::set_sphere_position_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y) {
+void interactions::move_sphere_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
     shared_ptr<sphere> sph = spheres_group->get_sphere_at(sphere_id);
-    point3 la = cam->get_center();
-    point3 lb = sph->get_center();
-    vec3 lab = lb - la;
-    point3 p0 = cam->get_pixel00_loc();
-    vec3 p01 = cam->get_viewport_u();
-    vec3 p02 = cam->get_viewport_v();
+    if (sph) {
+        hit_record rec;
+        ray r = cam->get_ray(screen_pos_x, screen_pos_y);
+        bool hit = sph->hit(r, interval(0.001, infinity), rec);
 
-    double t = dot(cross(p01, p02), la - p0) / dot(-lab, cross(p01, p02));
-    point3 pos_on_screen = p0 + ((double) screen_pos_x / cam->image_width) * p01
-                              + ((double) screen_pos_y / (static_cast<int>(cam->image_width / cam->aspect_ratio))) * p02;
-    point3 new_pos = (pos_on_screen - la * (1 - t)) / t;
-    spheres_group->set_sphere_position(sphere_id, new_pos);
+        if (hit) {
+            point3 la = cam->get_center();
+            point3 lb = rec.p;
+            vec3 lab = lb - la;
+            point3 p0 = cam->get_pixel00_loc();
+            vec3 p01 = cam->get_viewport_u();
+            vec3 p02 = cam->get_viewport_v();
+
+            double t = dot(cross(p01, p02), la - p0) / dot(-lab, cross(p01, p02));
+            point3 pos_on_screen = p0 + ((double) new_screen_pos_x / cam->image_width) * p01
+                                   +
+                                   ((double) new_screen_pos_y /
+                                    (static_cast<int>(cam->image_width / cam->aspect_ratio))) *
+                                   p02;
+            point3 new_pos = (pos_on_screen - la * (1 - t)) / t;
+
+            spheres_group->set_sphere_position(sphere_id, sph->get_center() + new_pos - lb);
+            //return new_pos - lb; //TODO: move the calculation of the translation vector to another function
+        }
+    }
 }
 
 interactions interactions::load(string filename) {

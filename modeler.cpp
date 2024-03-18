@@ -120,9 +120,9 @@ struct modeler
         return inter.increase_radius(sphere_id, radius);
     }
 
-    void set_sphere_position_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y)
+    void move_sphere_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
     {
-        return inter.set_sphere_position_on_screen(sphere_id, screen_pos_x, screen_pos_y);
+        return inter.move_sphere_on_screen(sphere_id, screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
     }
 
     void rotate_camera(double horizontal_angle, double vertical_angle)
@@ -218,7 +218,7 @@ PYBIND11_MODULE(main_modeler, m)
         .def("delete", &modeler::deleteSphere)
         .def("detect", &modeler::detectSphere)
         .def_readwrite("index", &modeler::indexLinkedSphere)
-        .def("set_sphere_position", &modeler::set_sphere_position_on_screen)
+        .def("move_sphere", &modeler::move_sphere_on_screen)
         .def("rotate_camera", &modeler::rotate_camera)
         .def("move_camera_forward", &modeler::move_camera_forward)
         .def("computeImageSpan", &modeler::computeImageSpan)

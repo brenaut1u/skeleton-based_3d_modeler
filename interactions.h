@@ -20,7 +20,9 @@ public:
         spheres_group->delete_sphere(sphere_id);
     }
 
-    int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y);
+    int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
+        return std::get<0>(sphere_at_pos(screen_pos_x, screen_pos_y));
+    }
 
     void change_radius(int sphere_id, double radius){
         spheres_group->change_sphere_radius(sphere_id, radius);
@@ -30,7 +32,7 @@ public:
         spheres_group->increase_sphere_radius(sphere_id, radius);
     }
 
-    void set_sphere_position_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y);
+    void move_sphere_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
 
     void rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center) {
         cam->rotate_camera(horizontal_angle, vertical_angle, rot_center);
