@@ -52,6 +52,8 @@ void interactions::move_sphere_on_screen(int sphere_id, int screen_pos_x, int sc
     }
 }
 
+
+
 interactions interactions::load(string filename) {
     camera cam(16.0 / 9.0, 800, 1, 1);
     try {

@@ -161,6 +161,10 @@ struct modeler
         inter.save(fileName);
     }
 
+    void load(string fileName){
+        inter = inter.load(fileName);
+    }
+
 };
 
 void compute(float *res, int n_x, int n_y)
@@ -180,10 +184,6 @@ void compute(float *res, int n_x, int n_y)
 
     // span3d numpyView(pyb::array_t<float> output)
 }
-
-
-
-
 
 
 void add_arrays(pyb::array_t<float> output)
@@ -223,6 +223,7 @@ PYBIND11_MODULE(main_modeler, m)
         .def("move_camera_forward", &modeler::move_camera_forward)
         .def("computeImageSpan", &modeler::computeImageSpan)
         .def("save",&modeler::saveInFile)
-        .def("segment_cone",&modeler::segmentCone);
+        .def("segment_cone",&modeler::segmentCone)
+        .def("load",&modeler::load);
     m.def("add_arrays", &add_arrays, "Add two NumPy arrays");
 }
