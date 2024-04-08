@@ -38,7 +38,7 @@ hovered_id = -1
 old_pos = (0, 0)
 
 while gui.running:
-    print("new loop")
+    #print("new loop")
     #gui.get_event()
     pos = gui.get_cursor_pos()
     hovered_id = modeler.detect(int(pos[0]*n),int((1-pos[1])*m))

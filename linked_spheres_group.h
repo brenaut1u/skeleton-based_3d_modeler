@@ -81,6 +81,8 @@ public:
 
     void set_sphere_position(int id, point3 pos);
 
+    void delete_isolated_spheres();
+
     string save();
 
 private:
@@ -90,7 +92,8 @@ private:
     shared_ptr<hittable_list> world;
     vector<material_ref> materials;
 
-    void delete_link(int id1, int id2);
+    bool is_sphere_isolated(int sphere_id);
+    int nb_sphere_links(int sphere_id);
 };
 
 #endif
