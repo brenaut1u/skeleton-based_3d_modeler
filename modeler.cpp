@@ -161,6 +161,21 @@ struct modeler
         inter.save(fileName);
     }
 
+    void load_file(string filename){
+        auto [tmp_spheres, tmp_world] = load_from_file(filename);
+        //std::tie()
+        spheres = tmp_spheres;
+        world = tmp_world;
+        inter = interactions(&spheres, world, &cam);
+
+
+        // auto created = loadSPhereAndInteract(filename);
+        // spheres = created.first;
+
+        // inter = created.second;
+//        inter = inter.load(filename);
+    }
+
 };
 
 void compute(float *res, int n_x, int n_y)
@@ -223,6 +238,7 @@ PYBIND11_MODULE(modeler, m)
         .def("move_camera_forward", &modeler::move_camera_forward)
         .def("computeImageSpan", &modeler::computeImageSpan)
         .def("save",&modeler::saveInFile)
+        .def("load", &modeler::load_file)
         .def("segment_cone",&modeler::segmentCone);
     m.def("add_arrays", &add_arrays, "Add two NumPy arrays");
 }

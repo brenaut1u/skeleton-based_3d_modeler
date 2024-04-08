@@ -49,6 +49,7 @@ void interactions::set_sphere_position_on_screen(int sphere_id, int screen_pos_x
     spheres_group->set_sphere_position(sphere_id, new_pos);
 }
 
+//std::pair<std::shared_ptr<linked_sphere_group>,shared_ptr<interactions>>
 interactions interactions::load(string filename) {
     camera cam(16.0 / 9.0, 800, 1, 1);
     try {
