@@ -36,10 +36,10 @@ vector<string> split(string txt) {
     return res;
 }
 
-pair<linked_spheres_group, shared_ptr<hittable_list>> load_from_file(string filename) {
+pair<shared_ptr<linked_spheres_group>, shared_ptr<hittable_list>> load_from_file(string filename) {
     std::ifstream file (filename);
     vector<shared_ptr<material>> materials;
-    linked_spheres_group spheres_group;
+    auto spheres_group = shared_ptr<linked_spheres_group>();
     shared_ptr<hittable_list> world = make_shared<hittable_list>();
 
     string line = "";
@@ -47,15 +47,22 @@ pair<linked_spheres_group, shared_ptr<hittable_list>> load_from_file(string file
     bool first_sphere = true;
 
     if (!file.is_open()) {
+        std::cerr<<"file could not be found A" << std::endl;
         throw std::exception();
     }
 
     while (getline (file,line))
     {
+        line.erase(std::remove(line.begin(), line.end(), '\r' ), line.end());
+
+        std::cout<<line << std::endl;
+        std::cout<<line.length() << std::endl;
         if (line == "materials" || line == "spheres" || line == "links") {
+            std::cout<<"category" << std::endl;
             category = line;
         }
         else if (!line.empty()){
+            std::cout<<line << std::endl;
             if (category == "materials") {
                 vector<string> l = split(line);
                 string mat_type = l[0];
@@ -67,6 +74,7 @@ pair<linked_spheres_group, shared_ptr<hittable_list>> load_from_file(string file
                     materials.push_back(make_shared<metal>(col, stod(l[4])));
                 }
                 else {
+                    std::cerr<<"file could not be found b " << std::endl;
                     throw std::exception();
                 }
             }
@@ -77,18 +85,20 @@ pair<linked_spheres_group, shared_ptr<hittable_list>> load_from_file(string file
                 int mat_id = stoi(l[4]);
                 shared_ptr<sphere> sph = make_shared<sphere>(center, radius, materials[mat_id]);
                 if (first_sphere) {
-                    spheres_group = linked_spheres_group(world, sph);
+                    std::cout<<"first sphere" << std::endl;
+                    spheres_group = make_shared<linked_spheres_group>(world, sph);
                     first_sphere = false;
                 }
                 else {
-                    spheres_group.add_sphere(sph);
+                    spheres_group -> add_sphere(sph);
                 }
             }
             else if (category == "links") {
                 vector<string> l = split(line);
-                spheres_group.add_link(stoi(l[0]), stoi(l[1]));
+                spheres_group -> add_link(stoi(l[0]), stoi(l[1]));
             }
             else {
+                std::cerr<<"file could not be found c" << std::endl;
                 throw std::exception();
             }
         }

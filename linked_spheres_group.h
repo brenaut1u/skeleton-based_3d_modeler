@@ -47,6 +47,9 @@ public:
     int get_number_of_spheres() {
         return spheres.size();
     }
+    int get_number_of_links() {
+        return links.size();
+    }
 
     shared_ptr<sphere> get_sphere_at(int i) {
         if (i >= 0 && i < spheres.size()) {

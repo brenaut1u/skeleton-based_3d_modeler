@@ -19,8 +19,8 @@ int main() {
     // ground
     // world->add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
 
-    linked_spheres_group spheres(world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, material_right));
-    spheres.add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, material_right), 0);
+    auto spheres = make_shared<linked_spheres_group>(world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, material_right));
+    spheres -> add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, material_right), 0);
 
     light white_light = new_light(point3(-1.0, 0.5, -1.0));
     //light red_light = new_colored_light(point3(0.0, 0.5, -1), point3(0.7, 0.2, 0.2));
@@ -30,7 +30,7 @@ int main() {
 
     camera cam(16.0 / 9.0, 800, 1, 1);
 
-    interactions inter(&spheres, world, &cam);
+    interactions inter(spheres, world, &cam);
     inter.add_sphere_at_pos(500, 100);
     inter.segment_cone_at_pos(300, 200);
     inter.increase_radius(inter.detect_sphere_at_pos(300, 170), -0.2);

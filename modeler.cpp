@@ -27,7 +27,7 @@ namespace pyb = pybind11;
 struct modeler
 {
     shared_ptr<hittable_list> world;
-    linked_spheres_group spheres;
+    shared_ptr<linked_spheres_group> spheres;
     camera cam;
     std::vector<vec3> imageVector;
     std::vector<light> lights;
@@ -47,8 +47,8 @@ struct modeler
         // in the current scope) :
         // linked_spheres_group spheres = ...
         // type + identifier => never refer to an existing variable or attributs
-        spheres = linked_spheres_group(world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, material_right));
-        spheres.add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, material_right), 0);
+        spheres = make_shared<linked_spheres_group>(world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, material_right));
+        spheres -> add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, material_right), 0);
 
         // CZ : no real reason to change the lights during updates,
         // however, it could be in a dedicated function
@@ -63,7 +63,7 @@ struct modeler
         // a set camera in interactions will be useful later (move viewpoint
         // in the scene : translate and rotate)
         cam = camera(16.0 / 9.0, 800, 1, 1);
-        inter = interactions(&spheres, world, &cam);
+        inter = interactions(spheres, world, &cam);
         gravity_center = point3(0.0, 0.25, -2.0);
 
         std::cout<<cam.image_width/cam.aspect_ratio<<"/n";
@@ -162,7 +162,9 @@ struct modeler
     }
 
     void load(string fileName){
-        inter = inter.load(fileName);
+        inter = inter.load(fileName,cam);
+        spheres = inter.get_spheres_group();
+        world = inter.get_world();  
     }
 
 };

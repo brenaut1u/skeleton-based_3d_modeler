@@ -54,15 +54,14 @@ void interactions::move_sphere_on_screen(int sphere_id, int screen_pos_x, int sc
 
 
 
-interactions interactions::load(string filename) {
-    camera cam(16.0 / 9.0, 800, 1, 1);
+interactions interactions::load(string filename,camera& cam) {
     try {
         auto [spheres, world] = load_from_file(filename);
-        return interactions(&spheres, world, &cam);
+        return interactions(spheres, world, &cam);
     }
     catch (const std::exception e) {
-        linked_spheres_group spheres = linked_spheres_group();
-        return interactions(&spheres, make_shared<hittable_list>(), &cam);
+        std::cout<<"Error loading file\n";
+        return interactions(make_shared<linked_spheres_group>(), make_shared<hittable_list>(), &cam);
     }
 }
 
