@@ -71,7 +71,7 @@ pair<shared_ptr<linked_spheres_group>, shared_ptr<hittable_list>> load_from_file
                     materials.push_back(make_shared<lambertian>(col));
                 }
                 else if (mat_type == "metal") {
-                    materials.push_back(make_shared<metal>(col, stod(l[4])));
+                    materials.push_back(make_shared<metal>(col, stof(l[4])));
                 }
                 else {
                     std::cerr<<"file could not be found b " << std::endl;
