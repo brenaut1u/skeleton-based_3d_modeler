@@ -9,7 +9,7 @@ class interactions {
 public:
     interactions(){}
 
-    interactions(linked_spheres_group* _spheres_group, shared_ptr<hittable_list> _world, camera* _cam) :
+    interactions(shared_ptr<linked_spheres_group> _spheres_group, shared_ptr<hittable_list> _world, camera* _cam) :
             spheres_group(_spheres_group), world(_world), cam(_cam) {}
 
     void add_sphere_at_pos(int screen_pos_x, int screen_pos_y);
@@ -41,13 +41,25 @@ public:
     }
 
     void save(string filename) {
-        save_in_file(spheres_group, filename);
+        save_in_file(spheres_group.get(), filename);
     }
 
-    static interactions load(string filename);
+    static interactions load(string filename,camera& cam);
+
+    shared_ptr<linked_spheres_group> get_spheres_group() const {
+        return spheres_group;
+    }
+
+    const shared_ptr<hittable_list> & get_world() const {
+        return world;
+    }
+
+    camera * get_cam() const {
+        return cam;
+    }
 
 private:
-    linked_spheres_group* spheres_group;
+    shared_ptr<linked_spheres_group> spheres_group;
     shared_ptr<hittable_list> world;
     camera* cam;
 

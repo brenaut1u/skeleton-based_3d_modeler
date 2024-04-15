@@ -14,6 +14,6 @@ void save_in_file(linked_spheres_group* spheres_group, string filename);
 
 vector<string> split(string txt);
 
-pair<linked_spheres_group, shared_ptr<hittable_list>> load_from_file(string filename);
+pair<shared_ptr<linked_spheres_group>, shared_ptr<hittable_list>> load_from_file(string filename);
 
 #endif

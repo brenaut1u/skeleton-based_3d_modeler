@@ -37,10 +37,12 @@ class cone : public hittable {
 
     void increase_radius1(double delta_radius) {
         radius1 += delta_radius;
+        radius1 = max(radius1,0);
     }
 
     void increase_radius2(double delta_radius) {
         radius2 += delta_radius;
+        radius2 = max(radius2,0);
     }
 
   private:
