@@ -10,9 +10,11 @@ int main() {
 
     camera cam(16.0 / 9.0, 800, 1, 1);
 
-    auto [spheres, world] = load_from_file("oiseau.txt");
-    cam.move_camera_forward(-7.0);
-    cam.rotate_camera(-1.2, 0.3, point3(0.0, -1.0, 0.0));
+    shared_ptr<hittable_list> world = make_shared<hittable_list>();
+    auto material = make_shared<lambertian>(color(0.7, 0.3, 0.3));
+
+    linked_spheres_group spheres(world, make_shared<sphere>(point3(0.2, 0.0, -2.0), 0.1, material));
+    spheres.add_sphere(make_shared<sphere>(point3(0.1, 0.0, -2.0), 0.5, material), 0);
 
     cam.render_phong_file(*world, lights);
     //cam.render_file(world);

@@ -25,40 +25,48 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
   float m6 = dot(ob,rd);
   float m7 = dot(ob,ob);
 
-  float d2 = m0-rr*rr;
+  float h1 = m3*m3 - m5 + ra*ra;
+  float h2 = m6*m6 - m7 + rb*rb;
 
-  float k2 = d2    - m2*m2;
-  float k1 = d2*m3 - m1*m2 + m2*rr*ra;
-  float k0 = d2*m5 - m1*m1 + m1*rr*ra*2.0 - m0*ra*ra;
+  float t;
 
-  float h = k1*k1 - k0*k2;
-  if(h < 0.0) return false;
-  float t = (-sqrt(h)-k1)/k2;
-
-  float y = m1 - ra*rr + t*m2;
-  if( y>0.0 && y<d2 )
-  {
-      outward_normal = unit_vector( d2*(oa + t*rd)-ba*y);
+  if (ba.length() + ra <= rb && h2 > 0.0) {
+      t = -m6 - sqrt( h2 );
+      outward_normal = (ob+t*rd)/rb;
   }
-
+  else if (ba.length() + rb <= ra && h1 > 0.0) {
+      t = -m3 - sqrt( h1 );
+      outward_normal = (oa+t*rd)/ra;
+  }
   else {
-      float h1 = m3*m3 - m5 + ra*ra;
-      float h2 = m6*m6 - m7 + rb*rb;
-      if( h1 < 0.0 && h2 < 0.0 ) return false;
+      float d2 = m0 - rr * rr;
 
-      t = +infinity;
-      if( h1>0.0 )
-      {
-        t = -m3 - sqrt( h1 );
-        outward_normal = (oa+t*rd)/ra;
-      }
-      if( h2>0.0 )
-      {
-        auto tmp_t = -m6 - sqrt( h2 );
-          if( tmp_t<t ) {
-            t = tmp_t;
-            outward_normal = (ob+t*rd)/rb;
-            }
+      float k2 = d2 - m2 * m2;
+      float k1 = d2 * m3 - m1 * m2 + m2 * rr * ra;
+      float k0 = d2 * m5 - m1 * m1 + m1 * rr * ra * 2.0 - m0 * ra * ra;
+
+      float h = k1 * k1 - k0 * k2;
+      if (h < 0.0) return false;
+      t = (-sqrt(h) - k1) / k2;
+
+      float y = m1 - ra * rr + t * m2;
+      if (y > 0.0 && y < d2) {
+          outward_normal = unit_vector(d2 * (oa + t * rd) - ba * y);
+      } else {
+          if (h1 < 0.0 && h2 < 0.0) return false;
+
+          t = +infinity;
+          if (h1 > 0.0) {
+              t = -m3 - sqrt(h1);
+              outward_normal = (oa + t * rd) / ra;
+          }
+          if (h2 > 0.0) {
+              auto tmp_t = -m6 - sqrt(h2);
+              if (tmp_t < t) {
+                  t = tmp_t;
+                  outward_normal = (ob + t * rd) / rb;
+              }
+          }
       }
   }
 
