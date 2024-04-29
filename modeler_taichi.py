@@ -1,11 +1,8 @@
-import main_modeler
+import build.main_modeler as main_modeler
 import taichi as ti
 import taichi.math as tm
 import math as m
 import numpy as np
-
-import easygui
-
 
 import tkinter as tk
 from tkinter import filedialog as fd
@@ -98,10 +95,7 @@ while gui.running:
                     selected_id_past = selected_id
                 else : 
                     ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
-                    print(ray)
                     modeler1.increaseRadius(selected_id_past,-(origin[0]-pos[0])/n*100)
-                print(origin)
-                print(pos)
             
         elif gui.is_pressed('t'):
                 origin = (-1,-1)

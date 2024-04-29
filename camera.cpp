@@ -73,7 +73,6 @@ std::vector<vec3> camera::render_phong(const hittable& world, const std::vector<
 
 void camera::computePhong(const hittable& world, const std::vector<light>& lights, span3D image) {
     for (int j = 0; j < image_height; ++j) {
-        std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
         for (int i = 0; i < image_width; ++i) {
             color pixel_color(0,0,0);
             for (int sample = 0; sample < samples_per_pixel; ++sample) {
