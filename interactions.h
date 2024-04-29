@@ -30,7 +30,9 @@ public:
         spheres_group->increase_sphere_radius(sphere_id, radius);
     }
 
-    void move_sphere_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
+    vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
+
+    void move_spheres_on_screen(vector<int> spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
 
     void rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center) {
         cam->rotate_camera(horizontal_angle, vertical_angle, rot_center);

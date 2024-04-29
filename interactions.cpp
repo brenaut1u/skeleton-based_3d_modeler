@@ -28,7 +28,7 @@ void interactions::delete_sphere(int sphere_id) {
     spheres_group->delete_isolated_spheres();
 }
 
-void interactions::move_sphere_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
+vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
     shared_ptr<sphere> sph = spheres_group->get_sphere_at(sphere_id);
     if (sph) {
         hit_record rec;
@@ -51,13 +51,26 @@ void interactions::move_sphere_on_screen(int sphere_id, int screen_pos_x, int sc
                                    p02;
             point3 new_pos = (pos_on_screen - la * (1 - t)) / t;
 
-            spheres_group->set_sphere_position(sphere_id, sph->get_center() + new_pos - lb);
-            //return new_pos - lb; //TODO: move the calculation of the translation vector to another function
+            return new_pos - lb;
+        }
+    }
+    return {0.0, 0.0, 0.0};
+}
+
+void interactions::move_spheres_on_screen(vector<int> spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
+    //the move is related to the last sphere of the list
+    if (!spheres_id.empty()) {
+        vec3 v = get_translation_vector_on_screen(spheres_id[0], screen_pos_x, screen_pos_y, new_screen_pos_x,
+                                                  new_screen_pos_y);
+        for (int id: spheres_id) {
+            shared_ptr<sphere> sph = spheres_group->get_sphere_at(id);
+            spheres_group->set_sphere_position(id, sph->get_center() + v);
         }
     }
 }
 
-
+//TODO: rotation around axis that links rotation center to camera center (use Rodrigues for now, create a separate fonction
+// for Rodrigues rotation
 
 interactions interactions::load(string filename,camera& cam) {
     try {
