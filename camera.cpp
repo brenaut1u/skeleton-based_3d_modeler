@@ -101,26 +101,18 @@ ray camera::get_ray(int i, int j) const {
 void camera::rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center) {
     // horizontal rotation
     vec3 h_axis = vec3(0.0, 1.0, 0.0);
-    vec3 pc = center - rot_center;
-    vec3 pl = pixel00_loc - rot_center;
-    vec3 pc_rot = cos(horizontal_angle) * pc + sin(horizontal_angle) * cross(h_axis, pc) + (1 - cos(horizontal_angle)) * dot(h_axis, pc) * h_axis;
-    center = rot_center + pc_rot;
-    vec3 pl_rot = cos(horizontal_angle) * pl + sin(horizontal_angle) * cross(h_axis, pl) + (1 - cos(horizontal_angle)) * dot(h_axis, pl) * h_axis;
-    pixel00_loc = rot_center + pl_rot;
-    viewport_u = cos(horizontal_angle) * viewport_u + sin(horizontal_angle) * cross(h_axis, viewport_u) + (1 - cos(horizontal_angle)) * dot(h_axis, viewport_u) * h_axis;
+    center = point_rotation(center, rot_center, h_axis, horizontal_angle);
+    pixel00_loc = point_rotation(pixel00_loc, rot_center, h_axis, horizontal_angle);
+    viewport_u = vector_rotation(viewport_u, h_axis, horizontal_angle);
+    viewport_v = vector_rotation(viewport_v, h_axis, horizontal_angle);
     pixel_delta_u = viewport_u / image_width;
-    viewport_v = cos(horizontal_angle) * viewport_v + sin(horizontal_angle) * cross(h_axis, viewport_v) + (1 - cos(horizontal_angle)) * dot(h_axis, viewport_v) * h_axis;
     pixel_delta_v = viewport_v / image_height;
 
     // vertical rotation
     vec3 v_axis = unit_vector(viewport_u);
-    pc = center - rot_center;
-    pl = pixel00_loc - rot_center;
-    pc_rot = cos(vertical_angle) * pc + sin(vertical_angle) * cross(v_axis, pc) + (1 - cos(vertical_angle)) * dot(v_axis, pc) * v_axis;
-    center = rot_center + pc_rot;
-    pl_rot = cos(vertical_angle) * pl + sin(vertical_angle) * cross(v_axis, pl) + (1 - cos(vertical_angle)) * dot(v_axis, pl) * v_axis;
-    pixel00_loc = rot_center + pl_rot;
-    viewport_v = cos(vertical_angle) * viewport_v + sin(vertical_angle) * cross(v_axis, viewport_v) + (1 - cos(vertical_angle)) * dot(v_axis, viewport_v) * v_axis;
+    center = point_rotation(center, rot_center, v_axis, vertical_angle);
+    pixel00_loc = point_rotation(pixel00_loc, rot_center, v_axis, vertical_angle);
+    viewport_v = vector_rotation(viewport_v, v_axis, vertical_angle);
     pixel_delta_v = viewport_v / image_height;
 }
 
@@ -206,7 +198,7 @@ color camera::ray_color_with_point_lights(const ray& r, int depth, const hittabl
             vec3 intensity_i = {1, 1, 1};
 
             light l = lights.at(i);
-            vec3 light_ray = unit_vector(l.pos - rec.p);
+            vec3 light_ray = {0.0, 1.0, 0.0};//unit_vector(l.pos - rec.p);
             vec3 reflected_ray = 2.0 * dot(rec.normal, light_ray) * rec.normal - light_ray;
 
             double diffuse = max(0, dot(rec.normal, light_ray));

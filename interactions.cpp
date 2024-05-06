@@ -57,7 +57,7 @@ vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_po
     return {0.0, 0.0, 0.0};
 }
 
-void interactions::move_spheres_on_screen(vector<int> spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
+void interactions::move_spheres_on_screen(const vector<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
     //the move is related to the last sphere of the list
     if (!spheres_id.empty()) {
         vec3 v = get_translation_vector_on_screen(spheres_id[0], screen_pos_x, screen_pos_y, new_screen_pos_x,
@@ -69,8 +69,18 @@ void interactions::move_spheres_on_screen(vector<int> spheres_id, int screen_pos
     }
 }
 
-//TODO: rotation around axis that links rotation center to camera center (use Rodrigues for now, create a separate fonction
-// for Rodrigues rotation
+void interactions::rotate_spheres_around_axis(const vector<int>& spheres_id, vec3 axis, point3 axis_point, double angle) {
+    for (int sphere_id : spheres_id) {
+        shared_ptr<sphere> sph = spheres_group->get_sphere_at(sphere_id);
+        point3 sph_pos = sph->get_center();
+        sph->set_center(point_rotation(sph_pos, axis_point, axis, angle));
+    }
+}
+
+void interactions::rotate_spheres_around_camera_axis(const vector<int>& spheres_id, point3 axis_point, double angle) {
+    vec3 axis = axis_point - cam->get_center();
+    rotate_spheres_around_axis(spheres_id, axis, axis_point, angle);
+}
 
 interactions interactions::load(string filename,camera& cam) {
     try {

@@ -41,17 +41,17 @@ def get_path(wildcard):
 
 
 ti.init(arch=ti.gpu)
-n = 800
-m = 450
+n = 400
+m = 225
 
-image = ti.field(dtype=float, shape=(n,m))
+#image = ti.field(dtype=float, shape=(n,m))
 
 pixels = np.ndarray((n,m,3), dtype='f')
 
 modeler1 = main_modeler.modeler()
 modeler1.initializedWorld()
 
-gui = ti.ui.Window("Modeler", res=(n, m),vsync=True)
+gui = ti.ui.Window("Modeler", res=(4*n, 4*m),vsync=True)
 gui2 = gui.get_gui()
 canvas = gui.get_canvas()
 
@@ -88,14 +88,15 @@ while gui.running:
 
             elif gui.is_pressed('d') :
                 modeler1.delete(selected_id)
+                selected_id = -1
 
             elif gui.is_pressed('r'):
                 if origin == (-1,-1) or selected_id_past != selected_id:
                     origin = pos
                     selected_id_past = selected_id
-                else : 
+                elif selected_id != -1 :
                     ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
-                    modeler1.increaseRadius(selected_id_past,-(origin[0]-pos[0])/n*100)
+                    modeler1.increaseRadius(selected_id,-(origin[0]-pos[0])/n*100)
             
         elif gui.is_pressed('t'):
                 origin = (-1,-1)
@@ -108,9 +109,9 @@ while gui.running:
             selected_id_past = selected_id = -1
         
                 
-    elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') :
+    elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') and selected_id != -1:
         ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
-        modeler1.increaseRadius(selected_id_past,-(origin[0]-pos[0])/n*100)
+        modeler1.increaseRadius(selected_id,-(origin[0]-pos[0])/n*100)
 
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and selected_id != -1 : 
         modeler1.move_sphere(selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))

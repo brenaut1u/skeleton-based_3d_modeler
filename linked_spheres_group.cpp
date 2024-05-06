@@ -88,7 +88,6 @@ void linked_spheres_group::delete_sphere(int sphere_id) {
         }
 
         spheres.erase(spheres.begin() + sphere_id);
-        std::cout << save() << "\n";
     }
 }
 
@@ -180,7 +179,7 @@ tuple<int, hit_record> linked_spheres_group::find_hit_cone(const ray& r, interva
 }
 
 void linked_spheres_group::change_sphere_radius(int id, double radius) {
-    spheres[id].sphere->set_radius(radius);
+    spheres.at(id).sphere->set_radius(radius);
     for (const cone_ref &c : cones) {
         if (c.sphere_id1 == id) {
             c.cone->set_radius1(radius);
@@ -192,7 +191,7 @@ void linked_spheres_group::change_sphere_radius(int id, double radius) {
 }
 
 void linked_spheres_group::increase_sphere_radius(int id, double radius) {
-    spheres[id].sphere->increase_radius(radius);
+    spheres.at(id).sphere->increase_radius(radius);
     for (const cone_ref &c : cones) {
         if (c.sphere_id1 == id) {
             c.cone->increase_radius1(radius);

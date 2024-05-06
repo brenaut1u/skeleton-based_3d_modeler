@@ -117,4 +117,11 @@ inline vec3 reflect(const vec3& v, const vec3& n) {
     return v - 2*dot(v,n)*n;
 }
 
+inline vec3 vector_rotation(vec3 v, vec3 axis, double angle) {
+    // Rodrigues' rotation formula
+    return cos(angle) * v + sin(angle) * cross(axis, v) + (1 - cos(angle)) * dot(axis, v) * axis;
+}
+
+point3 point_rotation(point3 p, point3 center_of_rotation, vec3 axis, double angle);
+
 #endif

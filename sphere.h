@@ -33,10 +33,12 @@ class sphere : public hittable {
 
     void set_radius(double new_radius) {
         radius = new_radius;
+        radius = max(radius,0.0);
     }
 
     void increase_radius(double delta_radius) {
         radius += delta_radius;
+        radius = max(radius,0.0);
     }
 
   private:
