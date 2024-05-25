@@ -62,7 +62,7 @@ struct modeler
         // it should be initialized before initializing interactions
         // a set camera in interactions will be useful later (move viewpoint
         // in the scene : translate and rotate)
-        cam = camera(16.0 / 9.0, 800, 1, 1);
+        cam = camera(16.0 / 9.0, 400, 1, 1);
         inter = interactions(spheres, world, &cam);
         gravity_center = point3(0.0, 0.25, -2.0);
 
@@ -122,7 +122,7 @@ struct modeler
 
     void move_sphere_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
     {
-        return inter.move_sphere_on_screen(sphere_id, screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
+        return inter.move_spheres_on_screen({sphere_id}, screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
     }
 
     void rotate_camera(double horizontal_angle, double vertical_angle)

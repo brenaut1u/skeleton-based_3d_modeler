@@ -35,3 +35,9 @@ vec3 random_on_hemisphere(const vec3& normal) {
     else
         return -on_unit_sphere;
 }
+
+point3 point_rotation(point3 p, point3 axis_point, vec3 axis, double angle) {
+    vec3 v = p - axis_point;
+    vec3 v_rot = vector_rotation(v, axis, angle);
+    return axis_point + v_rot;
+}

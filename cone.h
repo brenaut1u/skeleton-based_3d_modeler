@@ -29,20 +29,22 @@ class cone : public hittable {
 
     void set_radius1(double new_radius) {
         radius1 = new_radius;
+        radius1 = max(radius1,0.0);
     }
 
     void set_radius2(double new_radius) {
         radius2 = new_radius;
+        radius2 = max(radius2,0.0);
     }
 
     void increase_radius1(double delta_radius) {
         radius1 += delta_radius;
-        radius1 = max(radius1,0);
+        radius1 = max(radius1,0.0);
     }
 
     void increase_radius2(double delta_radius) {
         radius2 += delta_radius;
-        radius2 = max(radius2,0);
+        radius2 = max(radius2,0.0);
     }
 
   private:
