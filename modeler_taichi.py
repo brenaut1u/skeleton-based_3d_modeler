@@ -122,17 +122,27 @@ while gui.running:
     
     #rotate the camera around a fixed point
     if gui.is_pressed(ti.GUI.LEFT) :
-        modeler1.rotate_camera(-0.1,0)
+        if gui.is_pressed(ti.GUI.CTRL) :
+            modeler1.move_camera_sideways(-0.05, 0.0)
+        else:
+            modeler1.rotate_camera(-0.1,0)
     elif gui.is_pressed(ti.GUI.RIGHT) :
-        modeler1.rotate_camera(0.1,0)
+        if gui.is_pressed(ti.GUI.CTRL) :
+            modeler1.move_camera_sideways(0.05, 0.0)
+        else:
+            modeler1.rotate_camera(0.1,0)
     elif gui.is_pressed(ti.GUI.UP) :
         if gui.is_pressed(ti.GUI.SHIFT) :
             modeler1.move_camera_forward(0.1)
+        elif gui.is_pressed(ti.GUI.CTRL) :
+            modeler1.move_camera_sideways(0.0, -0.05)
         else : 
             modeler1.rotate_camera(0,0.1)
     elif gui.is_pressed(ti.GUI.DOWN) :
         if gui.is_pressed(ti.GUI.SHIFT) :
             modeler1.move_camera_forward(-0.1)
+        elif gui.is_pressed(ti.GUI.CTRL) :
+            modeler1.move_camera_sideways(0.0, 0.05)
         else : 
             modeler1.rotate_camera(0,-0.1)
     elif gui.is_pressed(ti.GUI.SHIFT) :

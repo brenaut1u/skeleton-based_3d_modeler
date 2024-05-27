@@ -10,7 +10,9 @@ public:
     interactions(){}
 
     interactions(shared_ptr<linked_spheres_group> _spheres_group, shared_ptr<hittable_list> _world, camera* _cam) :
-            spheres_group(_spheres_group), world(_world), cam(_cam) {}
+            spheres_group(_spheres_group), world(_world), cam(_cam) {
+        cam_rot_center = point3(0.0, 0.25, -2.0);
+    }
 
     void add_sphere_at_pos(int screen_pos_x, int screen_pos_y);
 
@@ -38,9 +40,11 @@ public:
 
     void rotate_spheres_around_camera_axis(const vector<int>& spheres_id, point3 axis_point, double angle);
 
-    void rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center) {
-        cam->rotate_camera(horizontal_angle, vertical_angle, rot_center);
+    void rotate_camera(double horizontal_angle, double vertical_angle) {
+        cam->rotate_camera(horizontal_angle, vertical_angle, cam_rot_center);
     }
+
+    void move_camera_sideways(double delta_pos_x, double delta_pos_y);
 
     void move_camera_forward(double delta_pos) {
         cam->move_camera_forward(delta_pos);
@@ -68,6 +72,7 @@ private:
     shared_ptr<linked_spheres_group> spheres_group;
     shared_ptr<hittable_list> world;
     camera* cam;
+    point3 cam_rot_center;
 
     tuple<int, hit_record> sphere_at_pos(int screen_pos_x, int screen_pos_y);
 

@@ -82,6 +82,11 @@ void interactions::rotate_spheres_around_camera_axis(const vector<int>& spheres_
     rotate_spheres_around_axis(spheres_id, axis, axis_point, angle);
 }
 
+void interactions::move_camera_sideways(double delta_pos_x, double delta_pos_y) {
+    cam->move_camera_sideways(delta_pos_x, delta_pos_y);
+    cam_rot_center += delta_pos_x * cam->get_viewport_u() + delta_pos_y * cam->get_viewport_v();
+}
+
 interactions interactions::load(string filename,camera& cam) {
     try {
         auto [spheres, world] = load_from_file(filename);

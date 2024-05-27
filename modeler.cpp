@@ -33,7 +33,6 @@ struct modeler
     std::vector<light> lights;
     interactions inter;
     int indexLinkedSphere;
-    point3 gravity_center;
 
     void initializedWorld()
     {
@@ -64,7 +63,6 @@ struct modeler
         // in the scene : translate and rotate)
         cam = camera(16.0 / 9.0, 400, 1, 1);
         inter = interactions(spheres, world, &cam);
-        gravity_center = point3(0.0, 0.25, -2.0);
 
         std::cout<<cam.image_width/cam.aspect_ratio<<"/n";
         //computeImageSpan(output);
@@ -127,7 +125,11 @@ struct modeler
 
     void rotate_camera(double horizontal_angle, double vertical_angle)
     {
-        return inter.rotate_camera(horizontal_angle, vertical_angle, gravity_center);
+        return inter.rotate_camera(horizontal_angle, vertical_angle);
+    }
+
+    void move_camera_sideways(double delta_pos_x, double delta_pos_y) {
+        return inter.move_camera_sideways(delta_pos_x, delta_pos_y);
     }
 
     void move_camera_forward(double delta_pos)
@@ -222,6 +224,7 @@ PYBIND11_MODULE(main_modeler, m)
         .def_readwrite("index", &modeler::indexLinkedSphere)
         .def("move_sphere", &modeler::move_sphere_on_screen)
         .def("rotate_camera", &modeler::rotate_camera)
+        .def("move_camera_sideways", &modeler::move_camera_sideways)
         .def("move_camera_forward", &modeler::move_camera_forward)
         .def("computeImageSpan", &modeler::computeImageSpan)
         .def("save",&modeler::saveInFile)

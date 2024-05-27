@@ -44,6 +44,8 @@ class camera {
 
     void rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center);
 
+    void move_camera_sideways(double delta_pos_x, double delta_pos_y);
+
     void move_camera_forward(double delta_pos);
 
     point3 get_center() const {
