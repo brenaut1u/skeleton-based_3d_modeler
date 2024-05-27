@@ -167,6 +167,10 @@ struct modeler
         world = inter.get_world();  
     }
 
+    void select(int sphere_id)
+    {
+        inter.select_sphere(sphere_id);
+    }
 };
 
 void compute(float *res, int n_x, int n_y)
@@ -188,22 +192,6 @@ void compute(float *res, int n_x, int n_y)
 }
 
 
-void add_arrays(pyb::array_t<float> output)
-{
-    pyb::buffer_info buf1 = output.request();
-    std::cout << buf1.ndim << std::endl;
-    std::cout << buf1.size << std::endl;
-    std::cout << buf1.shape[0] << std::endl;
-    std::cout << buf1.shape[1] << std::endl;
-    std::cout << buf1.shape[2] << std::endl;
-    std::flush(std::cout);
-    float *ptr1 = static_cast<float *>(buf1.ptr);
-
-    if (buf1.ndim != 3)
-        throw std::runtime_error("Number of color must be three");
-
-    compute(ptr1, buf1.shape[0], buf1.shape[1]);
-};
 
 PYBIND11_MODULE(main_modeler, m)
 {
@@ -226,6 +214,6 @@ PYBIND11_MODULE(main_modeler, m)
         .def("computeImageSpan", &modeler::computeImageSpan)
         .def("save",&modeler::saveInFile)
         .def("segment_cone",&modeler::segmentCone)
-        .def("load",&modeler::load);
-    m.def("add_arrays", &add_arrays, "Add two NumPy arrays");
+        .def("load",&modeler::load)
+        .def("select",&modeler::select);
 }

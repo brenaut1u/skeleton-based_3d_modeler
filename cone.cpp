@@ -2,8 +2,11 @@
 #include "vec3.h"
 #include "sphere.h"
 #include "cone.h"
+#include "material.h"
+#include "color.h"
 
 bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
+  bool selected = false;
   vec3 ro = r.origin();
   vec3 rd = unit_vector(r.direction());
   vec3 pa = center1;
@@ -59,12 +62,14 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
           if (h1 > 0.0) {
               t = -m3 - sqrt(h1);
               outward_normal = (oa + t * rd) / ra;
+              selected = is_selected(1);
           }
           if (h2 > 0.0) {
               auto tmp_t = -m6 - sqrt(h2);
               if (tmp_t < t) {
                   t = tmp_t;
                   outward_normal = (ob + t * rd) / rb;
+                  selected = is_selected(2);
               }
           }
       }
@@ -76,6 +81,15 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
   rec.p = r.at(rec.t);
   rec.set_face_normal(r, unit_vector(outward_normal));
   rec.mat = mat;
-
+    if (selected){
+        auto descr = mat->descriptor();
+        if (descr.first == "metal"){
+            //auto new_mat = make_shared<metal>(color(descr.second[0],descr.second[1],descr.second[2]));
+        }
+        else if (descr.first == "lambertian"){
+            //auto new_mat = make_shared<lambertian>(color(descr.second[0],descr.second[1],descr.second[2]), descr.second[3]);
+        }
+    }
   return true;
 }
+
