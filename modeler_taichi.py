@@ -147,10 +147,12 @@ while gui.running:
             modeler1.rotate_camera(0,-0.1)
     elif gui.is_pressed(ti.GUI.SHIFT) :
         if gui.is_pressed('s') :
-            filename = input("filename : ")
+            #filename = input("filename : ")
+            filename = tk.filedialog.asksaveasfilename()
             modeler1.save(filename)
         elif gui.is_pressed('l') :
-            filename = input("your filename : ")
+            filename = tk.filedialog.askopenfilename()
+            #filename = input("your filename : ")
             modeler1.load(filename)
 
 
