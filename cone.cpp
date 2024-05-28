@@ -33,11 +33,11 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
 
   float t;
 
-  if (ba.length() + ra <= rb && h2 > 0.0) {
+  if (ba.length() + ra <= rb && h2 > 0.0 || is_selected(2)) {
       t = -m6 - sqrt( h2 );
       outward_normal = (ob+t*rd)/rb;
   }
-  else if (ba.length() + rb <= ra && h1 > 0.0) {
+  else if (ba.length() + rb <= ra && h1 > 0.0 || is_selected(1)) {
       t = -m3 - sqrt( h1 );
       outward_normal = (oa+t*rd)/ra;
   }
@@ -82,13 +82,21 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
   rec.set_face_normal(r, unit_vector(outward_normal));
   rec.mat = mat;
     if (selected){
+        std::cout << "a sohere has been selected" << std::endl;
         auto descr = mat->descriptor();
-        if (descr.first == "metal"){
-            //auto new_mat = make_shared<metal>(color(descr.second[0],descr.second[1],descr.second[2]));
+        std::cout << rec.mat->get_material_color()<< std::endl;
+        if (descr.first == "lambertian"){
+            std::cout << "lambertian "<< std::endl;
+            auto new_mat = make_shared<lambertian>(color(descr.second[0],descr.second[1],descr.second[2]));
+            rec.mat = new_mat;
         }
-        else if (descr.first == "lambertian"){
-            //auto new_mat = make_shared<lambertian>(color(descr.second[0],descr.second[1],descr.second[2]), descr.second[3]);
+        else if (descr.first == "metal"){
+            std::cout << "lambertian "<< std::endl;
+            auto new_mat = make_shared<metal>(color(1.0,1.0,1.0), descr.second[3]);
+            rec.mat = new_mat;
         }
+        
+        std::cout << rec.mat->get_material_color()<< std::endl;
     }
   return true;
 }

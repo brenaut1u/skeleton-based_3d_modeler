@@ -72,13 +72,13 @@ while gui.running:
     mouse_clicked = False
 
    
-    
+    modeler1.select(hovered_id)
     
     if gui.get_event(ti.ui.PRESS) :
         if gui.event.key == ti.GUI.LMB :
             mouse_clicked = True
             selected_id = hovered_id
-            modeler1.select(selected_id)
+            
         elif gui.event.key == ti.GUI.WHEEL :
             print("mouse wheel")
 
