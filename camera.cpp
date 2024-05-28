@@ -116,6 +116,11 @@ void camera::rotate_camera(double horizontal_angle, double vertical_angle, point
     pixel_delta_v = viewport_v / image_height;
 }
 
+void camera::move_camera_sideways(double delta_pos_x, double delta_pos_y) {
+    center += delta_pos_x * viewport_u + delta_pos_y * viewport_v;
+    pixel00_loc += delta_pos_x * viewport_u + delta_pos_y * viewport_v;
+}
+
 void camera::move_camera_forward(double delta_pos) {
     point3 view_center = pixel00_loc + 0.5 * viewport_u + 0.5 * viewport_v;
     vec3 v = unit_vector(view_center - center);
