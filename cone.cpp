@@ -85,12 +85,14 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
   rec.mat = mat;
     if (selected){
         auto descr = mat->descriptor();
+        color new_color = rec.mat->get_material_color();
+            new_color = negative(new_color);
         if (descr.first == "lambertian"){
-            auto new_mat = make_shared<lambertian>(color(descr.second[0],descr.second[1],descr.second[2]));
+            auto new_mat = make_shared<lambertian>(new_color);
             rec.mat = new_mat;
         }
         else if (descr.first == "metal"){
-            auto new_mat = make_shared<metal>(color(1.0,1.0,1.0), descr.second[3]);
+            auto new_mat = make_shared<metal>(new_color, descr.second[3]);
             rec.mat = new_mat;
         }
     }
