@@ -32,6 +32,10 @@ public:
         spheres_group->increase_sphere_radius(sphere_id, radius);
     }
 
+    void change_color(int sphere_id, color c) {
+        spheres_group->set_sphere_color(sphere_id, c);
+    }
+
     vec3 get_translation_vector_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
 
     void move_spheres_on_screen(const vector<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);

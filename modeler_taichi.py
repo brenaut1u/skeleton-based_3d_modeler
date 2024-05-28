@@ -5,7 +5,8 @@ import math as m
 import numpy as np
 
 import tkinter as tk
-from tkinter import filedialog as fd
+from tkinter import filedialog
+from tkinter import colorchooser
 
 
 
@@ -113,6 +114,10 @@ while gui.running:
         ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
         modeler1.increaseRadius(selected_id,-(origin[0]-pos[0])/n*100)
 
+    elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('c') and selected_id != -1:
+        color = colorchooser.askcolor()
+        modeler1.changeColor(selected_id, color[0][0], color[0][1], color[0][2])
+
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and selected_id != -1 : 
         modeler1.move_sphere(selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
 
@@ -148,10 +153,10 @@ while gui.running:
     elif gui.is_pressed(ti.GUI.SHIFT) :
         if gui.is_pressed('s') :
             #filename = input("filename : ")
-            filename = tk.filedialog.asksaveasfilename()
+            filename = filedialog.asksaveasfilename()
             modeler1.save(filename)
         elif gui.is_pressed('l') :
-            filename = tk.filedialog.askopenfilename()
+            filename = filedialog.askopenfilename()
             #filename = input("your filename : ")
             modeler1.load(filename)
 

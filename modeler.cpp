@@ -118,6 +118,10 @@ struct modeler
         return inter.increase_radius(sphere_id, radius);
     }
 
+    void change_color(int sphere_id, int red, int green, int blue) {
+        return inter.change_color(sphere_id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
+    }
+
     void move_sphere_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
     {
         return inter.move_spheres_on_screen({sphere_id}, screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
@@ -219,6 +223,7 @@ PYBIND11_MODULE(main_modeler, m)
         .def("add", &modeler::addSphere)
         .def("changeRadius", &modeler::change_radius)
         .def("increaseRadius", &modeler::increase_radius)
+        .def("changeColor", &modeler::change_color)
         .def("delete", &modeler::deleteSphere)
         .def("detect", &modeler::detectSphere)
         .def_readwrite("index", &modeler::indexLinkedSphere)

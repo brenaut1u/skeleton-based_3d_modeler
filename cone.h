@@ -3,11 +3,13 @@
 
 #include "vec3.h"
 #include "sphere.h"
+#include "color.h"
+#include "material.h"
 
 class cone : public hittable {
   public:
     cone(point3 _center1, point3 _center2, double _radius1, double _radius2, shared_ptr<material> _material)
-      : center1(_center1), center2(_center2), radius1(_radius1), radius2(_radius2), mat(_material) {}
+      : center1(_center1), center2(_center2), radius1(_radius1), radius2(_radius2), mat1(_material), mat2(_material) {}
 
     bool hit(const ray& r, interval ray_t, hit_record& rec) const override;
 
@@ -47,12 +49,17 @@ class cone : public hittable {
         radius2 = max(radius2,0.0);
     }
 
+    void set_color1(color c);
+
+    void set_color2(color c);
+
   private:
     point3 center1;
     point3 center2;
     double radius1;
     double radius2;
-    shared_ptr<material> mat;
+    shared_ptr<material> mat1;
+    shared_ptr<material> mat2;
 };
 
 static shared_ptr<cone> cone_from_spheres(shared_ptr<sphere> sphere1, shared_ptr<sphere> sphere2, shared_ptr<material> material) {

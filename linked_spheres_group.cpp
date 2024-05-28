@@ -241,6 +241,17 @@ string linked_spheres_group::save() {
     return txt;
 }
 
+void linked_spheres_group::set_sphere_color(int id, color c) {
+    for (const cone_ref &cone : cones) {
+        if (cone.sphere_id1 == id) {
+            cone.cone->set_color1(c);
+        }
+        if (cone.sphere_id2 == id) {
+            cone.cone->set_color2(c);
+        }
+    }
+}
+
 void linked_spheres_group::delete_isolated_spheres() {
     int sphere_id = 0;
     while (sphere_id < spheres.size()) {
