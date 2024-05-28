@@ -49,9 +49,9 @@ class cone : public hittable {
         radius2 = max(radius2,0.0);
     }
 
-    void set_color1(color c);
+    void set_mat1(shared_ptr<material> mat);
 
-    void set_color2(color c);
+    void set_mat2(shared_ptr<material> mat);
 
   private:
     point3 center1;

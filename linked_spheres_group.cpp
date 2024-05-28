@@ -242,12 +242,14 @@ string linked_spheres_group::save() {
 }
 
 void linked_spheres_group::set_sphere_color(int id, color c) {
+    shared_ptr<material> mat = make_shared<metal>(c, 1.0);
+    materials.push_back(material_ref(mat, 1));
     for (const cone_ref &cone : cones) {
         if (cone.sphere_id1 == id) {
-            cone.cone->set_color1(c);
+            cone.cone->set_mat1(mat);
         }
         if (cone.sphere_id2 == id) {
-            cone.cone->set_color2(c);
+            cone.cone->set_mat2(mat);
         }
     }
 }

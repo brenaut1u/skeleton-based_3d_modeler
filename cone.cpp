@@ -59,7 +59,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
 
           point3 p = r.at(t / r.direction().length());
           vec3 v = center2 - center1;
-          double u = (1 / (v.y() - v.x() / outward_normal.x())) * (p.y() + (1 / outward_normal.x()) * (center1.x() - p.x()) - center1.y());
+          double u = dot(unit_vector(p - center1), unit_vector(v)) * (p - center1).length() / v.length();
 
           auto mat1_desc = mat1->descriptor();
           auto mat2_desc = mat2->descriptor();
@@ -67,6 +67,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
           color c = color((1 - u) * mat1_desc.second[0] + u * mat2_desc.second[0],
                           (1 - u) * mat1_desc.second[1] + u * mat2_desc.second[1],
                           (1 - u) * mat1_desc.second[2] + u * mat2_desc.second[2]);
+
           if (mat1_desc.first == "metal") {
               if (mat2_desc.first == "metal") {
                   mat = make_shared<metal>(c, (1 - u) * mat1_desc.second[4] + u * mat2_desc.second[4]);
@@ -113,22 +114,10 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
   return true;
 }
 
-void cone::set_color1(color c) {
-    auto mat1_desc = mat1->descriptor();
-    if (mat1_desc.first == "metal") {
-        mat1 = make_shared<metal>(c, mat1_desc.second[4]);
-    }
-    else {
-        mat1 = make_shared<lambertian>(c);
-    }
+void cone::set_mat1(shared_ptr<material> mat) {
+    mat1 = mat;
 }
 
-void cone::set_color2(color c) {
-    auto mat2_desc = mat1->descriptor();
-    if (mat2_desc.first == "metal") {
-        mat2 = make_shared<metal>(c, mat2_desc.second[4]);
-    }
-    else {
-        mat2 = make_shared<lambertian>(c);
-    }
+void cone::set_mat2(shared_ptr<material> mat) {
+    mat2 = mat;
 }

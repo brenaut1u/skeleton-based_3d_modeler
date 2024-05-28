@@ -55,14 +55,14 @@ pair<shared_ptr<linked_spheres_group>, shared_ptr<hittable_list>> load_from_file
     {
         line.erase(std::remove(line.begin(), line.end(), '\r' ), line.end());
 
-        std::cout<<line << std::endl;
-        std::cout<<line.length() << std::endl;
+        //std::cout<<line << std::endl;
+        //std::cout<<line.length() << std::endl;
         if (line == "materials" || line == "spheres" || line == "links") {
-            std::cout<<"category" << std::endl;
+            //std::cout<<"category" << std::endl;
             category = line;
         }
         else if (!line.empty()){
-            std::cout<<line << std::endl;
+            //std::cout<<line << std::endl;
             if (category == "materials") {
                 vector<string> l = split(line);
                 string mat_type = l[0];
@@ -85,7 +85,7 @@ pair<shared_ptr<linked_spheres_group>, shared_ptr<hittable_list>> load_from_file
                 int mat_id = stoi(l[4]);
                 shared_ptr<sphere> sph = make_shared<sphere>(center, radius, materials[mat_id]);
                 if (first_sphere) {
-                    std::cout<<"first sphere" << std::endl;
+                    //std::cout<<"first sphere" << std::endl;
                     spheres_group = make_shared<linked_spheres_group>(world, sph);
                     first_sphere = false;
                 }
