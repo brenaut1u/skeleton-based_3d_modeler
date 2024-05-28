@@ -64,7 +64,7 @@ class cone : public hittable {
     double radius1;
     double radius2;
     shared_ptr<material> mat;
-    int selected;
+    int selected = 0;
 };
 
 static shared_ptr<cone> cone_from_spheres(shared_ptr<sphere> sphere1, shared_ptr<sphere> sphere2, shared_ptr<material> material) {

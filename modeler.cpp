@@ -64,7 +64,7 @@ struct modeler
         cam = camera(16.0 / 9.0, 400, 1, 1);
         inter = interactions(spheres, world, &cam);
 
-        std::cout<<cam.image_width/cam.aspect_ratio<<"/n";
+        // std::cout<<cam.image_width/cam.aspect_ratio<<"/n";
         //computeImageSpan(output);
     }
 

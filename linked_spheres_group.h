@@ -60,22 +60,7 @@ public:
         }
     }
 
-    void sphere_is_selected(int id_selected) {
-        //std::cout << id_selected << std::flush;
-        int i = 0;
-        while (i < cones.size()) {
-            if (cones[i].sphere_id1 == id_selected) {
-                cones[i].cone->set_selected(1);
-            }
-            else if (cones[i].sphere_id2 == id_selected) {
-                cones[i].cone->set_selected(2);
-            }
-            else {
-                cones[i].cone->set_selected(0);
-            }
-            i++;
-        }
-    }
+    void sphere_is_selected(int id_selected) ;
 
     void add_sphere(shared_ptr<sphere> new_sphere);
 

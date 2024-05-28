@@ -271,3 +271,31 @@ int linked_spheres_group::nb_sphere_links(int sphere_id) {
     }
     return nb_links;
 }
+
+void linked_spheres_group::sphere_is_selected(int id_selected) {
+    int i = 0;
+    while (i < cones.size()) {
+        if (cones[i].sphere_id1 == id_selected) {
+            // cones[i].cone->set_selected(1);
+            if (cones[i].cone->is_selected(2)) {
+                cones[i].cone->set_selected(3);
+            }
+            else if (not cones[i].cone->is_selected(3)) { 
+                cones[i].cone->set_selected(1);
+            }
+        }
+        else if (cones[i].sphere_id2 == id_selected) {
+            // cones[i].cone->set_selected(2);
+            if (cones[i].cone->is_selected(1)) {
+                cones[i].cone->set_selected(3);
+            }
+            else if (not cones[i].cone->is_selected(3)){ 
+                cones[i].cone->set_selected(2);
+            }
+        }
+        else {
+            cones[i].cone->set_selected(0);
+        }
+        i++;
+    }
+}
