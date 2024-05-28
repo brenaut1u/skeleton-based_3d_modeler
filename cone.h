@@ -32,7 +32,7 @@ class cone : public hittable {
     }
 
     bool is_selected(int id_selected) const {
-        if (selected == id_selected) {
+        if (selected == id_selected || selected == 3) {
             return true;
         }
         return false;
