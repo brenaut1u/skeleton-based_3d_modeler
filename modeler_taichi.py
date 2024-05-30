@@ -8,8 +8,6 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import colorchooser
 
-
-
 import wx
 
 app = wx.App(None)
@@ -25,21 +23,6 @@ def get_path(wildcard):
         path = None
     dialog.Destroy()
     return path
-
-#print(get_path('*.txt'))
-
-#filetype = [("All files", "*.*")]
-
-#filename = fd.askopenfilename(
- #       title='Open a file',
-  #      initialdir='/',
-   #     filetypes=filetype)
-
-# filename = fd.askopenfilename(initialdir= "/",title="Select File",filetypes=(("png files","*.png"),("jpeg files","*.jpg"),("all files","*.*")))
-# print(filename)
-
-#path = easygui.fileopenbox()
-
 
 ti.init(arch=ti.gpu)
 n = 400
@@ -72,9 +55,6 @@ while gui.running:
     
     mouse_clicked = False
 
-   
-    
-    
     if gui.get_event(ti.ui.PRESS) :
         if gui.event.key == ti.GUI.LMB :
             mouse_clicked = True
@@ -115,8 +95,23 @@ while gui.running:
         modeler1.increaseRadius(selected_id,-(origin[0]-pos[0])/n*100)
 
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('c') and selected_id != -1:
-        color = colorchooser.askcolor()
-        modeler1.changeColor(selected_id, color[0][0], color[0][1], color[0][2])
+        try:
+            color = colorchooser.askcolor()
+            modeler1.changeColor(selected_id, color[0][0], color[0][1], color[0][2])
+        except:
+            print("Change color - Enter values between 0 and 255")
+            try:
+                r = int(input("Red: "))
+                g = int(input("Green: "))
+                b = int(input("Blue: "))
+
+                if (r in range(0, 256) and g in range(0, 256) and b in range(0, 256)):
+                    modeler1.changeColor(selected_id, r, g, b)
+                else:
+                    print("Value incorrect")
+            except:
+                print("Value incorrect")
+
 
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and selected_id != -1 : 
         modeler1.move_sphere(selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
@@ -152,61 +147,18 @@ while gui.running:
             modeler1.rotate_camera(0,-0.1)
     elif gui.is_pressed(ti.GUI.SHIFT) :
         if gui.is_pressed('s') :
-            #filename = input("filename : ")
-            filename = filedialog.asksaveasfilename()
+            try:
+                filename = filedialog.asksaveasfilename()
+            except:
+                filename = input("Save - Enter filename: ")
             modeler1.save(filename)
         elif gui.is_pressed('l') :
-            filename = filedialog.askopenfilename()
-            #filename = input("your filename : ")
+            try:
+                filename = filedialog.askopenfilename()
+            except:
+                filename = input("Open - Enter filename: ")
             modeler1.load(filename)
 
-
-    """with gui2.sub_window("Sub Window", x=10, y=10, width=300, height=100):
-        is_clicked = gui2.button("save2")
-        if is_clicked : 
-            print("you saved")
-            is_clicked = False
-            path = get_path('*.txt')
-            #filename = fd.askopenfilename(initialdir= "/",title="Select File",filetypes=(("png files","*.png"),("jpeg files","*.jpg"),("all files","*.*")))
-            #filename = fd.askopenfilename(title='Open a file',initialdir='/', filetypes=filetype)
-
-    if gui2.button("menu"):
-        print("menu")
-
-    
-    for e in gui.get_events():
-        #create a new sphere on the surface of a new one
-        if e.key == ti.ui.LMB : 
-            selected_id = modeler.detect(int(pos[0]*n),int((1-pos[1])*m))
-            if selected_id != -1 :
-                modeler.add(int(pos[0]*n),int((1-pos[1])*m))
-            else :
-                modeler.segment_cone(int(pos[0]*n),int((1-pos[1])*m))
-        #delete a sphere
-        elif e.key == ti.GUI.RMB :
-            selected_id = modeler.detect(int(pos[0]*n),int((1-pos[1])*m))
-            modeler.delete(selected_id)
-
-    if gui.get_event((ti.GUI.RELEASE,ti.GUI.LMB)) :
-        selected_id = modeler.detect(int(pos[0]*n),int((1-pos[1])*m))
-        if selected_id != -1 :
-            modeler.add(int(pos[0]*n),int((1-pos[1])*m))
-        else :
-            modeler.segment_cone(int(pos[0]*n),int((1-pos[1])*m))
-    elif gui.is_pressed(ti.GUI.RMB) :
-        selected_id = modeler.detect(int(pos[0]*n),int((1-pos[1])*m))
-        modeler.delete(selected_id)
- 
-    if gui.is_pressed(ti.GUI.MOVE and ti.GUI.LMB):
-        print("you moved the mouse")
-        pos = gui.get_cursor_pos()
-        selected_id = modeler.detect(int(pos[0]*n),int((1-pos[1])*m))
-        modeler.set_sphere_position(selected_id,int(pos[0]*n),int((1-pos[1])*m))
-
-    if gui.is_pressed(ti.GUI.SHIFT and ti.GUI.MOVE and ti.GUI.LMB):
-        pos = gui.get_cursor_pos()
-        selected_id = modeler.detect(int(pos[0]*n),int((1-pos[1])*m))
-        modeler.changeRadius(selected_id,1)"""
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
     
     modeler1.computeImageSpan(pixels)
