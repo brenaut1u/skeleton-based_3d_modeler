@@ -59,7 +59,9 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
 
           point3 p = r.at(t / r.direction().length());
           vec3 v = center2 - center1;
-          double u = dot(unit_vector(p - center1), unit_vector(v)) * (p - center1).length() / v.length();
+          vec3 n = outward_normal;
+          point3 c1 = center1;
+          double u = (1.0 / (-v.x() * n.y() + v.y() * n.x())) * (-n.y() * (p.x() - c1.x()) + n.x() * (p.y() - c1.y()));
 
           auto mat1_desc = mat1->descriptor();
           auto mat2_desc = mat2->descriptor();
