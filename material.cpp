@@ -31,3 +31,33 @@ pair<string, vector<double>> metal::descriptor() const {
     vector<double> data = {albedo.x(), albedo.y(), albedo.z(), fuzz};
     return {mat_type, data};
 }
+
+shared_ptr<material> blend_materials(const shared_ptr<material>& mat1, const shared_ptr<material>& mat2, double t) {
+    shared_ptr<material> mat;
+
+    auto mat1_desc = mat1->descriptor();
+    auto mat2_desc = mat2->descriptor();
+
+    color c = color((1 - t) * mat1_desc.second[0] + t * mat2_desc.second[0],
+                    (1 - t) * mat1_desc.second[1] + t * mat2_desc.second[1],
+                    (1 - t) * mat1_desc.second[2] + t * mat2_desc.second[2]);
+
+    if (mat1_desc.first == "metal") {
+        if (mat2_desc.first == "metal") {
+            mat = make_shared<metal>(c, (1 - t) * mat1_desc.second[4] + t * mat2_desc.second[4]);
+        }
+        else {
+            mat = make_shared<metal>(c, (1 - t) * mat1_desc.second[4]);
+        }
+    }
+    else {
+        if (mat2_desc.first == "metal") {
+            mat = make_shared<metal>(c, t * mat2_desc.second[4]);
+        }
+        else {
+            mat = make_shared<lambertian>(c);
+        }
+    }
+
+    return mat;
+}

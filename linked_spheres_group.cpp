@@ -93,7 +93,7 @@ void linked_spheres_group::delete_sphere(int sphere_id) {
 
 void linked_spheres_group::add_link(int id1, int id2) {
     links.push_back({id1, id2});
-    shared_ptr<cone> new_cone = cone_from_spheres(spheres[id1].sphere, spheres[id2].sphere, spheres[id1].sphere->get_material());
+    shared_ptr<cone> new_cone = cone_from_spheres(spheres[id1].sphere, spheres[id2].sphere, spheres[id1].sphere->get_material(), spheres[id2].sphere->get_material());
     cones.push_back(cone_ref {new_cone, id1, id2});
     world->add(new_cone);
     world->remove(spheres[id1].sphere); //to avoid having the old sphere (if it exists) at the same position as the new cone overlapping each other
@@ -243,7 +243,18 @@ string linked_spheres_group::save() {
 
 void linked_spheres_group::set_sphere_color(int id, color c) {
     shared_ptr<material> mat = make_shared<metal>(c, 1.0);
-    materials.push_back(material_ref(mat, 1));
+    int mat_id = spheres[id].material_id;
+    if (materials[mat_id].nb_users == 1) {
+        materials[mat_id] = {mat, 1};
+    }
+    else {
+        materials.push_back(material_ref(mat, 1));
+        spheres[id].material_id = materials.size() - 1;
+        materials[mat_id].nb_users--;
+    }
+
+    spheres[id].sphere->set_mat(mat);
+
     for (const cone_ref &cone : cones) {
         if (cone.sphere_id1 == id) {
             cone.cone->set_mat1(mat);

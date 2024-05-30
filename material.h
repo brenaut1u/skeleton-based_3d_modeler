@@ -5,6 +5,7 @@
 #include "color.h"
 #include "hittable.h"
 #include <vector>
+#include <memory>
 
 using std::string;
 using std::vector;
@@ -51,5 +52,7 @@ class metal : public material {
     color albedo;
     double fuzz;
 };
+
+shared_ptr<material> blend_materials(const shared_ptr<material>& mat1, const shared_ptr<material>& mat2, double t);
 
 #endif

@@ -11,6 +11,9 @@ class cone : public hittable {
     cone(point3 _center1, point3 _center2, double _radius1, double _radius2, shared_ptr<material> _material)
       : center1(_center1), center2(_center2), radius1(_radius1), radius2(_radius2), mat1(_material), mat2(_material) {}
 
+    cone(point3 _center1, point3 _center2, double _radius1, double _radius2, shared_ptr<material> _mat1, shared_ptr<material> _mat2)
+            : center1(_center1), center2(_center2), radius1(_radius1), radius2(_radius2), mat1(_mat1), mat2(_mat2) {}
+
     bool hit(const ray& r, interval ray_t, hit_record& rec) const override;
 
     void set_center1(point3 new_center) {
@@ -49,9 +52,13 @@ class cone : public hittable {
         radius2 = max(radius2,0.0);
     }
 
-    void set_mat1(shared_ptr<material> mat);
+    void set_mat1(shared_ptr<material> mat) {
+        mat1 = mat;
+    }
 
-    void set_mat2(shared_ptr<material> mat);
+    void set_mat2(shared_ptr<material> mat) {
+        mat2 = mat;
+    }
 
   private:
     point3 center1;
@@ -62,8 +69,8 @@ class cone : public hittable {
     shared_ptr<material> mat2;
 };
 
-static shared_ptr<cone> cone_from_spheres(shared_ptr<sphere> sphere1, shared_ptr<sphere> sphere2, shared_ptr<material> material) {
-  return make_shared<cone>(sphere1->get_center(), sphere2->get_center(), sphere1->get_radius(), sphere2->get_radius(), material);
+static shared_ptr<cone> cone_from_spheres(shared_ptr<sphere> sphere1, shared_ptr<sphere> sphere2, shared_ptr<material> mat1, shared_ptr<material> mat2) {
+  return make_shared<cone>(sphere1->get_center(), sphere2->get_center(), sphere1->get_radius(), sphere2->get_radius(), mat1, mat2);
 }
 
 #endif

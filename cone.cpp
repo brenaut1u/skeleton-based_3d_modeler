@@ -63,29 +63,8 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
           point3 c1 = center1;
           double u = (1.0 / (-v.x() * n.y() + v.y() * n.x())) * (-n.y() * (p.x() - c1.x()) + n.x() * (p.y() - c1.y()));
 
-          auto mat1_desc = mat1->descriptor();
-          auto mat2_desc = mat2->descriptor();
+          mat = blend_materials(mat1, mat2, u);
 
-          color c = color((1 - u) * mat1_desc.second[0] + u * mat2_desc.second[0],
-                          (1 - u) * mat1_desc.second[1] + u * mat2_desc.second[1],
-                          (1 - u) * mat1_desc.second[2] + u * mat2_desc.second[2]);
-
-          if (mat1_desc.first == "metal") {
-              if (mat2_desc.first == "metal") {
-                  mat = make_shared<metal>(c, (1 - u) * mat1_desc.second[4] + u * mat2_desc.second[4]);
-              }
-              else {
-                  mat = make_shared<metal>(c, (1 - u) * mat1_desc.second[4]);
-              }
-          }
-          else {
-              if (mat2_desc.first == "metal") {
-                  mat = make_shared<metal>(c, u * mat2_desc.second[4]);
-              }
-              else {
-                  mat = make_shared<lambertian>(c);
-              }
-          }
       } else {
           if (h1 < 0.0 && h2 < 0.0) return false;
 
@@ -114,12 +93,4 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
   rec.mat = mat;
 
   return true;
-}
-
-void cone::set_mat1(shared_ptr<material> mat) {
-    mat1 = mat;
-}
-
-void cone::set_mat2(shared_ptr<material> mat) {
-    mat2 = mat;
 }
