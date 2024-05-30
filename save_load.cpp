@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include "linked_spheres_group.h"
 #include "hittable_list.h"
 #include "color.h"
