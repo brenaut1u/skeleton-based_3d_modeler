@@ -60,6 +60,10 @@ public:
         }
     }
 
+    vector<pair<int, int>> get_links() const {
+        return links;
+    }
+
     void add_sphere(shared_ptr<sphere> new_sphere);
 
     void add_sphere(shared_ptr<sphere> new_sphere, int linked_to);

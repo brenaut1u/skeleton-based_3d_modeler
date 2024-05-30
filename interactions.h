@@ -24,6 +24,10 @@ public:
         return std::get<0>(sphere_at_pos(screen_pos_x, screen_pos_y));
     }
 
+    pair<int, int> world_to_screen_pos(point3 p);
+
+    vector<pair<pair<int, int>, pair<int, int>>> get_skeleton_screen_coordinates();
+
     void change_radius(int sphere_id, double radius){
         spheres_group->change_sphere_radius(sphere_id, radius);
     }
