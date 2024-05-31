@@ -1,3 +1,4 @@
+#include "draw.h"
 #include "camera.h"
 
 void camera::render_file(const hittable& world) {
@@ -79,10 +80,28 @@ void camera::computePhong(const hittable& world, const std::vector<light>& light
                 ray r = get_ray(i, j);
                 pixel_color += ray_color_with_point_lights(r, max_depth, world, lights);
             }
-            image(i,image_height-j-1,0) = pixel_color.x();
-            image(i,image_height-j-1,1) = pixel_color.y();
-            image(i,image_height-j-1,2) = pixel_color.z();
+            color_pixel(image, {i, j}, pixel_color);
         }
+    }
+}
+
+void camera::computePhong(const hittable& world, const std::vector<light>& lights, span3D image, const segment_list& skeleton) {
+    for (int j = 0; j < image_height; ++j) {
+        for (int i = 0; i < image_width; ++i) {
+            color pixel_color(0,0,0);
+            for (int sample = 0; sample < samples_per_pixel; ++sample) {
+                ray r = get_ray(i, j);
+                pixel_color += ray_color_with_point_lights(r, max_depth, world, lights);
+            }
+            color_pixel(image, {i, j}, pixel_color);
+        }
+    }
+
+    for (const auto& segment : skeleton) {
+        std::cout << "(" << segment.first.first << ", " << segment.first.second << ")\n";
+        draw_line(image, segment.first, segment.second, skeleton_line_radius, skeleton_background_color, skeleton_border_color);
+        draw_circle(image, segment.first, skeleton_circle_radius, skeleton_background_color, skeleton_border_color);
+        draw_circle(image, segment.second, skeleton_circle_radius, skeleton_background_color, skeleton_border_color);
     }
 }
 

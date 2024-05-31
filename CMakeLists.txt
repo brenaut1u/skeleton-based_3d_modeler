@@ -19,6 +19,8 @@ add_library(skeleton_modeler STATIC
         color.h
         cone.cpp
         cone.h
+        draw.cpp
+        draw.h
         hittable.cpp
         hittable.h
         hittable_list.cpp

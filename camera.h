@@ -14,6 +14,12 @@
 
 #define MODE " "
 inline constexpr double ambient_occlusion = 0.5;
+inline const color skeleton_background_color = {0.5, 0.9, 1.0};
+inline const color skeleton_border_color = {0.2, 0.3, 0.5};
+inline constexpr float skeleton_line_radius = 7;
+inline constexpr float skeleton_circle_radius = 5;
+
+using segment_list = vector<pair<pair<int, int>, pair<int, int>>>;
 
 class camera {
   public:
@@ -39,6 +45,8 @@ class camera {
     std::vector<vec3> render_phong(const hittable& world, const std::vector<light>& lights);
 
     void computePhong(const hittable& world, const std::vector<light>& lights, span3D image);
+
+    void computePhong(const hittable& world, const std::vector<light>& lights, span3D image, const segment_list& skeleton);
 
     ray get_ray(int i, int j) const;
 

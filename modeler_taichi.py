@@ -180,17 +180,7 @@ while gui.running:
 
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
     
-    modeler1.computeImageSpan(pixels)
+    modeler1.computeImageSpan(pixels, show_skeleton)
     canvas.set_image(pixels)
-
-    f = ti.Vector.field(n=2, dtype=int, shape=2)
-    f[0] = (0, 0)
-    f[1] = (1, 1)
-    canvas.lines(f, 1)
-    # if show_skeleton:
-    #     segments = modeler1.getSkeletonScreenCoordinates()
-    #     for i in range(segments.size()):
-    #         print("(%d %d), (%d %d)\n"%(segments.at(i).first.x, segments.at(i).first.y, \
-    #                                     segments.at(i).second.x, segments.at(i).second.y))
 
     gui.show()

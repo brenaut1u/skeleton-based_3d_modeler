@@ -40,13 +40,13 @@ pair<int, int> interactions::world_to_screen_pos(point3 p) {
     point3 point_on_screen = la + t * lab;
 
     int screen_pos_x = cam->image_width * dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_u())) / cam->get_viewport_u().length();
-    int screen_pos_y = cam->aspect_ratio * cam->image_width * dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_v())) / cam->get_viewport_v().length();
+    int screen_pos_y = cam->image_width * cam->aspect_ratio * dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_v())) / cam->get_viewport_v().length();
 
     return {screen_pos_x, screen_pos_y};
 }
 
-vector<pair<pair<int, int>, pair<int, int>>> interactions::get_skeleton_screen_coordinates() {
-    vector<pair<pair<int, int>, pair<int, int>>> skeleton_screen_coordinates;
+segment_list interactions::get_skeleton_screen_coordinates() {
+    segment_list skeleton_screen_coordinates;
     for (const pair<int, int>& link : spheres_group->get_links()) {
         skeleton_screen_coordinates.push_back({ world_to_screen_pos(spheres_group->get_sphere_at(link.first)->get_center()),
                                                 world_to_screen_pos(spheres_group->get_sphere_at(link.second)->get_center())});

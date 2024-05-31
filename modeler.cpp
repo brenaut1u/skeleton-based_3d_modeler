@@ -23,29 +23,6 @@ namespace pyb = pybind11;
 #include <pybind11/numpy.h>
 
 #include <span>
-#include <vector>
-
-using std::vector;
-
-struct point {
-    int x;
-    int y;
-};
-
-struct segment {
-    point first;
-    point second;
-};
-
-struct segment_list {
-    vector<segment> segments;
-    int size() {
-        return segments.size();
-    }
-    segment at(int i) {
-        return segments.at(i);
-    }
-};
 
 struct modeler
 {
@@ -165,34 +142,14 @@ struct modeler
     }
 
     // compute the new image (load changes)
-    void computeImageSpan(pyb::array_t<float> output)
+    void computeImageSpan(pyb::array_t<float> output, bool draw_skeleton)
     {
-        cam.computePhong(*world, lights, numpyView(output));
-    }
-
-//    pyb::array_t<segment> getSkeletonScreenCoordinates() {
-//        auto skel_screen_coord = inter.get_skeleton_screen_coordinates();
-//        pyb::array_t<segment> skel_segments = pyb::array_t<segment>(skel_screen_coord.size());
-//
-//        pyb::buffer_info buf = skel_segments.request();
-//        segment* ptr = static_cast<segment*>(buf.ptr);
-//
-//        for (int s = 0; s < skel_screen_coord.size(); s++) {
-//            ptr[s] = segment{point{skel_screen_coord[s].first.first},
-//                                       point{skel_screen_coord[s].first.second}};
-//        }
-//
-//        return skel_segments;
-//    }
-
-    segment_list getSkeletonScreenCoordinates() {
-        auto skel_screen_coord = inter.get_skeleton_screen_coordinates();
-        vector<segment> skel_segments = vector<segment>();
-        for (const auto seg : skel_screen_coord) {
-            skel_segments.push_back(segment{point{seg.first.first, seg.first.second},
-                                            point{seg.second.first, seg.second.second}});
+        if (draw_skeleton) {
+            cam.computePhong(*world, lights, numpyView(output), inter.get_skeleton_screen_coordinates());
         }
-        return segment_list{skel_segments};
+        else {
+            cam.computePhong(*world, lights, numpyView(output));
+        }
     }
 
     //transform a numpy array into a span3D
@@ -280,21 +237,8 @@ PYBIND11_MODULE(main_modeler, m)
         .def("move_camera_sideways", &modeler::move_camera_sideways)
         .def("move_camera_forward", &modeler::move_camera_forward)
         .def("computeImageSpan", &modeler::computeImageSpan)
-        .def("getSkeletonScreenCoordinates", &modeler::getSkeletonScreenCoordinates)
         .def("save",&modeler::saveInFile)
         .def("segment_cone",&modeler::segmentCone)
         .def("load",&modeler::load);
     m.def("add_arrays", &add_arrays, "Add two NumPy arrays");
-
-    pyb::class_<point>(m, "point")
-            .def_readonly("x", &point::x)
-            .def_readonly("y", &point::y);
-
-    pyb::class_<segment>(m, "segment")
-            .def_readonly("first", &segment::first)
-            .def_readonly("second", &segment::second);
-
-    pyb::class_<segment_list>(m, "segmentList")
-            .def("size", &segment_list::size)
-            .def("at", &segment_list::at);
 }

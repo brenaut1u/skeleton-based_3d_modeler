@@ -12,6 +12,9 @@ public:
 
     int size() const { return sizeX * sizeY * sizeZ; }
 
+    int size_X() const {return sizeX;}
+    int size_Y() const {return sizeY;}
+
 private:
     float* data;
     int sizeX;
