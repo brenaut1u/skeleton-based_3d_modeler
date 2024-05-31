@@ -109,3 +109,7 @@ tuple<int, hit_record> interactions::cone_at_pos(int screen_pos_x, int screen_po
     tuple<int, hit_record> find_cone = spheres_group->find_hit_cone(r, interval(0.001, infinity));
     return find_cone;
 }
+
+void interactions::add_link(int id1, int id2) {
+    spheres_group->add_link(id1, id2);
+}

@@ -60,6 +60,10 @@ public:
         }
     }
 
+    void sphere_is_selected(int id_selected) ;
+
+    void sphere_is_unselected(int id_selected) ;
+
     void add_sphere(shared_ptr<sphere> new_sphere);
 
     void add_sphere(shared_ptr<sphere> new_sphere, int linked_to);

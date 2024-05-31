@@ -34,7 +34,6 @@ ti.init(arch=ti.gpu)
 n = 400
 m = 225
 
-#image = ti.field(dtype=float, shape=(n,m))
 
 pixels = np.ndarray((n,m,3), dtype='f')
 
@@ -45,61 +44,58 @@ gui = ti.ui.Window("Modeler", res=(4*n, 4*m),vsync=True)
 gui2 = gui.get_gui()
 canvas = gui.get_canvas()
 
-selected_id = -1
+list_selected_id = [-1]
 hovered_id = -1
 origin = (-1,-1)
  
 old_pos = (0, 0)
-#save = gui2.button('save')
-#filename = fd.askopenfilename(title='Open a file',initialdir='/', filetypes=filetype)
-
 
 while gui.running:
     #gui.get_event()
     pos = gui.get_cursor_pos()
-    hovered_id = modeler1.detect(int(pos[0]*n),int((1-pos[1])*m))
-    
-    mouse_clicked = False
 
+    hovered_id = modeler1.detect(int(pos[0]*n),int((1-pos[1])*m))
+
+    mouse_clicked = False
+   
+#modeler1.select(hovered_id)
     if gui.get_event(ti.ui.PRESS) :
         if gui.event.key == ti.GUI.LMB :
             mouse_clicked = True
-            selected_id = hovered_id
-        elif gui.event.key == ti.GUI.WHEEL :
-            print("mouse wheel")
+            if hovered_id == -1 :
+                for id in list_selected_id:
+                    print(id)
+                    modeler1.unselect(id)
+                list_selected_id = [-1]
+            elif gui.is_pressed('Control') and list_selected_id[0] != -1 :
+                if hovered_id not in list_selected_id :
+                    list_selected_id.append(hovered_id)
+            else : 
+                for id in list_selected_id:
+                    modeler1.unselect(id)
+                list_selected_id = [hovered_id]
+    
+    for id in list_selected_id:
+        modeler1.select(id)        
 
     if mouse_clicked :
-        if selected_id != -1 :
+        if list_selected_id[0] != -1 :
             if gui.is_pressed('q'):
                 modeler1.add(int(pos[0]*n),int((1-pos[1])*m))
 
-            elif gui.is_pressed('d') :
-                modeler1.delete(selected_id)
-                selected_id = -1
-
             elif gui.is_pressed('r'):
-                if origin == (-1,-1) or selected_id_past != selected_id:
+                if origin == (-1,-1) or selected_id_past != list_selected_id[0]:
                     origin = pos
-                    selected_id_past = selected_id
-                elif selected_id != -1 :
-                    ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
-                    modeler1.increaseRadius(selected_id,-(origin[0]-pos[0])/n*100)
-            
-        elif gui.is_pressed('t'):
-                origin = (-1,-1)
-                selected_id_past = -1
+                    selected_id_past = list_selected_id[0]
+                # elif list_selected_id[0] != -1 :
+                #     ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
+                #     modeler1.increaseRadius(list_selected_id[0],-(origin[0]-pos[0])/n*100)
         else :
             if gui.is_pressed('q'):
                 modeler1.segment_cone(int(pos[0]*n),int((1-pos[1])*m))
-        
             origin = pos
-            selected_id_past = selected_id = -1
+            selected_id_past = list_selected_id[0] = -1
         
-                
-    elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') and selected_id != -1:
-        ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
-        modeler1.increaseRadius(selected_id,-(origin[0]-pos[0])/n*100)
-
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('c') and selected_id != -1:
         if use_tk:
             color = colorchooser.askcolor()
@@ -118,14 +114,25 @@ while gui.running:
                     print("Value incorrect")
             except:
                 print("Value incorrect")
+        
+    elif gui.is_pressed('d') :
+        for id in list_selected_id:
+            modeler1.delete(id)
+        list_selected_id = [-1]
 
+    elif gui.is_pressed('f') :
+        modeler1.addLink(list_selected_id[0],list_selected_id[1])
 
-    elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and selected_id != -1 : 
-        modeler1.move_sphere(selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
+    elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') and list_selected_id[0] != -1:
+        for i in list_selected_id:
+            modeler1.increaseRadius(i,-(origin[0]-pos[0])/n*100)
+        # ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
+        # modeler1.increaseRadius(list_selected_id[0],-(origin[0]-pos[0])/n*100)
 
-    elif gui.is_pressed(ti.GUI.WHEEL):
-        print("you click on the mouse")
-
+    elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and list_selected_id[0] != -1: 
+        for id in list_selected_id:
+            modeler1.move_sphere(id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
+        #modeler1.move_sphere(list_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
     
     #rotate the camera around a fixed point
     if gui.is_pressed(ti.GUI.LEFT) :
@@ -152,6 +159,7 @@ while gui.running:
             modeler1.move_camera_sideways(0.0, 0.05)
         else : 
             modeler1.rotate_camera(0,-0.1)
+    #save and load functions
     elif gui.is_pressed(ti.GUI.SHIFT) :
         if gui.is_pressed('s') :
             if use_tk:

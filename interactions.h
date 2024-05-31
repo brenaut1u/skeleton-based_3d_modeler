@@ -72,6 +72,16 @@ public:
         return cam;
     }
 
+    void select_sphere(int sphere_id) {
+        spheres_group->sphere_is_selected(sphere_id);
+    }
+
+    void unselect_sphere(int sphere_id) {
+        spheres_group->sphere_is_unselected(sphere_id);
+    }
+    
+    void add_link(int id1, int id2);
+    
 private:
     shared_ptr<linked_spheres_group> spheres_group;
     shared_ptr<hittable_list> world;

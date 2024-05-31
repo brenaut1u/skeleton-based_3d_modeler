@@ -4,6 +4,7 @@
 #include <nanobind/stl/string.h>
 #include <nanobind/stl/vector.h>*/
 #include <vector>
+#include <pybind11/numpy.h>
 
 namespace pyb = pybind11;
 
@@ -64,7 +65,7 @@ struct modeler
         cam = camera(16.0 / 9.0, 400, 1, 1);
         inter = interactions(spheres, world, &cam);
 
-        std::cout<<cam.image_width/cam.aspect_ratio<<"/n";
+        // std::cout<<cam.image_width/cam.aspect_ratio<<"/n";
         //computeImageSpan(output);
     }
 
@@ -173,6 +174,20 @@ struct modeler
         world = inter.get_world();  
     }
 
+    void select(int sphere_id)
+    {
+        inter.select_sphere(sphere_id);
+    }
+
+    void unselect(int sphere_id)
+    {
+        inter.unselect_sphere(sphere_id);
+    }
+
+    void addLink(int id1, int id2)
+    {
+        inter.add_link(id1, id2);
+    }
 };
 
 void compute(float *res, int n_x, int n_y)
@@ -194,22 +209,6 @@ void compute(float *res, int n_x, int n_y)
 }
 
 
-void add_arrays(pyb::array_t<float> output)
-{
-    pyb::buffer_info buf1 = output.request();
-    std::cout << buf1.ndim << std::endl;
-    std::cout << buf1.size << std::endl;
-    std::cout << buf1.shape[0] << std::endl;
-    std::cout << buf1.shape[1] << std::endl;
-    std::cout << buf1.shape[2] << std::endl;
-    std::flush(std::cout);
-    float *ptr1 = static_cast<float *>(buf1.ptr);
-
-    if (buf1.ndim != 3)
-        throw std::runtime_error("Number of color must be three");
-
-    compute(ptr1, buf1.shape[0], buf1.shape[1]);
-};
 
 PYBIND11_MODULE(main_modeler, m)
 {
@@ -234,6 +233,8 @@ PYBIND11_MODULE(main_modeler, m)
         .def("computeImageSpan", &modeler::computeImageSpan)
         .def("save",&modeler::saveInFile)
         .def("segment_cone",&modeler::segmentCone)
-        .def("load",&modeler::load);
-    m.def("add_arrays", &add_arrays, "Add two NumPy arrays");
+        .def("load",&modeler::load)
+        .def("select",&modeler::select)
+        .def("unselect",&modeler::unselect)
+        .def("addLink",&modeler::addLink);
 }
