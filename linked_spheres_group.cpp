@@ -78,9 +78,9 @@ void linked_spheres_group::delete_sphere(int sphere_id) {
         if (materials[spheres[sphere_id].material_id].nb_users == 1) {
             // delete the material if the sphere was its last user
             materials.erase(materials.begin() + spheres[sphere_id].material_id);
-            for (auto s: spheres) {
-                if (s.material_id >= spheres[sphere_id].material_id) {
-                    s.material_id--;
+            for (int s = 0; s < spheres.size(); s++) {
+                if (s != sphere_id && spheres[s].material_id >= spheres[sphere_id].material_id) {
+                    spheres[s].material_id--;
                 }
             }
         } else {
