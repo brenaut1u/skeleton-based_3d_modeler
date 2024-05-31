@@ -1,30 +1,21 @@
-#include "rtweekend.h"
-
 #include "camera.h"
 #include "color.h"
 #include "hittable_list.h"
-#include "material.h"
-#include "sphere.h"
-#include "cone.h"
+#include "light.h"
+#include "save_load.h"
 
 int main() {
-    hittable_list world;
-    auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
-    auto material_center = make_shared<lambertian>(color(0.7, 0.3, 0.3));
-    auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
-    auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
+    light white_light = new_light(point3(-1.0, 0.5, -1.0));
+    std::vector<light> lights {white_light};
 
-    world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
-    //world.add(make_shared<sphere>(point3( 0.0, 0.25, -2.0),   0.8, material_center));
+    camera cam(16.0 / 9.0, 800, 1, 1);
 
-    world.add(make_shared<cone>(point3(-1.5, 0.25, -2.0), point3(0.75, 0.25, -2.0), 0.2, 0.8, material_right));
+    shared_ptr<hittable_list> world = make_shared<hittable_list>();
+    auto material = make_shared<lambertian>(color(0.7, 0.3, 0.3));
 
-    camera cam;
+    linked_spheres_group spheres(world, make_shared<sphere>(point3(0.2, 0.0, -2.0), 0.1, material));
+    spheres.add_sphere(make_shared<sphere>(point3(0.1, 0.0, -2.0), 0.5, material), 0);
 
-    cam.aspect_ratio = 16.0 / 9.0;
-    cam.image_width  = 400;
-    cam.samples_per_pixel = 100;
-    cam.max_depth = 50;
-
-    cam.render(world);
+    cam.render_phong_file(*world, lights);
+    //cam.render_file(world);
 }

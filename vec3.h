@@ -22,19 +22,9 @@ class vec3 {
     double operator[](int i) const { return e[i]; }
     double& operator[](int i) { return e[i]; }
 
-    vec3& operator+=(const vec3 &v) {
-        e[0] += v.e[0];
-        e[1] += v.e[1];
-        e[2] += v.e[2];
-        return *this;
-    }
+    vec3& operator+=(const vec3 &v);
 
-    vec3& operator*=(double t) {
-        e[0] *= t;
-        e[1] *= t;
-        e[2] *= t;
-        return *this;
-    }
+    vec3& operator*=(double t);
 
     vec3& operator/=(double t) {
         return *this *= 1/t;
@@ -56,11 +46,7 @@ class vec3 {
         return vec3(random_double(min,max), random_double(min,max), random_double(min,max));
     }
 
-    bool near_zero() const {
-        // Return true if the vector is close to zero in all dimensions.
-        auto s = 1e-8;
-        return (fabs(e[0]) < s) && (fabs(e[1]) < s) && (fabs(e[2]) < s);
-    }    
+    bool near_zero() const;
 };
 
 // point3 is just an alias for vec3, but useful for geometric clarity in the code.
@@ -109,32 +95,33 @@ inline vec3 cross(const vec3 &u, const vec3 &v) {
                 u.e[0] * v.e[1] - u.e[1] * v.e[0]);
 }
 
+inline vec3 term_to_term_product(const vec3 &u, const vec3 &v) {
+    return vec3(u.e[0] * v.e[0],
+                u.e[1] * v.e[1],
+                u.e[2] * v.e[2]);
+}
+
 inline vec3 unit_vector(vec3 v) {
     return v / v.length();
 }
 
-inline vec3 random_in_unit_sphere() {
-    while (true) {
-        auto p = vec3::random(-1,1);
-        if (p.length_squared() < 1)
-            return p;
-    }
-}
+vec3 random_in_unit_sphere();
 
 inline vec3 random_unit_vector() {
     return unit_vector(random_in_unit_sphere());
 }
 
-inline vec3 random_on_hemisphere(const vec3& normal) {
-    vec3 on_unit_sphere = random_unit_vector();
-    if (dot(on_unit_sphere, normal) > 0.0) // In the same hemisphere as the normal
-        return on_unit_sphere;
-    else
-        return -on_unit_sphere;
-}
+inline vec3 random_on_hemisphere(const vec3& normal);
 
-vec3 reflect(const vec3& v, const vec3& n) {
+inline vec3 reflect(const vec3& v, const vec3& n) {
     return v - 2*dot(v,n)*n;
 }
+
+inline vec3 vector_rotation(vec3 v, vec3 axis, double angle) {
+    // Rodrigues' rotation formula
+    return cos(angle) * v + sin(angle) * cross(axis, v) + (1 - cos(angle)) * dot(axis, v) * axis;
+}
+
+point3 point_rotation(point3 p, point3 center_of_rotation, vec3 axis, double angle);
 
 #endif

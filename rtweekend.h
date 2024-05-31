@@ -34,4 +34,8 @@ inline double random_double(double min, double max) {
     return min + (max-min)*random_double();
 }
 
+inline double max(double x, double y) {
+    return x * (x > y) + y * (x <= y);
+}
+
 #endif
