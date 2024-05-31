@@ -4,9 +4,31 @@ import taichi.math as tm
 import math as m
 import numpy as np
 
-import tkinter as tk
-from tkinter import filedialog as fd
+from sys import platform
 
+use_tk = True
+if platform == "darwin":
+    use_tk = False
+
+if use_tk:
+    from tkinter import filedialog
+    from tkinter import colorchooser
+
+import wx
+
+app = wx.App(None)
+
+def get_path(wildcard):
+    global app
+    #app = wx.App(None)
+    style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
+    dialog = wx.FileDialog(None, 'Open', wildcard=wildcard, style=style)
+    if dialog.ShowModal() == wx.ID_OK:
+        path = dialog.GetPath()
+    else:
+        path = None
+    dialog.Destroy()
+    return path
 
 ti.init(arch=ti.gpu)
 n = 400
@@ -37,7 +59,6 @@ while gui.running:
     mouse_clicked = False
    
 #modeler1.select(hovered_id)
-    
     if gui.get_event(ti.ui.PRESS) :
         if gui.event.key == ti.GUI.LMB :
             mouse_clicked = True
@@ -74,6 +95,25 @@ while gui.running:
                 modeler1.segment_cone(int(pos[0]*n),int((1-pos[1])*m))
             origin = pos
             selected_id_past = list_selected_id[0] = -1
+        
+    elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('c') and selected_id != -1:
+        if use_tk:
+            color = colorchooser.askcolor()
+            if color[0] != None:
+                modeler1.changeColor(selected_id, color[0][0], color[0][1], color[0][2])
+        else:
+            print("Change color - Enter values between 0 and 255")
+            try:
+                r = int(input("Red: "))
+                g = int(input("Green: "))
+                b = int(input("Blue: "))
+
+                if (r in range(0, 256) and g in range(0, 256) and b in range(0, 256)):
+                    modeler1.changeColor(selected_id, r, g, b)
+                else:
+                    print("Value incorrect")
+            except:
+                print("Value incorrect")
         
     elif gui.is_pressed('d') :
         for id in list_selected_id:
@@ -122,13 +162,19 @@ while gui.running:
     #save and load functions
     elif gui.is_pressed(ti.GUI.SHIFT) :
         if gui.is_pressed('s') :
-            #filename = input("filename : ")
-            filename = tk.filedialog.asksaveasfilename()
-            modeler1.save(filename)
+            if use_tk:
+                filename = filedialog.asksaveasfilename()
+            else:
+                filename = input("Save - Enter filename: ")
+            if filename != '':
+                modeler1.save(filename)
         elif gui.is_pressed('l') :
-            filename = tk.filedialog.askopenfilename()
-            #filename = input("your filename : ")
-            modeler1.load(filename)
+            if use_tk:
+                filename = filedialog.askopenfilename()
+            else:
+                filename = input("Open - Enter filename: ")
+            if filename != '':
+                modeler1.load(filename)
 
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
     

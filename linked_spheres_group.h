@@ -88,6 +88,8 @@ public:
 
     void set_sphere_position(int id, point3 pos);
 
+    void set_sphere_color(int id, color c);
+
     void delete_isolated_spheres();
 
     string save();

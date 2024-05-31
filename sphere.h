@@ -41,6 +41,10 @@ class sphere : public hittable {
         radius = max(radius,0.0);
     }
 
+    void set_mat(shared_ptr<material> _mat) {
+        mat = _mat;
+    }
+
   private:
     point3 center;
     double radius;
