@@ -25,3 +25,7 @@ void write_color(std::ostream &out, color pixel_color, int samples_per_pixel) {
         << static_cast<int>(256 * intensity.clamp(g)) << ' '
         << static_cast<int>(256 * intensity.clamp(b)) << '\n';
 }
+
+    color negative(color c){
+        return color(1.0 - c.x(), 1.0 - c.y(), 1.0 - c.z());
+    }
