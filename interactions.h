@@ -71,6 +71,10 @@ public:
     void select_sphere(int sphere_id) {
         spheres_group->sphere_is_selected(sphere_id);
     }
+
+    void unselect_sphere(int sphere_id) {
+        spheres_group->sphere_is_unselected(sphere_id);
+    }
     
 private:
     shared_ptr<linked_spheres_group> spheres_group;

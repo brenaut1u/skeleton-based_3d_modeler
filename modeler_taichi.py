@@ -36,18 +36,24 @@ while gui.running:
 
     mouse_clicked = False
    
-    modeler1.select(hovered_id)
+#modeler1.select(hovered_id)
     
     if gui.get_event(ti.ui.PRESS) :
         if gui.event.key == ti.GUI.LMB :
             mouse_clicked = True
             if hovered_id == -1 :
+                for id in list_selected_id:
+                    print(id)
+                    modeler1.unselect(id)
                 list_selected_id = [-1]
             elif gui.is_pressed('Control') and list_selected_id[0] != -1 :
                 if hovered_id not in list_selected_id :
                     list_selected_id.append(hovered_id)
             else : 
+                for id in list_selected_id:
+                    modeler1.unselect(id)
                 list_selected_id = [hovered_id]
+    
     for id in list_selected_id:
         modeler1.select(id)        
 

@@ -173,6 +173,11 @@ struct modeler
     {
         inter.select_sphere(sphere_id);
     }
+
+    void unselect(int sphere_id)
+    {
+        inter.unselect_sphere(sphere_id);
+    }
 };
 
 void compute(float *res, int n_x, int n_y)
@@ -218,5 +223,6 @@ PYBIND11_MODULE(main_modeler, m)
         .def("save",&modeler::saveInFile)
         .def("segment_cone",&modeler::segmentCone)
         .def("load",&modeler::load)
-        .def("select",&modeler::select);
+        .def("select",&modeler::select)
+        .def("unselect",&modeler::unselect);
 }

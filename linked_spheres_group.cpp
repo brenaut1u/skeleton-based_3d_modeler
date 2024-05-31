@@ -293,8 +293,31 @@ void linked_spheres_group::sphere_is_selected(int id_selected) {
                 cones[i].cone->set_selected(2);
             }
         }
-        else {
+        else if (!cones[i].cone->is_selected(1) && !cones[i].cone->is_selected(2) && cones[i].cone->is_selected(3)) {
             cones[i].cone->set_selected(0);
+        }
+        i++;
+    }
+}
+
+void linked_spheres_group::sphere_is_unselected(int id){
+    int i = 0;
+    while (i < cones.size()) {
+        if (cones[i].sphere_id1 == id) {
+            if (cones[i].cone->is_selected(1)) {
+                cones[i].cone->set_selected(0);
+            }
+            else if (cones[i].cone->is_selected(3)) {
+                cones[i].cone->set_selected(2);
+            }
+        }
+        else if (cones[i].sphere_id2 == id) {
+            if (cones[i].cone->is_selected(2)) {
+                cones[i].cone->set_selected(0);
+            }
+            else if (cones[i].cone->is_selected(3)) {
+                cones[i].cone->set_selected(1);
+            }
         }
         i++;
     }
