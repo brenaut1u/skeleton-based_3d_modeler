@@ -48,6 +48,8 @@ canvas = gui.get_canvas()
 selected_id = -1
 hovered_id = -1
 origin = (-1,-1)
+
+show_skeleton = True
  
 old_pos = (0, 0)
 #save = gui2.button('save')
@@ -67,6 +69,14 @@ while gui.running:
             selected_id = hovered_id
         elif gui.event.key == ti.GUI.WHEEL :
             print("mouse wheel")
+
+        elif gui.is_pressed('w'):
+            show_skeleton = not show_skeleton
+            # print("\n")
+            # segments = modeler1.getSkeletonScreenCoordinates()
+            # for i in range(segments.size()):
+            #     print("(%d %d), (%d %d)\n"%(segments.at(i).first.x, segments.at(i).first.y, \
+            #                                 segments.at(i).second.x, segments.at(i).second.y))
 
     if mouse_clicked :
         if selected_id != -1 :
@@ -172,5 +182,15 @@ while gui.running:
     
     modeler1.computeImageSpan(pixels)
     canvas.set_image(pixels)
+
+    f = ti.Vector.field(n=2, dtype=int, shape=2)
+    f[0] = (0, 0)
+    f[1] = (1, 1)
+    canvas.lines(f, 1)
+    # if show_skeleton:
+    #     segments = modeler1.getSkeletonScreenCoordinates()
+    #     for i in range(segments.size()):
+    #         print("(%d %d), (%d %d)\n"%(segments.at(i).first.x, segments.at(i).first.y, \
+    #                                     segments.at(i).second.x, segments.at(i).second.y))
 
     gui.show()
