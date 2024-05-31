@@ -248,7 +248,7 @@ void linked_spheres_group::set_sphere_color(int id, color c) {
         materials[mat_id] = {mat, 1};
     }
     else {
-        materials.push_back(material_ref(mat, 1));
+        materials.push_back(material_ref{mat, 1});
         spheres[id].material_id = materials.size() - 1;
         materials[mat_id].nb_users--;
     }
