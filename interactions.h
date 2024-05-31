@@ -62,7 +62,7 @@ public:
         save_in_file(spheres_group.get(), filename);
     }
 
-    static interactions load(string filename,camera& cam);
+    interactions load(string filename,camera& cam);
 
     shared_ptr<linked_spheres_group> get_spheres_group() const {
         return spheres_group;

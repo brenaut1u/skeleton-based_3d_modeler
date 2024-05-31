@@ -4,9 +4,15 @@ import taichi.math as tm
 import math as m
 import numpy as np
 
-import tkinter as tk
-from tkinter import filedialog
-from tkinter import colorchooser
+from sys import platform
+
+use_tk = True
+if platform == "darwin":
+    use_tk = False
+
+if use_tk:
+    from tkinter import filedialog
+    from tkinter import colorchooser
 
 import wx
 
@@ -95,10 +101,11 @@ while gui.running:
         modeler1.increaseRadius(selected_id,-(origin[0]-pos[0])/n*100)
 
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('c') and selected_id != -1:
-        try:
+        if use_tk:
             color = colorchooser.askcolor()
-            modeler1.changeColor(selected_id, color[0][0], color[0][1], color[0][2])
-        except:
+            if color[0] != None:
+                modeler1.changeColor(selected_id, color[0][0], color[0][1], color[0][2])
+        else:
             print("Change color - Enter values between 0 and 255")
             try:
                 r = int(input("Red: "))
@@ -147,17 +154,19 @@ while gui.running:
             modeler1.rotate_camera(0,-0.1)
     elif gui.is_pressed(ti.GUI.SHIFT) :
         if gui.is_pressed('s') :
-            try:
+            if use_tk:
                 filename = filedialog.asksaveasfilename()
-            except:
+            else:
                 filename = input("Save - Enter filename: ")
-            modeler1.save(filename)
+            if filename != '':
+                modeler1.save(filename)
         elif gui.is_pressed('l') :
-            try:
+            if use_tk:
                 filename = filedialog.askopenfilename()
-            except:
+            else:
                 filename = input("Open - Enter filename: ")
-            modeler1.load(filename)
+            if filename != '':
+                modeler1.load(filename)
 
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
     

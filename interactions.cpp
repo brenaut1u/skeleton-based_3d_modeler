@@ -120,7 +120,7 @@ interactions interactions::load(string filename,camera& cam) {
     }
     catch (const std::exception e) {
         std::cout<<"Error loading file\n";
-        return interactions(make_shared<linked_spheres_group>(), make_shared<hittable_list>(), &cam);
+        return *this;
     }
 }
 
