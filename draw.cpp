@@ -5,6 +5,8 @@ using std::abs;
 using std::sqrt;
 using std::ceil;
 using std::round;
+using std::min;
+using std::max;
 
 void color_pixel(span3D image, pair<int, int> pos, color color) {
     int image_height = image.size_Y();
@@ -14,97 +16,82 @@ void color_pixel(span3D image, pair<int, int> pos, color color) {
 }
 
 void draw_line(span3D image, pair<int, int> start, pair<int, int> end, int radius, color background_color, color border_color) {
-    int line_width = abs(end.first - start.first);
-    int line_height = abs(end.second - start.second);
-
-    if (line_width > line_height) {
+    // Bresenham's line algorithm
+    if (abs(end.second - start.second) < abs(end.first - start.first)) {
         if (start.first > end.first) {
-            pair<int, int> tmp = start;
-            start = end;
-            end = tmp;
-        }
-
-        if (line_height > 0) {
-            int pix_steps = ceil(line_width / line_height);
-
-            for (int x = start.first; x <= end.first; x++) {
-                int y;
-                if (end.second > start.second) {
-                    y = start.second + (x - start.first) / pix_steps;
-                }
-                else {
-                    y = start.second - (x - start.first) / pix_steps;
-                }
-
-
-                // draw the outine
-                color_pixel(image, {x, y - radius / 2 - 1}, border_color);
-                color_pixel(image, {x, y + radius / 2 + 1}, border_color);
-
-                // draw the inside
-                for (int i = -radius / 2; i <= radius / 2; i++) {
-                    color_pixel(image, {x, y + i}, background_color);
-                }
-            }
+            draw_line_low(image, end, start, radius, background_color, border_color);
         }
         else {
-            // if the line is horizontal
-            for (int x = start.first; x <= end.first; x++) {
-                // draw the outline
-                color_pixel(image, {x, start.second - radius / 2 - 1}, border_color);
-                color_pixel(image, {x, start.second + radius / 2 + 1}, border_color);
-
-                // draw the inside
-                for (int i = -radius / 2; i <= radius / 2; i++) {
-                    color_pixel(image, {x, start.second + i}, background_color);
-                }
-            }
+            draw_line_low(image, start, end, radius, background_color, border_color);
         }
-
     }
     else {
         if (start.second > end.second) {
-            pair<int, int> tmp = start;
-            start = end;
-            end = tmp;
-        }
-
-        if (line_width > 0) {
-            int pix_steps = ceil(line_height / line_width);
-
-            for (int y = start.second; y <= end.second; y++) {
-                int x;
-                if (end.first > start.first) {
-                    x = start.first + (y - start.second) / pix_steps;
-                }
-                else {
-                    x = start.first - (y - start.second) / pix_steps;
-                }
-
-                // draw the outline
-                color_pixel(image, {x - radius / 2 - 1, y}, border_color);
-                color_pixel(image, {x + radius / 2 + 1, y}, border_color);
-
-                // draw the inside
-                for (int i = -radius / 2; i <= radius / 2; i++) {
-                    color_pixel(image, {x + i, y}, background_color);
-                }
-            }
+            draw_line_high(image, end, start, radius, background_color, border_color);
         }
         else {
-            // if the line is vertical
-            for (int y = start.second; y <= end.second; y++) {
-                // draw the outline
-                color_pixel(image, {start.first - radius / 2 - 1, y}, border_color);
-                color_pixel(image, {start.first + radius / 2 + 1, y}, border_color);
-
-                // draw the inside
-                for (int i = -radius / 2; i <= radius / 2; i++) {
-                    color_pixel(image, {start.first + i, y}, background_color);
-                }
-            }
+            draw_line_high(image, start, end, radius, background_color, border_color);
         }
+    }
+}
 
+void draw_line_low(span3D image, pair<int, int> start, pair<int, int> end, int radius, color background_color, color border_color) {
+    int dx = end.first - start.first;
+    int dy = end.second - start.second;
+    int yi = 1;
+    if (dy < 0) {
+        yi = -1;
+        dy = -dy;
+    }
+    int D = (2 * dy) - dx;
+    int y = start.second;
+
+    for (int x = start.first; x <= end.first; x++) {
+        // draw the outline
+        color_pixel(image, {x, y - radius / 2 - 1}, border_color);
+        color_pixel(image, {x, y + radius / 2 + 1}, border_color);
+
+        // draw the inside
+        for (int i = -radius / 2; i <= radius / 2; i++) {
+            color_pixel(image, {x, y + i}, background_color);
+        }
+        if (D > 0) {
+            y = y + yi;
+            D = D + (2 * (dy - dx));
+        }
+        else {
+            D = D + 2 * dy;
+        }
+    }
+}
+
+void draw_line_high(span3D image, pair<int, int> start, pair<int, int> end, int radius, color background_color, color border_color) {
+    int dx = end.first - start.first;
+    int dy = end.second - start.second;
+    int xi = 1;
+    if (dx < 0) {
+        xi = -1;
+        dx = -dx;
+    }
+    int D = (2 * dx) - dy;
+    int x = start.first;
+
+    for (int y = start.second; y <= end.second; y++) {
+        // draw the outline
+        color_pixel(image, {x - radius / 2 - 1, y}, border_color);
+        color_pixel(image, {x + radius / 2 + 1, y}, border_color);
+
+        // draw the inside
+        for (int i = -radius / 2; i <= radius / 2; i++) {
+            color_pixel(image, {x + i, y}, background_color);
+        }
+        if (D > 0) {
+            x = x + xi;
+            D = D + (2 * (dx - dy));
+        }
+        else {
+            D = D + 2 * dx;
+        }
     }
 }
 
