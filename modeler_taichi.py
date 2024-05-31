@@ -86,10 +86,12 @@ while gui.running:
         # ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
         # modeler1.increaseRadius(list_selected_id[0],-(origin[0]-pos[0])/n*100)
 
-    elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and list_selected_id[0] != -1 : 
-        # for id in list_selected_id:
+    elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and list_selected_id[0] != -1: 
+        print(list_selected_id)
+        #for id in list_selected_id:
+        #     print("the sphere id is : ", id,"and it moves")
         #     modeler1.move_sphere(id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
-        modeler1.move_sphere(list_selected_id[0], old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
+        modeler1.move_sphere(list_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
     
     #rotate the camera around a fixed point
     if gui.is_pressed(ti.GUI.LEFT) :

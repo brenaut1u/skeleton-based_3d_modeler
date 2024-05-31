@@ -4,6 +4,7 @@
 #include <nanobind/stl/string.h>
 #include <nanobind/stl/vector.h>*/
 #include <vector>
+#include <pybind11/numpy.h>
 
 namespace pyb = pybind11;
 
@@ -118,9 +119,9 @@ struct modeler
         return inter.increase_radius(sphere_id, radius);
     }
 
-    void move_sphere_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
+    void move_sphere_on_screen(vector<int>  sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
     {
-        return inter.move_spheres_on_screen({sphere_id}, screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
+        return inter.move_spheres_on_screen(sphere_id, screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
     }
 
     void rotate_camera(double horizontal_angle, double vertical_angle)
