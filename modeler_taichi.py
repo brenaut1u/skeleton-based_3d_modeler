@@ -49,7 +49,7 @@ selected_id = -1
 hovered_id = -1
 origin = (-1,-1)
 
-show_skeleton = True
+show_skeleton = False
  
 old_pos = (0, 0)
 #save = gui2.button('save')
@@ -72,11 +72,6 @@ while gui.running:
 
         elif gui.is_pressed('w'):
             show_skeleton = not show_skeleton
-            # print("\n")
-            # segments = modeler1.getSkeletonScreenCoordinates()
-            # for i in range(segments.size()):
-            #     print("(%d %d), (%d %d)\n"%(segments.at(i).first.x, segments.at(i).first.y, \
-            #                                 segments.at(i).second.x, segments.at(i).second.y))
 
     if mouse_clicked :
         if selected_id != -1 :

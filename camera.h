@@ -16,8 +16,8 @@
 inline constexpr double ambient_occlusion = 0.5;
 inline const color skeleton_background_color = {0.5, 0.9, 1.0};
 inline const color skeleton_border_color = {0.2, 0.3, 0.5};
-inline constexpr float skeleton_line_radius = 7;
-inline constexpr float skeleton_circle_radius = 5;
+inline constexpr float skeleton_line_radius = 2;
+inline constexpr float skeleton_circle_radius = 4;
 
 using segment_list = vector<pair<pair<int, int>, pair<int, int>>>;
 
