@@ -82,6 +82,10 @@ public:
         spheres_group->sphere_is_selected(sphere_id);
     }
 
+    void hovered(int sphere_id) {
+        spheres_group->sphere_is_hovered(sphere_id);
+    }
+
     void unselect_sphere(int sphere_id) {
         spheres_group->sphere_is_unselected(sphere_id);
     }

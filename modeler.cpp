@@ -189,6 +189,11 @@ struct modeler
         inter.unselect_sphere(sphere_id);
     }
 
+    void hovered(int sphere_id)
+    {
+        inter.hovered(sphere_id);
+    }
+
     void addLink(int id1, int id2)
     {
         inter.add_link(id1, id2);
@@ -241,5 +246,6 @@ PYBIND11_MODULE(main_modeler, m)
         .def("load",&modeler::load)
         .def("select",&modeler::select)
         .def("unselect",&modeler::unselect)
-        .def("addLink",&modeler::addLink);
+        .def("addLink",&modeler::addLink)
+        .def("hovered",&modeler::hovered);
 }
