@@ -346,3 +346,23 @@ void linked_spheres_group::sphere_is_unselected(int id){
         i++;
     }
 }
+
+void linked_spheres_group::sphere_is_hovered(int id){
+    int i = 0;
+    while (i < cones.size()) {
+        if (cones[i].sphere_id1 == id) {
+            if (not cones[i].cone->is_selected(1) && not cones[i].cone->is_selected(3)) {
+                cones[i].cone->set_selected(01);
+            }
+        }
+        else if (cones[i].sphere_id2 == id) {
+            if (not cones[i].cone->is_selected(2) && not cones[i].cone->is_selected(3)) {
+                cones[i].cone->set_selected(02);
+            }
+        }
+        else {
+            cones[i].cone->set_selected(0);
+        }
+        i++;
+    }
+}

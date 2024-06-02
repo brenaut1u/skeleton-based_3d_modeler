@@ -60,13 +60,13 @@ while gui.running:
 
     mouse_clicked = False
    
-#modeler1.select(hovered_id)
+    modeler1.hovered(hovered_id)
+
     if gui.get_event(ti.ui.PRESS) :
         if gui.event.key == ti.GUI.LMB :
             mouse_clicked = True
             if hovered_id == -1 :
                 for id in list_selected_id:
-                    print(id)
                     modeler1.unselect(id)
                 list_selected_id = [-1]
             elif gui.is_pressed('Control') and list_selected_id[0] != -1 :
@@ -76,7 +76,9 @@ while gui.running:
                 for id in list_selected_id:
                     modeler1.unselect(id)
                 list_selected_id = [hovered_id]
-        
+
+
+
     for id in list_selected_id:
         modeler1.select(id)        
 
@@ -87,7 +89,6 @@ while gui.running:
 
             elif not gui.is_pressed('r'):
                     origin = (pos[0],pos[1])
-                    print(origin)
                 # elif list_selected_id[0] != -1 :
                 #     ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
                 #     modeler1.increaseRadius(list_selected_id[0],-(origin[0]-pos[0])/n*100)
