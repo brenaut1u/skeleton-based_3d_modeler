@@ -56,6 +56,22 @@ class metal : public material {
     double fuzz;
 };
 
+class unlit : public material {
+public:
+    unlit(const color& a) : albedo(a) {}
+
+    bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const override {return true;}
+
+    color get_material_color() const override {return albedo;}
+
+    pair<string, vector<double>> descriptor() const override {
+        return {"unlit", {albedo.x(), albedo.y(), albedo.z()}};
+    }
+
+private:
+    color albedo;
+};
+
 shared_ptr<material> blend_materials(const shared_ptr<material>& mat1, const shared_ptr<material>& mat2, double t);
 
 #endif

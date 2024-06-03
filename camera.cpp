@@ -186,21 +186,24 @@ color camera::ray_color(const ray& r, int depth, const hittable& world) const {
         return color(0,0,0);
 
     if (world.hit(r, interval(0.001, infinity), rec)) {
-        ray scattered;
-        color attenuation;
-        if (rec.mat->scatter(r, rec, attenuation, scattered))
-            if (MODE == "normals") {
-                vec3 N = rec.normal;
-                return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
-            }
-            else if (MODE == "distances") {
-                float dist = (rec.p.length() - 1) / 2;
-                return color(dist, dist, dist);
-            }
-            else {
-                return attenuation * ray_color(scattered, depth-1, world);
-            }
-        return color(0,0,0);
+        if (rec.mat->descriptor().first == "unlit") {
+            return rec.mat->get_material_color();
+        }
+        else {
+            ray scattered;
+            color attenuation;
+            if (rec.mat->scatter(r, rec, attenuation, scattered))
+                if (MODE == "normals") {
+                    vec3 N = rec.normal;
+                    return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
+                } else if (MODE == "distances") {
+                    float dist = (rec.p.length() - 1) / 2;
+                    return color(dist, dist, dist);
+                } else {
+                    return attenuation * ray_color(scattered, depth - 1, world);
+                }
+            return color(0, 0, 0);
+        }
     }
 
     vec3 unit_direction = unit_vector(r.direction());
@@ -217,21 +220,26 @@ color camera::ray_color_with_point_lights(const ray& r, int depth, const hittabl
         return color(0,0,0);
 
     if (world.hit(r, interval(0.001, infinity), rec)) {
-        for (int i = 0; i < lights.size(); i++) {
-            vec3 intensity_i = {1, 1, 1};
-
-            light l = lights.at(i);
-            vec3 light_ray = {0.0, 1.0, 0.0};//unit_vector(l.pos - rec.p);
-            vec3 reflected_ray = 2.0 * dot(rec.normal, light_ray) * rec.normal - light_ray;
-
-            double diffuse = max(0, dot(rec.normal, light_ray));
-            double specular = specular_coefficient * max(0, dot(reflected_ray, unit_vector(center - rec.p)));
-            intensity_i *=  diffuse + specular + ambient_occlusion;
-            intensity_i = term_to_term_product(intensity_i, l.ray_color);
-
-            intensity += intensity_i;
+        if (rec.mat->descriptor().first == "unlit") {
+            return rec.mat->get_material_color();
         }
-        return term_to_term_product(intensity, rec.mat->get_material_color());
+        else {
+            for (int i = 0; i < lights.size(); i++) {
+                vec3 intensity_i = {1, 1, 1};
+
+                light l = lights.at(i);
+                vec3 light_ray = {0.0, 1.0, 0.0};//unit_vector(l.pos - rec.p);
+                vec3 reflected_ray = 2.0 * dot(rec.normal, light_ray) * rec.normal - light_ray;
+
+                double diffuse = max(0, dot(rec.normal, light_ray));
+                double specular = specular_coefficient * max(0, dot(reflected_ray, unit_vector(center - rec.p)));
+                intensity_i *= diffuse + specular + ambient_occlusion;
+                intensity_i = term_to_term_product(intensity_i, l.ray_color);
+
+                intensity += intensity_i;
+            }
+            return term_to_term_product(intensity, rec.mat->get_material_color());
+        }
     }
 
     vec3 unit_direction = unit_vector(r.direction());
