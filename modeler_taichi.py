@@ -1,4 +1,4 @@
-import build.main_modeler as main_modeler
+import main_modeler as main_modeler
 import taichi as ti
 import taichi.math as tm
 import math as m
@@ -119,8 +119,10 @@ while gui.running:
             except:
                 print("Value incorrect")
         
-    elif gui.is_pressed('d') :
+    
+    elif gui.is_pressed('d') and list_selected_id[0] != -1:
         for id in list_selected_id:
+            modeler1.unselect(id)
             modeler1.delete(id)
         list_selected_id = [-1]
 
