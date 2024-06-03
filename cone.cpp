@@ -6,7 +6,8 @@
 #include "color.h"
 
 bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
-  bool selected = false;
+  bool selected_hovered = false;
+
   vec3 ro = r.origin();
   vec3 rd = unit_vector(r.direction());
   vec3 pa = center1;
@@ -34,17 +35,17 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
 
   float t;
 
-    if ((ba.length() + ra <= rb || is_selected(2)) && h2 > 0.0) {
+    if ((ba.length() + ra <= rb || is_selected(2) || is_hovered(2)) && h2 > 0.0) {
         t = -m6 - sqrt( h2 );
         outward_normal = (ob+t*rd)/rb;
         mat = mat2;
-        selected = is_selected(2) || is_selected(02);
+        selected_hovered = is_selected(2) || is_selected(02) || is_hovered(2);
     }
-    else if ((ba.length() + rb <= ra  || is_selected(1)) && h1 > 0.0) {
+    else if ((ba.length() + rb <= ra  || is_selected(1) || is_hovered(1)) && h1 > 0.0) {
         t = -m3 - sqrt( h1 );
         outward_normal = (oa+t*rd)/ra;
         mat = mat1;
-        selected = is_selected(1) || is_selected(01);
+        selected_hovered = is_selected(1) || is_selected(01) || is_hovered(1);
     }
     else {
         float d2 = m0 - rr * rr;
@@ -76,7 +77,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
               t = -m3 - sqrt(h1);
               outward_normal = (oa + t * rd) / ra;
               mat = mat1;
-              selected = is_selected(1) || is_selected(3) || is_selected(01);
+              selected_hovered = is_selected(1) || is_selected(3) || is_hovered(1);
           }
           if (h2 > 0.0) {
               auto tmp_t = -m6 - sqrt(h2);
@@ -84,7 +85,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
                   t = tmp_t;
                   outward_normal = (ob + t * rd) / rb;
                   mat = mat2;
-                  selected = is_selected(2) || is_selected(3) || is_selected(02);
+                  selected_hovered = is_selected(2) || is_selected(3) || is_hovered(2);
               }
           }
       }
@@ -96,7 +97,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
     rec.set_face_normal(r, unit_vector(outward_normal));
     rec.mat = mat;
 
-    if (selected){
+    if (selected_hovered){
         auto descr = mat->descriptor();
         color new_color = rec.mat->get_material_color();
         new_color = negative(new_color);

@@ -351,17 +351,13 @@ void linked_spheres_group::sphere_is_hovered(int id){
     int i = 0;
     while (i < cones.size()) {
         if (cones[i].sphere_id1 == id) {
-            if (not cones[i].cone->is_selected(1) && not cones[i].cone->is_selected(3)) {
-                cones[i].cone->set_selected(01);
-            }
+            cones[i].cone->set_hovered(1);
         }
         else if (cones[i].sphere_id2 == id) {
-            if (not cones[i].cone->is_selected(2) && not cones[i].cone->is_selected(3)) {
-                cones[i].cone->set_selected(02);
-            }
+            cones[i].cone->set_hovered(2);
         }
         else {
-            cones[i].cone->set_selected(0);
+            cones[i].cone->set_hovered(0);
         }
         i++;
     }

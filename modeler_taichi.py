@@ -64,6 +64,7 @@ while gui.running:
 
     if gui.get_event(ti.ui.PRESS) :
         if gui.event.key == ti.GUI.LMB :
+            origin = (pos[0],pos[1])
             mouse_clicked = True
             if hovered_id == -1 :
                 for id in list_selected_id:
@@ -72,12 +73,13 @@ while gui.running:
             elif gui.is_pressed('Control') and list_selected_id[0] != -1 :
                 if hovered_id not in list_selected_id :
                     list_selected_id.append(hovered_id)
+                else : 
+                    list_selected_id.remove(hovered_id)
+                    modeler1.unselect(hovered_id)
             else : 
                 for id in list_selected_id:
                     modeler1.unselect(id)
                 list_selected_id = [hovered_id]
-
-
 
     for id in list_selected_id:
         modeler1.select(id)        
@@ -87,16 +89,14 @@ while gui.running:
             if gui.is_pressed('q'):
                 modeler1.add(int(pos[0]*n),int((1-pos[1])*m))
 
-            elif not gui.is_pressed('r'):
-                    origin = (pos[0],pos[1])
-                # elif list_selected_id[0] != -1 :
-                #     ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
-                #     modeler1.increaseRadius(list_selected_id[0],-(origin[0]-pos[0])/n*100)
+            # elif not gui.is_pressed('r'):
+            #         origin = (pos[0],pos[1])
+            #     # elif list_selected_id[0] != -1 :
+            #     #     ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
+            #     #     modeler1.increaseRadius(list_selected_id[0],-(origin[0]-pos[0])/n*100)
         else :
             if gui.is_pressed('q'):
                 modeler1.segment_cone(int(pos[0]*n),int((1-pos[1])*m))
-        
-    
         
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('c') and list_selected_id[0] != -1:
         if use_tk:
@@ -128,39 +128,35 @@ while gui.running:
         modeler1.addLink(list_selected_id[0],list_selected_id[1])
 
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') and list_selected_id[0] != -1:
-        # print(origin)
-        # for i in list_selected_id:
-        #     modeler1.increaseRadius(i,-(origin[0]-pos[0])/n*100)
-        # ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
-        # modeler1.increaseRadius(list_selected_id[0],-(origin[0]-pos[0])/n*100)
-
-        if use_tk :
-            title = "Radius"    
-            prompt = "Enter the radius of the circle: "
-            radius = simpledialog.askfloat(title, prompt)
-            for id in list_selected_id:
-                modeler1.changeRadius(id, radius)
-        else : 
-            print("Change radius - Enter values between 0 and 1")
-            try:
-                radius = float(input("Radius: "))
-                if 0 < radius and radius < 10:
-                    for id in list_selected_id:
-                        modeler1.changeRadius(id, radius)
-                else:
+        if gui.is_pressed('Shift') :
+            if use_tk :
+                title = "Radius"    
+                prompt = "Enter the radius of the circle: "
+                radius = simpledialog.askfloat(title, prompt)
+                for id in list_selected_id:
+                    modeler1.changeRadius(id, radius)
+            else : 
+                print("Change radius - Enter values between 0 and 1")
+                try:
+                    radius = float(input("Radius: "))
+                    if 0 < radius and radius < 10:
+                        for id in list_selected_id:
+                            modeler1.changeRadius(id, radius)
+                    else:
+                        print("Value incorrect")
+                except:
                     print("Value incorrect")
-            except:
-                print("Value incorrect")
+        else : 
+            for i in list_selected_id:
+                modeler1.increaseRadius(i,-(origin[0]-pos[0])/n*100)
+            ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
+            modeler1.increaseRadius(list_selected_id[0],-(origin[0]-pos[0])/n*100)
 
-    elif gui.get_event(ti.ui.RELEASE):
-        if gui.event.key == 'r':
-            origin = (-1,-1)
 
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and list_selected_id[0] != -1: 
         for id in list_selected_id:
             modeler1.move_sphere(id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
         #modeler1.move_sphere(list_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
-
 
     #rotate the camera around a fixed point
     if gui.is_pressed(ti.GUI.LEFT) :
@@ -203,6 +199,12 @@ while gui.running:
                 filename = input("Open - Enter filename: ")
             if filename != '':
                 modeler1.load(filename)
+
+    elif gui.get_event(ti.ui.RELEASE) and not gui.is_pressed('Control') :
+        if (gui.event.key == 'LMB') :
+            for id in list_selected_id :
+                modeler1.unselect(id)
+            list_selected_id = [-1]
 
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
     

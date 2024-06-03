@@ -145,6 +145,7 @@ struct modeler
     // compute the new image (load changes)
     void computeImageSpan(pyb::array_t<float> output)
     {
+        
         cam.computePhong(*world, lights, numpyView(output));
     }
 
