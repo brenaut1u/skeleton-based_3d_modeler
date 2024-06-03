@@ -12,7 +12,7 @@ void linked_spheres_group::add_sphere(shared_ptr<sphere> new_sphere) {
         materials.push_back({new_sphere->get_material(), 1});
         mat_id = materials.size() - 1;
     }
-    spheres.push_back({new_sphere, mat_id});
+    spheres.push_back({new_sphere, mat_id, false});
 }
 
 void linked_spheres_group::add_sphere(shared_ptr<sphere> new_sphere, int linked_to) {
@@ -296,7 +296,8 @@ int linked_spheres_group::nb_sphere_links(int sphere_id) {
     return nb_links;
 }
 
-void linked_spheres_group::sphere_is_selected(int id_selected) {
+void linked_spheres_group::select_sphere(int id_selected) {
+    spheres[id_selected].is_selected = true;
     int i = 0;
     while (i < cones.size()) {
         if (cones[i].sphere_id1 == id_selected) {
@@ -324,10 +325,11 @@ void linked_spheres_group::sphere_is_selected(int id_selected) {
     }
 }
 
-void linked_spheres_group::sphere_is_unselected(int id){
+void linked_spheres_group::unselect_sphere(int id_selected){
+    spheres[id_selected].is_selected = false;
     int i = 0;
     while (i < cones.size()) {
-        if (cones[i].sphere_id1 == id) {
+        if (cones[i].sphere_id1 == id_selected) {
             if (cones[i].cone->is_selected(1)) {
                 cones[i].cone->set_selected(0);
             }
@@ -335,7 +337,7 @@ void linked_spheres_group::sphere_is_unselected(int id){
                 cones[i].cone->set_selected(2);
             }
         }
-        else if (cones[i].sphere_id2 == id) {
+        else if (cones[i].sphere_id2 == id_selected) {
             if (cones[i].cone->is_selected(2)) {
                 cones[i].cone->set_selected(0);
             }
@@ -347,15 +349,15 @@ void linked_spheres_group::sphere_is_unselected(int id){
     }
 }
 
-void linked_spheres_group::sphere_is_hovered(int id){
+void linked_spheres_group::hover_sphere(int id_selected){
     int i = 0;
     while (i < cones.size()) {
-        if (cones[i].sphere_id1 == id) {
+        if (cones[i].sphere_id1 == id_selected) {
             if (not cones[i].cone->is_selected(1) && not cones[i].cone->is_selected(3)) {
                 cones[i].cone->set_selected(01);
             }
         }
-        else if (cones[i].sphere_id2 == id) {
+        else if (cones[i].sphere_id2 == id_selected) {
             if (not cones[i].cone->is_selected(2) && not cones[i].cone->is_selected(3)) {
                 cones[i].cone->set_selected(02);
             }

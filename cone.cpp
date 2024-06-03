@@ -95,13 +95,6 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
               outward_normal = (oa + t * rd) / ra;
               mat = mat1;
               selected = is_selected(1) || is_selected(3);
-
-              vec3 r_dir = unit_vector(r.direction());
-              point3 p = r.at(t / r.direction().length());
-              vec3 v = p - center2;
-              if (selected && ra - (v - r_dir * dot(v, r_dir)).length() < contour_thickness) {
-                  contour = true;
-              }
           }
           if (h2 > 0.0) {
               auto tmp_t = -m6 - sqrt(h2);
@@ -110,13 +103,6 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
                   outward_normal = (ob + t * rd) / rb;
                   mat = mat2;
                   selected = is_selected(2) || is_selected(3);
-
-                  vec3 r_dir = unit_vector(r.direction());
-                  point3 p = r.at(t / r.direction().length());
-                  vec3 v = p - center2;
-                  if (selected && rb - (v - r_dir * dot(v, r_dir)).length() < contour_thickness) {
-                      contour = true;
-                  }
               }
           }
       }
@@ -133,16 +119,17 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
             rec.mat = make_shared<unlit>(contour_color);
         }
         else {
-            auto descr = mat->descriptor();
-            color new_color = negative(rec.mat->get_material_color());
-            if (descr.first == "lambertian"){
-                auto new_mat = make_shared<lambertian>(new_color);
-                rec.mat = new_mat;
-            }
-            else if (descr.first == "metal"){
-                auto new_mat = make_shared<metal>(new_color, descr.second[3]);
-                rec.mat = new_mat;
-            }
+            rec.mat = mat;
+//            auto descr = mat->descriptor();
+//            color new_color = negative(rec.mat->get_material_color());
+//            if (descr.first == "lambertian"){
+//                auto new_mat = make_shared<lambertian>(new_color);
+//                rec.mat = new_mat;
+//            }
+//            else if (descr.first == "metal"){
+//                auto new_mat = make_shared<metal>(new_color, descr.second[3]);
+//                rec.mat = new_mat;
+//            }
         }
     }
     return true;

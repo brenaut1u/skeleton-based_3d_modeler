@@ -16,10 +16,12 @@
 inline constexpr double ambient_occlusion = 0.5;
 inline const color skeleton_background_color = {0.5, 0.9, 1.0};
 inline const color skeleton_border_color = {0.2, 0.3, 0.5};
+inline const color skeleton_selected_background_color = {1.0, 1.0, 0.0};
+inline const color skeleton_selected_border_color = {1.0, 1.0, 1.0};
 inline constexpr float skeleton_line_radius = 2;
 inline constexpr float skeleton_circle_radius = 4;
 
-using segment_list = vector<pair<pair<int, int>, pair<int, int>>>;
+using segment_list = vector<pair<pair<pair<int, int>, pair<int, int>>, pair<bool, bool>>>;
 
 class camera {
   public:

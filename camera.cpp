@@ -98,9 +98,15 @@ void camera::computePhong(const hittable& world, const std::vector<light>& light
     }
 
     for (const auto& segment : skeleton) {
-        draw_line(image, segment.first, segment.second, skeleton_line_radius, skeleton_background_color, skeleton_border_color);
-        draw_circle(image, segment.first, skeleton_circle_radius, skeleton_background_color, skeleton_border_color);
-        draw_circle(image, segment.second, skeleton_circle_radius, skeleton_background_color, skeleton_border_color);
+        draw_line(image, segment.first.first, segment.first.second, skeleton_line_radius, skeleton_background_color, skeleton_border_color);
+
+        color background_color = segment.second.first ? skeleton_selected_background_color : skeleton_background_color;
+        color border_color = segment.second.first ? skeleton_selected_border_color : skeleton_border_color;
+        draw_circle(image, segment.first.first, skeleton_circle_radius, background_color, border_color);
+
+        background_color = segment.second.second ? skeleton_selected_background_color : skeleton_background_color;
+        border_color = segment.second.second ? skeleton_selected_border_color : skeleton_border_color;
+        draw_circle(image, segment.first.second, skeleton_circle_radius, background_color, border_color);
     }
 }
 

@@ -48,8 +48,10 @@ pair<int, int> interactions::world_to_screen_pos(point3 p) {
 segment_list interactions::get_skeleton_screen_coordinates() {
     segment_list skeleton_screen_coordinates;
     for (const pair<int, int>& link : spheres_group->get_links()) {
-        skeleton_screen_coordinates.push_back({ world_to_screen_pos(spheres_group->get_sphere_at(link.first)->get_center()),
-                                                world_to_screen_pos(spheres_group->get_sphere_at(link.second)->get_center())});
+        skeleton_screen_coordinates.push_back({ { world_to_screen_pos(spheres_group->get_sphere_at(link.first)->get_center()),
+                                                 world_to_screen_pos(spheres_group->get_sphere_at(link.second)->get_center()) },
+                                                {spheres_group->is_sphere_selected(link.first),
+                                                 spheres_group->is_sphere_selected(link.second)}});
     }
     return skeleton_screen_coordinates;
 }

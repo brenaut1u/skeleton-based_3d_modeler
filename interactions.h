@@ -5,7 +5,7 @@
 #include "linked_spheres_group.h"
 #include "save_load.h"
 
-using segment_list = vector<pair<pair<int, int>, pair<int, int>>>;
+using segment_list = vector<pair<pair<pair<int, int>, pair<int, int>>, pair<bool, bool>>>;
 
 class interactions {
 public:
@@ -79,15 +79,15 @@ public:
     }
 
     void select_sphere(int sphere_id) {
-        spheres_group->sphere_is_selected(sphere_id);
+        spheres_group->select_sphere(sphere_id);
     }
 
     void hovered(int sphere_id) {
-        spheres_group->sphere_is_hovered(sphere_id);
+        spheres_group->hover_sphere(sphere_id);
     }
 
     void unselect_sphere(int sphere_id) {
-        spheres_group->sphere_is_unselected(sphere_id);
+        spheres_group->unselect_sphere(sphere_id);
     }
     
     void add_link(int id1, int id2);
