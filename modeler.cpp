@@ -123,9 +123,9 @@ struct modeler
         return inter.change_color(sphere_id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
     }
 
-    void move_sphere_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
+    void move_sphere_on_screen(pyb::array_t<float> sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
     {
-        return inter.move_spheres_on_screen({sphere_id}, screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
+        return inter.move_spheres_on_screen(numpyViewArray(sphere_id), screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
     }
 
     void rotate_camera(double horizontal_angle, double vertical_angle)
@@ -164,6 +164,18 @@ struct modeler
 
         return span3D(data, shape[0], shape[1], shape[2]);
     }
+
+    std::span<int> numpyViewArray(pyb::array_t<int> array){
+    if (!array.ptr())
+        throw std::runtime_error("Invalid numpy array!");
+
+    auto buffer_info = array.request();
+    if (buffer_info.ndim != 1)
+        throw std::runtime_error("Not a 1D numpy array!");
+    std::span<int> span = std::span<int>(static_cast<int*>(buffer_info.ptr), buffer_info.size);
+    
+    return span;
+}
 
     void saveInFile(string fileName){
         inter.save(fileName);

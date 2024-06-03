@@ -4,6 +4,7 @@
 #include <iostream>
 #include "linked_spheres_group.h"
 #include "save_load.h"
+#include <span>
 
 class interactions {
 public:
@@ -38,7 +39,7 @@ public:
 
     vec3 get_translation_vector_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
 
-    void move_spheres_on_screen(const vector<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
+    void move_spheres_on_screen(const std::span<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
 
     void rotate_spheres_around_axis(const vector<int>& spheres_id, vec3 axis, point3 axis_point, double angle);
 
