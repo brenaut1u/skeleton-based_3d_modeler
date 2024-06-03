@@ -4,8 +4,7 @@
 #include <iostream>
 #include "linked_spheres_group.h"
 #include "save_load.h"
-
-using segment_list = vector<pair<pair<pair<int, int>, pair<int, int>>, pair<bool, bool>>>;
+#include "screen_segment.h"
 
 class interactions {
 public:
@@ -28,7 +27,7 @@ public:
 
     pair<int, int> world_to_screen_pos(point3 p);
 
-    segment_list get_skeleton_screen_coordinates();
+    vector<screen_segment> get_skeleton_screen_coordinates();
 
     void change_radius(int sphere_id, double radius){
         spheres_group->change_sphere_radius(sphere_id, radius);

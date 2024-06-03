@@ -41,6 +41,8 @@ void linked_spheres_group::delete_sphere(int sphere_id) {
             return;
         }
 
+        unselect_sphere(sphere_id);
+
         // update cones
         int i = 0;
         while (i < cones.size()) {

@@ -1,16 +1,15 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <iostream>
+#include <vector>
 #include "interval.h"
 #include "color.h"
 #include "hittable.h"
 #include "material.h"
 #include "light.h"
 #include "span3D.h"
-
-
-#include <iostream>
-#include <vector>
+#include "screen_segment.h"
 
 #define MODE " "
 inline constexpr double ambient_occlusion = 0.5;
@@ -20,8 +19,6 @@ inline const color skeleton_selected_background_color = {1.0, 1.0, 0.0};
 inline const color skeleton_selected_border_color = {1.0, 1.0, 1.0};
 inline constexpr float skeleton_line_radius = 2;
 inline constexpr float skeleton_circle_radius = 4;
-
-using segment_list = vector<pair<pair<pair<int, int>, pair<int, int>>, pair<bool, bool>>>;
 
 class camera {
   public:
@@ -48,7 +45,7 @@ class camera {
 
     void computePhong(const hittable& world, const std::vector<light>& lights, span3D image);
 
-    void computePhong(const hittable& world, const std::vector<light>& lights, span3D image, const segment_list& skeleton);
+    void computePhong(const hittable& world, const std::vector<light>& lights, span3D image, const vector<screen_segment>& skeleton);
 
     ray get_ray(int i, int j) const;
 

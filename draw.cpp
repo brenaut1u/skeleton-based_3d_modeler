@@ -19,10 +19,10 @@ void color_pixel(span3D image, pair<int, int> pos, color color) {
     }
 }
 
-void draw_line(span3D image, pair<int, int> start, pair<int, int> end, int radius, color background_color, color border_color) {
+void draw_line(span3D image, screen_point start, screen_point end, int radius, color background_color, color border_color) {
     // Bresenham's line algorithm
-    if (abs(end.second - start.second) < abs(end.first - start.first)) {
-        if (start.first > end.first) {
+    if (abs(end.y - start.y) < abs(end.x - start.x)) {
+        if (start.x > end.x) {
             draw_line_low(image, end, start, radius, background_color, border_color);
         }
         else {
@@ -30,7 +30,7 @@ void draw_line(span3D image, pair<int, int> start, pair<int, int> end, int radiu
         }
     }
     else {
-        if (start.second > end.second) {
+        if (start.y > end.y) {
             draw_line_high(image, end, start, radius, background_color, border_color);
         }
         else {
@@ -39,18 +39,18 @@ void draw_line(span3D image, pair<int, int> start, pair<int, int> end, int radiu
     }
 }
 
-void draw_line_low(span3D image, pair<int, int> start, pair<int, int> end, int radius, color background_color, color border_color) {
-    int dx = end.first - start.first;
-    int dy = end.second - start.second;
+void draw_line_low(span3D image, screen_point start, screen_point end, int radius, color background_color, color border_color) {
+    int dx = end.x - start.x;
+    int dy = end.y - start.y;
     int yi = 1;
     if (dy < 0) {
         yi = -1;
         dy = -dy;
     }
     int D = (2 * dy) - dx;
-    int y = start.second;
+    int y = start.y;
 
-    for (int x = start.first; x <= end.first; x++) {
+    for (int x = start.x; x <= end.x; x++) {
         // draw the outline
         color_pixel(image, {x, y - radius / 2 - 1}, border_color);
         color_pixel(image, {x, y + radius / 2 + 1}, border_color);
@@ -69,18 +69,18 @@ void draw_line_low(span3D image, pair<int, int> start, pair<int, int> end, int r
     }
 }
 
-void draw_line_high(span3D image, pair<int, int> start, pair<int, int> end, int radius, color background_color, color border_color) {
-    int dx = end.first - start.first;
-    int dy = end.second - start.second;
+void draw_line_high(span3D image, screen_point start, screen_point end, int radius, color background_color, color border_color) {
+    int dx = end.x - start.x;
+    int dy = end.y - start.y;
     int xi = 1;
     if (dx < 0) {
         xi = -1;
         dx = -dx;
     }
     int D = (2 * dx) - dy;
-    int x = start.first;
+    int x = start.x;
 
-    for (int y = start.second; y <= end.second; y++) {
+    for (int y = start.y; y <= end.y; y++) {
         // draw the outline
         color_pixel(image, {x - radius / 2 - 1, y}, border_color);
         color_pixel(image, {x + radius / 2 + 1, y}, border_color);
@@ -99,7 +99,7 @@ void draw_line_high(span3D image, pair<int, int> start, pair<int, int> end, int 
     }
 }
 
-void draw_circle(span3D image, pair<int, int> center, int radius, color background_color, color border_color) {
+void draw_circle(span3D image, screen_point center, int radius, color background_color, color border_color) {
     for (int x = - radius; x <= radius; x++) {
         int thickness = round(sqrt(radius * radius - x * x));
 
@@ -114,19 +114,19 @@ void draw_circle(span3D image, pair<int, int> center, int radius, color backgrou
 
         // draw the outline
         if (thickness == thickness2) {
-            color_pixel(image, {center.first + x, center.second - thickness}, border_color);
-            color_pixel(image, {center.first + x, center.second + thickness}, border_color);
+            color_pixel(image, {center.x + x, center.y - thickness}, border_color);
+            color_pixel(image, {center.x + x, center.y + thickness}, border_color);
         }
         else {
             for (int i = thickness; i < thickness2; i++) {
-                color_pixel(image, {center.first + x, center.second - i}, border_color);
-                color_pixel(image, {center.first + x, center.second + i}, border_color);
+                color_pixel(image, {center.x + x, center.y - i}, border_color);
+                color_pixel(image, {center.x + x, center.y + i}, border_color);
             }
         }
 
         // draw the inside
         for (int y = -thickness + 1; y <= thickness - 1; y++) {
-            color_pixel(image, {center.first + x, center.second + y}, background_color);
+            color_pixel(image, {center.x + x, center.y + y}, background_color);
         }
     }
 }
