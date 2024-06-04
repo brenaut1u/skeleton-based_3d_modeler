@@ -18,6 +18,7 @@ void linked_spheres_group::add_sphere(shared_ptr<sphere> new_sphere) {
 void linked_spheres_group::add_sphere(shared_ptr<sphere> new_sphere, int linked_to) {
     add_sphere(new_sphere);
     add_link(spheres.size() - 1, linked_to);
+    add_link(spheres.size() - 1, spheres.size() - 1);
 }
 
 void linked_spheres_group::add_sphere_split_cone(int cone_id, point3 p, vec3 n, shared_ptr<material> mat) {
@@ -34,13 +35,7 @@ void linked_spheres_group::add_sphere_split_cone(int cone_id, point3 p, vec3 n, 
 }
 
 void linked_spheres_group::delete_sphere(int sphere_id) {
-    if (spheres.size() > 2) {
-        if (spheres.size() == 3 && nb_sphere_links(sphere_id) == 2) {
-            //prevents deletion of all the spheres if there are three spheres and we are rying to delete the middle
-            //sphere (as the isolated spheres are deleted too)
-            return;
-        }
-
+    if (spheres.size() > 1) {
         // update cones
         int i = 0;
         while (i < cones.size()) {
@@ -308,7 +303,7 @@ void linked_spheres_group::sphere_is_selected(int id_selected) {
                 cones[i].cone->set_selected(1);
             }
         }
-        else if (cones[i].sphere_id2 == id_selected) {
+        if (cones[i].sphere_id2 == id_selected) {
             // cones[i].cone->set_selected(2);
             if (cones[i].cone->is_selected(1)) {
                 cones[i].cone->set_selected(3);
@@ -317,7 +312,7 @@ void linked_spheres_group::sphere_is_selected(int id_selected) {
                 cones[i].cone->set_selected(2);
             }
         }
-        else if (!cones[i].cone->is_selected(1) && !cones[i].cone->is_selected(2) && cones[i].cone->is_selected(3)) {
+        if (!cones[i].cone->is_selected(1) && !cones[i].cone->is_selected(2) && cones[i].cone->is_selected(3)) {
             cones[i].cone->set_selected(0);
         }
         i++;
@@ -350,14 +345,12 @@ void linked_spheres_group::sphere_is_unselected(int id){
 void linked_spheres_group::sphere_is_hovered(int id){
     int i = 0;
     while (i < cones.size()) {
+        cones[i].cone->set_hovered(0);
         if (cones[i].sphere_id1 == id) {
             cones[i].cone->set_hovered(1);
         }
-        else if (cones[i].sphere_id2 == id) {
+        if (cones[i].sphere_id2 == id) {
             cones[i].cone->set_hovered(2);
-        }
-        else {
-            cones[i].cone->set_hovered(0);
         }
         i++;
     }

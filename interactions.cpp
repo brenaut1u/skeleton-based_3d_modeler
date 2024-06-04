@@ -25,7 +25,6 @@ void interactions::segment_cone_at_pos(int screen_pos_x, int screen_pos_y) {
 
 void interactions::delete_sphere(int sphere_id) {
     spheres_group->delete_sphere(sphere_id);
-    spheres_group->delete_isolated_spheres();
 }
 
 vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
