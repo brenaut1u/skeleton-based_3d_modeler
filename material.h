@@ -74,4 +74,8 @@ private:
 
 shared_ptr<material> blend_materials(const shared_ptr<material>& mat1, const shared_ptr<material>& mat2, double t);
 
+shared_ptr<material> copy_material(const shared_ptr<material>& mat);
+
+shared_ptr<material> copy_material(const shared_ptr<material>& mat, const color& color);
+
 #endif

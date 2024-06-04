@@ -244,8 +244,8 @@ string linked_spheres_group::save() {
 }
 
 void linked_spheres_group::set_sphere_color(int id, color c) {
-    shared_ptr<material> mat = make_shared<metal>(c, 1.0);
     int mat_id = spheres[id].material_id;
+    shared_ptr<material> mat = copy_material(materials[mat_id].mat, c);
     if (materials[mat_id].nb_users == 1) {
         materials[mat_id] = {mat, 1};
     }

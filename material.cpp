@@ -44,15 +44,15 @@ shared_ptr<material> blend_materials(const shared_ptr<material>& mat1, const sha
 
     if (mat1_desc.first == "metal") {
         if (mat2_desc.first == "metal") {
-            mat = make_shared<metal>(c, (1 - t) * mat1_desc.second[4] + t * mat2_desc.second[4]);
+            mat = make_shared<metal>(c, (1 - t) * mat1_desc.second[3] + t * mat2_desc.second[3]);
         }
         else {
-            mat = make_shared<metal>(c, (1 - t) * mat1_desc.second[4]);
+            mat = make_shared<metal>(c, (1 - t) * mat1_desc.second[3]);
         }
     }
     else {
         if (mat2_desc.first == "metal") {
-            mat = make_shared<metal>(c, t * mat2_desc.second[4]);
+            mat = make_shared<metal>(c, t * mat2_desc.second[3]);
         }
         else {
             mat = make_shared<lambertian>(c);
@@ -60,4 +60,33 @@ shared_ptr<material> blend_materials(const shared_ptr<material>& mat1, const sha
     }
 
     return mat;
+}
+
+shared_ptr<material> copy_material(const shared_ptr<material>& mat) {
+    auto mat_descr = mat->descriptor();
+    if (mat_descr.first == "lambertian") {
+        return make_shared<lambertian>(mat->get_material_color());
+    }
+    else if (mat_descr.first == "metal") {
+        return make_shared<metal>(mat->get_material_color(), mat_descr.second[3]);
+    }
+    else if (mat_descr.first == "unlit") {
+        return make_shared<unlit>(mat->get_material_color());
+    }
+    return nullptr;
+}
+
+shared_ptr<material> copy_material(const shared_ptr<material>& mat, const color& color) {
+    // copies a material while assigning it the desired color
+    auto mat_descr = mat->descriptor();
+    if (mat_descr.first == "lambertian") {
+        return make_shared<lambertian>(color);
+    }
+    else if (mat_descr.first == "metal") {
+        return make_shared<metal>(color, mat_descr.second[3]);
+    }
+    else if (mat_descr.first == "unlit") {
+        return make_shared<unlit>(color);
+    }
+    return nullptr;
 }
