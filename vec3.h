@@ -124,4 +124,16 @@ inline vec3 vector_rotation(vec3 v, vec3 axis, double angle) {
 
 point3 point_rotation(point3 p, point3 center_of_rotation, vec3 axis, double angle);
 
+inline double lines_intersection(point3 p1, vec3 v1, point3 p2, vec3 v2) {
+    // returns t such as the intersection point is p1 + t * v1
+    return (1.0 / (-v1.x() * v2.y() + v1.y() * v2.x())) *
+               (-v2.y() * (p2.x() - p1.x()) + v2.x() * (p2.y() - p1.y()));
+}
+
+inline double line_plane_intersection(point3 la, vec3 lab, point3 p0, point3 p01, point3 p02) {
+    // for line la + t * lab and plane p0 + u * p01 + v * p02,
+    // returns t such as the intersection poiunt is la + t * lab
+    return dot(cross(p01, p02), la - p0) / dot(-lab, cross(p01, p02));
+}
+
 #endif

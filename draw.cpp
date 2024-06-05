@@ -12,7 +12,7 @@ void color_pixel(span3D image, pair<int, int> pos, color color) {
     int image_width = image.size_X();
     int image_height = image.size_Y();
 
-    if (pos.first >= 0 && pos.first < image_width && pos.second >= 0 && pos.second < image_height) {
+    if (pos.first >= 0 && pos.first < image_width && pos.second >= 0 && pos.second < image_height - 1) {
         image(pos.first, image_height - pos.second -1, 0) = color.x();
         image(pos.first, image_height - pos.second - 1, 1) = color.y();
         image(pos.first, image_height - pos.second - 1, 2) = color.z();

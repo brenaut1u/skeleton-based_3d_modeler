@@ -28,20 +28,63 @@ void interactions::delete_sphere(const std::span<int>& spheres_id) {
 }
 
 pair<int, int> interactions::world_to_screen_pos(point3 p) {
-    point3 la = cam->get_center();
-    point3 lb = p;
-    vec3 lab = lb - la;
-    point3 p0 = cam->get_pixel00_loc();
-    vec3 p01 = cam->get_viewport_u();
-    vec3 p02 = cam->get_viewport_v();
+    if (dot(p - cam->get_center(), cross(cam->get_viewport_u(), cam->get_viewport_v())) > 0) {
+        point3 cam_center = cam->get_center();
 
-    double t = dot(cross(p01, p02), la - p0) / dot(-lab, cross(p01, p02));
-    point3 point_on_screen = la + t * lab;
+        double t = line_plane_intersection(cam_center, p - cam_center,
+                                           cam->get_pixel00_loc(), cam->get_viewport_u(), cam->get_viewport_v());
+        point3 point_on_screen = cam_center + t * (p - cam_center);
 
-    int screen_pos_x = cam->image_width * dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_u())) / cam->get_viewport_u().length();
-    int screen_pos_y = cam->image_width / cam->aspect_ratio * dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_v())) / cam->get_viewport_v().length();
+        int screen_pos_x =
+                cam->image_width * dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_u())) /
+                cam->get_viewport_u().length();
+        int screen_pos_y = cam->image_width / cam->aspect_ratio *
+                           dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_v())) /
+                           cam->get_viewport_v().length();
 
-    return {screen_pos_x, screen_pos_y};
+        return {screen_pos_x, screen_pos_y};
+    }
+
+    // if the object is behind the camera
+    else {
+        point3 cam_center = cam->get_center();
+        vec3 cam_u = cam->get_viewport_u();
+        vec3 cam_v = cam->get_viewport_v();
+
+        float u = dot(p - cam_center, unit_vector(cam_u));
+        float v = dot(p - cam_center, unit_vector(-cam_v));
+
+        double w = cam_u.length();
+        double h = cam_v.length();
+        if (v > (h / w) * u) {
+            if (v > -(h / w) * u) {
+                // top border
+                double t = lines_intersection(cam_center - cam_u / 2 - cam_v / 2,cam_u,
+                                              cam_center, u * cam_u - v * cam_v);
+                return {t * cam->image_width, 0};
+            }
+            else {
+                // left border
+                double t = lines_intersection(cam_center - cam_u / 2 - cam_v / 2,cam_v,
+                                              cam_center, u * cam_u - v * cam_v);
+                return {0, t * cam->image_width / cam->aspect_ratio};
+            }
+        }
+        else {
+            if (v > -(h / w) * u) {
+                // right border
+                double t = lines_intersection(cam_center + cam_u / 2 - cam_v / 2,cam_v,
+                                              cam_center, u * cam_u - v * cam_v);
+                return {cam->image_width, t * cam->image_width / cam->aspect_ratio};
+            }
+            else {
+                // bottom border
+                double t = lines_intersection(cam_center - cam_u / 2 + cam_v / 2,cam_u,
+                                              cam_center, u * cam_u - v * cam_v);
+                return {t * cam->image_width, cam->image_width / cam->aspect_ratio};
+            }
+        }
+    }
 }
 
 vector<screen_segment> interactions::get_skeleton_screen_coordinates() {
@@ -65,12 +108,11 @@ vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_po
         if (hit) {
             point3 la = cam->get_center();
             point3 lb = rec.p;
-            vec3 lab = lb - la;
             point3 p0 = cam->get_pixel00_loc();
             vec3 p01 = cam->get_viewport_u();
             vec3 p02 = cam->get_viewport_v();
 
-            double t = dot(cross(p01, p02), la - p0) / dot(-lab, cross(p01, p02));
+            double t = line_plane_intersection(la, lb - la, p0, p01, p02);
             point3 pos_on_screen = p0 + ((double) new_screen_pos_x / cam->image_width) * p01
                                    +
                                    ((double) new_screen_pos_y /

@@ -101,11 +101,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
                 outward_normal = unit_vector(d2 * (oa + t * rd) - ba * y);
 
                 point3 p = r.at(t / r.direction().length());
-                vec3 v = center2 - center1;
-                vec3 n = outward_normal;
-                point3 c1 = center1;
-                double u = (1.0 / (-v.x() * n.y() + v.y() * n.x())) *
-                           (-n.y() * (p.x() - c1.x()) + n.x() * (p.y() - c1.y()));
+                double u = lines_intersection(center1, center2 - center1, p, outward_normal);
 
                 mat = blend_materials(mat1, mat2, u);
 

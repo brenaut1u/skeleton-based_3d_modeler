@@ -25,7 +25,7 @@ void linked_spheres_group::add_sphere_split_cone(int cone_id, point3 p, vec3 n, 
     point3 c1 = spheres[cones[cone_id].sphere_id1].sphere->get_center();
     point3 c2 = spheres[cones[cone_id].sphere_id2].sphere->get_center();
     vec3 v = c2 - c1;
-    double t = (p.y() - c1.y() + (n.y() / n.x()) * (c1.x() - p.x())) / (v.y() - v.x() * n.y() / n.x());
+    double t = lines_intersection(c1, v, p, n);
     point3 center = c1 + t * v;
     double radius = (p - center).length();
     shared_ptr<sphere> new_sphere = make_shared<sphere>(center, radius, mat);
