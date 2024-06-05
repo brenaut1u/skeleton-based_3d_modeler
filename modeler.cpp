@@ -84,9 +84,9 @@ struct modeler
         inter.segment_cone_at_pos(screen_pos_x, screen_pos_y);
     }
 
-    void deleteSphere(int sphere_id)
+    void deleteSphere(pyb::array_t<float> sphere_id)
     {
-        inter.delete_sphere(sphere_id);
+        inter.delete_sphere(numpyViewArray(sphere_id));
     }
 
     int detectSphere(int screen_pos_x, int screen_pos_y)

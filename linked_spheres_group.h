@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <span>
 
 using std::vector;
 using std::pair;
@@ -72,7 +73,7 @@ public:
 
     void add_sphere_split_cone(int cone_id, point3 p, vec3 n, shared_ptr<material> mat);
 
-    void delete_sphere(int sphere_id);
+    void delete_sphere(const std::span<int>& spheres_id);
 
     void unlink(int id1, int id2);
 
@@ -95,6 +96,8 @@ public:
     void delete_isolated_spheres();
 
     string save();
+
+    void update_ids(const std::span<int>& spheres_id);
 
 private:
     vector<pair<int, int>> links;

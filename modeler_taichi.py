@@ -125,9 +125,10 @@ while gui.running:
         
     
     elif gui.is_pressed('d') and array_selected_id[0] != -1:
-        for id in array_selected_id:
-            modeler1.unselect(id)
-            modeler1.delete(id)
+        array_selected_id = np.sort(array_selected_id)
+        for i in range(len(array_selected_id)-1,0,-1):
+            modeler1.unselect(array_selected_id[i])
+        modeler1.delete(array_selected_id)
         array_selected_id = np.array([-1])
 
     elif gui.is_pressed('f') :
@@ -216,3 +217,12 @@ while gui.running:
     canvas.set_image(pixels)
 
     gui.show()
+
+
+
+def bubble_sort(arr):
+    for i in range(len(arr) - 1, 0, -1):
+        for j in range(i):
+            if arr[j] > arr[j + 1]:
+                arr[j + 1], arr[j] = arr[j], arr[j + 1]
+    return arr

@@ -34,55 +34,61 @@ void linked_spheres_group::add_sphere_split_cone(int cone_id, point3 p, vec3 n, 
     unlink(cones[cone_id].sphere_id1, cones[cone_id].sphere_id2);
 }
 
-void linked_spheres_group::delete_sphere(int sphere_id) {
-    if (spheres.size() > 1) {
-        // update cones
-        int i = 0;
-        while (i < cones.size()) {
-            if (cones[i].sphere_id1 == sphere_id || cones[i].sphere_id2 == sphere_id) {
-                world->remove(cones[i].cone);
-                cones.erase(cones.begin() + i);
-            } else {
-                if (cones[i].sphere_id1 > sphere_id) {
-                    cones[i].sphere_id1--;
-                }
-                if (cones[i].sphere_id2 > sphere_id) {
-                    cones[i].sphere_id2--;
-                }
-                i++;
-            }
-        }
-
-        // update links
-        i = 0;
-        while (i < links.size()) {
-            if (links[i].first == sphere_id || links[i].second == sphere_id) {
-                links.erase(links.begin() + i);
-            } else {
-                if (links[i].first > sphere_id) {
-                    links[i].first--;
-                }
-                if (links[i].second > sphere_id) {
-                    links[i].second--;
-                }
-                i++;
-            }
-        }
-
-        // material
-        if (materials[spheres[sphere_id].material_id].nb_users == 1) {
-            // delete the material if the sphere was its last user
-            materials.erase(materials.begin() + spheres[sphere_id].material_id);
-            for (int s = 0; s < spheres.size(); s++) {
-                if (s != sphere_id && spheres[s].material_id >= spheres[sphere_id].material_id) {
-                    spheres[s].material_id--;
+void linked_spheres_group::delete_sphere(const std::span<int>& spheres_id) {
+    
+    for (auto it = spheres_id.rbegin(); it != spheres_id.rend(); ++it) {
+        int id = *it;
+        if (spheres.size() > 1) {
+            // update cones
+            int i = 0;
+            while (i < cones.size()) {
+                if (cones[i].sphere_id1 == id || cones[i].sphere_id2 == id) {
+                    world->remove(cones[i].cone);
+                    cones.erase(cones.begin() + i);
+                } 
+                else {
+                    if (cones[i].sphere_id1 > id) {
+                        cones[i].sphere_id1--;
+                    }
+                    if (cones[i].sphere_id2 > id) {
+                        cones[i].sphere_id2--;
+                    }
+                    i++;
                 }
             }
-        } else {
-            materials[spheres[sphere_id].material_id].nb_users--;
-        }
 
-        spheres.erase(spheres.begin() + sphere_id);
+            // update links
+            i = 0;
+            while (i < links.size()) {
+                if (links[i].first == id || links[i].second == id) {
+                    links.erase(links.begin() + i);
+                } 
+                else {
+                    if (links[i].first > id) {
+                        links[i].first--;
+                    }
+                    if (links[i].second > id) {
+                        links[i].second--;
+                    }
+                    i++;
+                }
+            }
+
+            // material
+            if (materials[spheres[id].material_id].nb_users == 1) {
+                // delete the material if the sphere was its last user
+                materials.erase(materials.begin() + spheres[id].material_id);
+                for (int s = 0; s < spheres.size(); s++) {
+                    if (s != id && spheres[s].material_id >= spheres[id].material_id) {
+                        spheres[s].material_id--;
+                    }
+                }
+            } 
+            else {
+                materials[spheres[id].material_id].nb_users--;
+            }
+            spheres.erase(spheres.begin() + id);
+        }
     }
 }
 
@@ -260,17 +266,17 @@ void linked_spheres_group::set_sphere_color(int id, color c) {
     }
 }
 
-void linked_spheres_group::delete_isolated_spheres() {
-    int sphere_id = 0;
-    while (sphere_id < spheres.size()) {
-        if (is_sphere_isolated(sphere_id)) {
-            delete_sphere(sphere_id);
-        }
-        else {
-            sphere_id++;
-        }
-    }
-}
+// void linked_spheres_group::delete_isolated_spheres() {
+//     int sphere_id = 0;
+//     while (sphere_id < spheres.size()) {
+//         if (is_sphere_isolated(sphere_id)) {
+//             delete_sphere(sphere_id);
+//         }
+//         else {
+//             sphere_id++;
+//         }
+//     }
+// }
 
 bool linked_spheres_group::is_sphere_isolated(int sphere_id) {
     for (const pair<int, int> link : links) {

@@ -19,7 +19,7 @@ public:
 
     void segment_cone_at_pos(int screen_pos_x, int screen_pos_y);
 
-    void delete_sphere(int sphere_id);
+    void delete_sphere(const std::span<int>& spheres_id);
 
     int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
         return std::get<0>(sphere_at_pos(screen_pos_x, screen_pos_y));
