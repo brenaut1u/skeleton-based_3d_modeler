@@ -1,3 +1,4 @@
+#include <future>
 #include "draw.h"
 #include "camera.h"
 
@@ -72,9 +73,9 @@ std::vector<vec3> camera::render_phong(const hittable& world, const std::vector<
     return rendered_image;
 }
 
-void camera::computePhong(const hittable& world, const std::vector<light>& lights, span3D image) {
-    for (int j = 0; j < image_height; ++j) {
-        for (int i = 0; i < image_width; ++i) {
+void camera::computePhong_partial(const hittable& world, const std::vector<light>& lights, span3D image, int start_x, int end_x, int start_y, int end_y) {
+    for (int j = start_y; j < end_y; ++j) {
+        for (int i = start_x; i < end_x; ++i) {
             color pixel_color(0,0,0);
             for (int sample = 0; sample < samples_per_pixel; ++sample) {
                 ray r = get_ray(i, j);
@@ -85,17 +86,12 @@ void camera::computePhong(const hittable& world, const std::vector<light>& light
     }
 }
 
+void camera::computePhong(const hittable& world, const std::vector<light>& lights, span3D image) {
+    std::future<void> task1 = std::async(&camera::computePhong_partial, this, world, lights, image, 0, image_width / 2, 0, image_height / 2);
+}
+
 void camera::computePhong(const hittable& world, const std::vector<light>& lights, span3D image, const vector<screen_segment>& skeleton) {
-    for (int j = 0; j < image_height; ++j) {
-        for (int i = 0; i < image_width; ++i) {
-            color pixel_color(0,0,0);
-            for (int sample = 0; sample < samples_per_pixel; ++sample) {
-                ray r = get_ray(i, j);
-                pixel_color += ray_color_with_point_lights(r, max_depth, world, lights);
-            }
-            color_pixel(image, {i, j}, pixel_color);
-        }
-    }
+    computePhong(world, lights, image);
 
     for (const auto& segment : skeleton) {
         draw_line(image, segment.first, segment.second, skeleton_line_radius, skeleton_background_color, skeleton_border_color);

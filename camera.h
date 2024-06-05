@@ -10,6 +10,7 @@
 #include "light.h"
 #include "span3D.h"
 #include "screen_segment.h"
+#include "hittable_list.h"
 
 #define MODE " "
 inline constexpr double ambient_occlusion = 0.5;
@@ -42,6 +43,8 @@ class camera {
     void render_phong_file(const hittable& world, const std::vector<light>& lights);
 
     std::vector<vec3> render_phong(const hittable& world, const std::vector<light>& lights);
+
+    void computePhong_partial(const hittable& world, const std::vector<light>& lights, span3D image, int start_x, int end_x, int start_y, int end_y);
 
     void computePhong(const hittable& world, const std::vector<light>& lights, span3D image);
 
