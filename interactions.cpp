@@ -28,72 +28,35 @@ void interactions::delete_sphere(const std::span<int>& spheres_id) {
 }
 
 pair<int, int> interactions::world_to_screen_pos(point3 p) {
-    if (dot(p - cam->get_center(), cross(cam->get_viewport_u(), cam->get_viewport_v())) > 0) {
-        point3 cam_center = cam->get_center();
+    point3 cam_center = cam->get_center();
 
-        double t = line_plane_intersection(cam_center, p - cam_center,
-                                           cam->get_pixel00_loc(), cam->get_viewport_u(), cam->get_viewport_v());
-        point3 point_on_screen = cam_center + t * (p - cam_center);
+    double t = line_plane_intersection(cam_center, p - cam_center,
+                                       cam->get_pixel00_loc(), cam->get_viewport_u(), cam->get_viewport_v());
+    point3 point_on_screen = cam_center + t * (p - cam_center);
 
-        int screen_pos_x =
-                cam->image_width * dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_u())) /
-                cam->get_viewport_u().length();
-        int screen_pos_y = cam->image_width / cam->aspect_ratio *
-                           dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_v())) /
-                           cam->get_viewport_v().length();
+    int screen_pos_x =
+            cam->image_width * dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_u())) /
+            cam->get_viewport_u().length();
+    int screen_pos_y = cam->image_width / cam->aspect_ratio *
+                       dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_v())) /
+                       cam->get_viewport_v().length();
 
-        return {screen_pos_x, screen_pos_y};
-    }
-
-    // if the object is behind the camera
-    else {
-        point3 cam_center = cam->get_center();
-        vec3 cam_u = cam->get_viewport_u();
-        vec3 cam_v = cam->get_viewport_v();
-
-        float u = dot(p - cam_center, unit_vector(cam_u));
-        float v = dot(p - cam_center, unit_vector(-cam_v));
-
-        double w = cam_u.length();
-        double h = cam_v.length();
-        if (v > (h / w) * u) {
-            if (v > -(h / w) * u) {
-                // top border
-                double t = lines_intersection(cam_center - cam_u / 2 - cam_v / 2,cam_u,
-                                              cam_center, u * cam_u - v * cam_v);
-                return {t * cam->image_width, 0};
-            }
-            else {
-                // left border
-                double t = lines_intersection(cam_center - cam_u / 2 - cam_v / 2,cam_v,
-                                              cam_center, u * cam_u - v * cam_v);
-                return {0, t * cam->image_width / cam->aspect_ratio};
-            }
-        }
-        else {
-            if (v > -(h / w) * u) {
-                // right border
-                double t = lines_intersection(cam_center + cam_u / 2 - cam_v / 2,cam_v,
-                                              cam_center, u * cam_u - v * cam_v);
-                return {cam->image_width, t * cam->image_width / cam->aspect_ratio};
-            }
-            else {
-                // bottom border
-                double t = lines_intersection(cam_center - cam_u / 2 + cam_v / 2,cam_u,
-                                              cam_center, u * cam_u - v * cam_v);
-                return {t * cam->image_width, cam->image_width / cam->aspect_ratio};
-            }
-        }
-    }
+    return {screen_pos_x, screen_pos_y};
 }
 
 vector<screen_segment> interactions::get_skeleton_screen_coordinates() {
     vector<screen_segment> skeleton_screen_coordinates;
     for (const pair<int, int>& link : spheres_group->get_links()) {
-        skeleton_screen_coordinates.push_back(screen_segment{screen_point{world_to_screen_pos(spheres_group->get_sphere_at(link.first)->get_center())},
-                                                             screen_point{world_to_screen_pos(spheres_group->get_sphere_at(link.second)->get_center())},
-                                                             spheres_group->is_sphere_selected(link.first),
-                                                             spheres_group->is_sphere_selected(link.second)});
+        point3 c1 = spheres_group->get_sphere_at(link.first)->get_center();
+        point3 c2 = spheres_group->get_sphere_at(link.second)->get_center();
+        if (dot(c1 - cam->get_center(), cross(cam->get_viewport_u(), cam->get_viewport_v())) > 0 &&
+            dot(c2 - cam->get_center(), cross(cam->get_viewport_u(), cam->get_viewport_v())) > 0)
+        {
+            skeleton_screen_coordinates.push_back(screen_segment{screen_point{world_to_screen_pos(c1)},
+                                                                 screen_point{world_to_screen_pos(c2)},
+                                                                 spheres_group->is_sphere_selected(link.first),
+                                                                 spheres_group->is_sphere_selected(link.second)});
+        }
     }
     return skeleton_screen_coordinates;
 }
