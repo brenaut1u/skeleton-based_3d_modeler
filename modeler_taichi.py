@@ -15,21 +15,6 @@ if use_tk:
     from tkinter import colorchooser
     from tkinter import simpledialog
 
-import wx
-
-app = wx.App(None)
-
-def get_path(wildcard):
-    global app
-    #app = wx.App(None)
-    style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
-    dialog = wx.FileDialog(None, 'Open', wildcard=wildcard, style=style)
-    if dialog.ShowModal() == wx.ID_OK:
-        path = dialog.GetPath()
-    else:
-        path = None
-    dialog.Destroy()
-    return path
 
 ti.init(arch=ti.gpu)
 n = 400
