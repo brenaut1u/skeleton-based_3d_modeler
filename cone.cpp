@@ -75,13 +75,13 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
             t = -m6 - sqrt(h2);
             outward_normal = (ob + t * rd) / rb;
             mat = mat2;
-            selected = is_selected(2);
+            //selected = is_selected(2);
         }
         else if (ba.length() + rb <= ra && h1 > 0.0) {
             t = -m3 - sqrt(h1);
             outward_normal = (oa + t * rd) / ra;
             mat = mat1;
-            selected = is_selected(1);
+            //selected = is_selected(1);
         }
 
         else {
@@ -120,7 +120,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
                     t = -m3 - sqrt(h1);
                     outward_normal = (oa + t * rd) / ra;
                     mat = mat1;
-                    selected = is_selected(1);
+                    //selected = is_selected(1);
                 }
                 if (h2 > 0.0) {
                     auto tmp_t = -m6 - sqrt(h2);
@@ -128,7 +128,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
                         t = tmp_t;
                         outward_normal = (ob + t * rd) / rb;
                         mat = mat2;
-                        selected = is_selected(2);
+                        //selected = is_selected(2);
                     }
                 }
             }

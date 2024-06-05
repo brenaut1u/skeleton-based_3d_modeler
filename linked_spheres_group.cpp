@@ -266,17 +266,17 @@ void linked_spheres_group::set_sphere_color(int id, color c) {
     }
 }
 
-void linked_spheres_group::delete_isolated_spheres() {
-    int sphere_id = 0;
-    while (sphere_id < spheres.size()) {
-        if (is_sphere_isolated(sphere_id)) {
-            delete_sphere(sphere_id);
-        }
-        else {
-            sphere_id++;
-        }
-    }
-}
+//void linked_spheres_group::delete_isolated_spheres() {
+//    int sphere_id = 0;
+//    while (sphere_id < spheres.size()) {
+//        if (is_sphere_isolated(sphere_id)) {
+//            delete_sphere(sphere_id);
+//        }
+//        else {
+//            sphere_id++;
+//        }
+//    }
+//}
 
 bool linked_spheres_group::is_sphere_isolated(int sphere_id) {
     for (const pair<int, int> link : links) {
@@ -354,10 +354,10 @@ void linked_spheres_group::hover_sphere(int id_selected){
     int i = 0;
     while (i < cones.size()) {
         cones[i].cone->set_hovered(0);
-        if (cones[i].sphere_id1 == id) {
+        if (cones[i].sphere_id1 == id_selected) {
             cones[i].cone->set_hovered(1);
         }
-        if (cones[i].sphere_id2 == id) {
+        if (cones[i].sphere_id2 == id_selected) {
             cones[i].cone->set_hovered(2);
         }
         i++;
