@@ -2,9 +2,10 @@
 #define INTERACTIONS
 
 #include <iostream>
+#include <span>
 #include "linked_spheres_group.h"
 #include "save_load.h"
-#include <span>
+#include "screen_segment.h"
 
 class interactions {
 public:
@@ -24,6 +25,10 @@ public:
     int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
         return std::get<0>(sphere_at_pos(screen_pos_x, screen_pos_y));
     }
+
+    pair<int, int> world_to_screen_pos(point3 p);
+
+    vector<screen_segment> get_skeleton_screen_coordinates();
 
     void change_radius(int sphere_id, double radius){
         spheres_group->change_sphere_radius(sphere_id, radius);
@@ -74,15 +79,15 @@ public:
     }
 
     void select_sphere(int sphere_id) {
-        spheres_group->sphere_is_selected(sphere_id);
+        spheres_group->select_sphere(sphere_id);
     }
 
     void hovered(int sphere_id) {
-        spheres_group->sphere_is_hovered(sphere_id);
+        spheres_group->hover_sphere(sphere_id);
     }
 
     void unselect_sphere(int sphere_id) {
-        spheres_group->sphere_is_unselected(sphere_id);
+        spheres_group->unselect_sphere(sphere_id);
     }
     
     void add_link(int id1, int id2);

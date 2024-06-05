@@ -19,6 +19,8 @@ add_library(skeleton_modeler STATIC
         color.h
         cone.cpp
         cone.h
+        draw.cpp
+        draw.h
         hittable.cpp
         hittable.h
         hittable_list.cpp
@@ -40,6 +42,7 @@ add_library(skeleton_modeler STATIC
         vec3.h
         save_load.cpp
         save_load.h
+        screen_segment.h
         span3D.cpp
         span3D.h
 )

@@ -50,9 +50,12 @@ array_selected_id = np.array([-1])
 
 hovered_id = -1
 origin = (-1,-1)
+
+show_skeleton = False
 selected_id_past = -1
- 
+
 old_pos = (0, 0)
+
 
 while gui.running:
     #gui.get_event()
@@ -84,6 +87,9 @@ while gui.running:
                 for id in array_selected_id:
                     modeler1.unselect(id)
                 array_selected_id = np.array([hovered_id])
+                
+        elif gui.is_pressed('w'):
+            show_skeleton = not show_skeleton
 
     for id in array_selected_id:
         modeler1.select(id)        
@@ -122,7 +128,6 @@ while gui.running:
                                ("Value incorrect")
             except:
                 print("Value incorrect")
-        
     
     elif gui.is_pressed('d') and array_selected_id[0] != -1:
         array_selected_id = np.sort(array_selected_id)
@@ -157,8 +162,6 @@ while gui.running:
             for id in array_selected_id:
                 modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)
             
-            
-
 
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1: 
         modeler1.move_sphere(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
@@ -179,14 +182,14 @@ while gui.running:
             modeler1.move_camera_forward(0.1)
         elif gui.is_pressed(ti.GUI.CTRL) :
             modeler1.move_camera_sideways(0.0, -0.05)
-        else : 
+        else :
             modeler1.rotate_camera(0,0.1)
     elif gui.is_pressed(ti.GUI.DOWN) :
         if gui.is_pressed(ti.GUI.SHIFT) :
             modeler1.move_camera_forward(-0.1)
         elif gui.is_pressed(ti.GUI.CTRL) :
             modeler1.move_camera_sideways(0.0, 0.05)
-        else : 
+        else :
             modeler1.rotate_camera(0,-0.1)
     #save and load functions
     elif gui.is_pressed(ti.GUI.SHIFT) :
@@ -212,8 +215,8 @@ while gui.running:
             array_selected_id = np.array([-1])
 
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
-    
-    modeler1.computeImageSpan(pixels)
+
+    modeler1.computeImageSpan(pixels, show_skeleton)
     canvas.set_image(pixels)
 
     gui.show()

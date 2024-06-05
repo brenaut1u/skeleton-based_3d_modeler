@@ -27,6 +27,34 @@ void interactions::delete_sphere(const std::span<int>& spheres_id) {
     spheres_group->delete_sphere(spheres_id);
 }
 
+pair<int, int> interactions::world_to_screen_pos(point3 p) {
+    point3 la = cam->get_center();
+    point3 lb = p;
+    vec3 lab = lb - la;
+    point3 p0 = cam->get_pixel00_loc();
+    vec3 p01 = cam->get_viewport_u();
+    vec3 p02 = cam->get_viewport_v();
+
+    double t = dot(cross(p01, p02), la - p0) / dot(-lab, cross(p01, p02));
+    point3 point_on_screen = la + t * lab;
+
+    int screen_pos_x = cam->image_width * dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_u())) / cam->get_viewport_u().length();
+    int screen_pos_y = cam->image_width / cam->aspect_ratio * dot(point_on_screen - cam->get_pixel00_loc(), unit_vector(cam->get_viewport_v())) / cam->get_viewport_v().length();
+
+    return {screen_pos_x, screen_pos_y};
+}
+
+vector<screen_segment> interactions::get_skeleton_screen_coordinates() {
+    vector<screen_segment> skeleton_screen_coordinates;
+    for (const pair<int, int>& link : spheres_group->get_links()) {
+        skeleton_screen_coordinates.push_back(screen_segment{screen_point{world_to_screen_pos(spheres_group->get_sphere_at(link.first)->get_center())},
+                                                             screen_point{world_to_screen_pos(spheres_group->get_sphere_at(link.second)->get_center())},
+                                                             spheres_group->is_sphere_selected(link.first),
+                                                             spheres_group->is_sphere_selected(link.second)});
+    }
+    return skeleton_screen_coordinates;
+}
+
 vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
     shared_ptr<sphere> sph = spheres_group->get_sphere_at(sphere_id);
     if (sph) {

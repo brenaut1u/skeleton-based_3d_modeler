@@ -38,17 +38,14 @@ struct modeler
     void initializedWorld()
     {
         world = make_shared<hittable_list>();
-        auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
-        auto material_center = make_shared<lambertian>(color(0.7, 0.3, 0.3));
-        auto material_left = make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
-        auto material_right = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
+        auto mat = make_shared<metal>(color(0.8, 0.6, 0.2), 0.5);
 
         // CZ You were initializing temporary variable (hiding the attribut of the structure
         // in the current scope) :
         // linked_spheres_group spheres = ...
         // type + identifier => never refer to an existing variable or attributs
-        spheres = make_shared<linked_spheres_group>(world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, material_right));
-        spheres -> add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, material_right), 0);
+        spheres = make_shared<linked_spheres_group>(world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, mat));
+        spheres -> add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, mat), 0);
 
         // CZ : no real reason to change the lights during updates,
         // however, it could be in a dedicated function
@@ -143,10 +140,15 @@ struct modeler
     }
 
     // compute the new image (load changes)
-    void computeImageSpan(pyb::array_t<float> output)
+
+    void computeImageSpan(pyb::array_t<float> output, bool draw_skeleton)
     {
-        
-        cam.computePhong(*world, lights, numpyView(output));
+        if (draw_skeleton) {
+            cam.computePhong(*world, lights, numpyView(output), inter.get_skeleton_screen_coordinates());
+        }
+        else {
+            cam.computePhong(*world, lights, numpyView(output));
+        }
     }
 
     //transform a numpy array into a span3D

@@ -19,6 +19,7 @@ using std::to_string;
 struct sphere_ref {
     shared_ptr<sphere> sphere;
     int material_id;
+    bool is_selected;
 };
 
 struct cone_ref {
@@ -61,11 +62,19 @@ public:
         }
     }
 
-    void sphere_is_selected(int id_selected) ;
+    vector<pair<int, int>> get_links() const {
+        return links;
+    }
 
-    void sphere_is_unselected(int id_selected) ;
+    void select_sphere(int id_selected) ;
 
-    void sphere_is_hovered(int id_selected) ;
+    void unselect_sphere(int id_selected) ;
+
+    void hover_sphere(int id_selected) ;
+
+    bool is_sphere_selected(int id) {
+        return spheres[id].is_selected;
+    }
 
     void add_sphere(shared_ptr<sphere> new_sphere);
 
