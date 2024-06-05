@@ -23,9 +23,8 @@ void interactions::segment_cone_at_pos(int screen_pos_x, int screen_pos_y) {
     }
 }
 
-void interactions::delete_sphere(int sphere_id) {
-    spheres_group->delete_sphere(sphere_id);
-    spheres_group->delete_isolated_spheres();
+void interactions::delete_sphere(const std::span<int>& spheres_id) {
+    spheres_group->delete_sphere(spheres_id);
 }
 
 pair<int, int> interactions::world_to_screen_pos(point3 p) {
@@ -85,11 +84,10 @@ vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_po
     return {0.0, 0.0, 0.0};
 }
 
-void interactions::move_spheres_on_screen(const vector<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
+void interactions::move_spheres_on_screen(const std::span<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
     //the move is related to the last sphere of the list
     if (!spheres_id.empty()) {
-        vec3 v = get_translation_vector_on_screen(spheres_id[0], screen_pos_x, screen_pos_y, new_screen_pos_x,
-                                                  new_screen_pos_y);
+        vec3 v = get_translation_vector_on_screen(spheres_id[spheres_id.size()-1], screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
         for (int id: spheres_id) {
             shared_ptr<sphere> sph = spheres_group->get_sphere_at(id);
             spheres_group->set_sphere_position(id, sph->get_center() + v);

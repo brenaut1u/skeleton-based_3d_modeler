@@ -9,7 +9,7 @@ inline constexpr double contour_thickness = 0.005;
 inline const color contour_color = color(1.0, 1.0, 0.0);
 
 bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
-  bool selected = false;
+  bool selected_hovered = false;
   bool contour = false;
   vec3 ro = r.origin();
   vec3 rd = unit_vector(r.direction());
@@ -141,7 +141,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
     rec.set_face_normal(r, unit_vector(outward_normal));
     rec.mat = mat;
 
-//    if (selected){
+//    if (selected_hovered){
 //        if (contour) {
 //            rec.mat = make_shared<unlit>(contour_color);
 //        }
@@ -159,5 +159,6 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
 //            }
 //        }
 //    }
+
     return true;
 }

@@ -18,6 +18,7 @@ void linked_spheres_group::add_sphere(shared_ptr<sphere> new_sphere) {
 void linked_spheres_group::add_sphere(shared_ptr<sphere> new_sphere, int linked_to) {
     add_sphere(new_sphere);
     add_link(spheres.size() - 1, linked_to);
+    add_link(spheres.size() - 1, spheres.size() - 1);
 }
 
 void linked_spheres_group::add_sphere_split_cone(int cone_id, point3 p, vec3 n, shared_ptr<material> mat) {
@@ -33,63 +34,61 @@ void linked_spheres_group::add_sphere_split_cone(int cone_id, point3 p, vec3 n, 
     unlink(cones[cone_id].sphere_id1, cones[cone_id].sphere_id2);
 }
 
-void linked_spheres_group::delete_sphere(int sphere_id) {
-    if (spheres.size() > 2) {
-        if (spheres.size() == 3 && nb_sphere_links(sphere_id) == 2) {
-            //prevents deletion of all the spheres if there are three spheres and we are rying to delete the middle
-            //sphere (as the isolated spheres are deleted too)
-            return;
-        }
-
-        unselect_sphere(sphere_id);
-
-        // update cones
-        int i = 0;
-        while (i < cones.size()) {
-            if (cones[i].sphere_id1 == sphere_id || cones[i].sphere_id2 == sphere_id) {
-                world->remove(cones[i].cone);
-                cones.erase(cones.begin() + i);
-            } else {
-                if (cones[i].sphere_id1 > sphere_id) {
-                    cones[i].sphere_id1--;
-                }
-                if (cones[i].sphere_id2 > sphere_id) {
-                    cones[i].sphere_id2--;
-                }
-                i++;
-            }
-        }
-
-        // update links
-        i = 0;
-        while (i < links.size()) {
-            if (links[i].first == sphere_id || links[i].second == sphere_id) {
-                links.erase(links.begin() + i);
-            } else {
-                if (links[i].first > sphere_id) {
-                    links[i].first--;
-                }
-                if (links[i].second > sphere_id) {
-                    links[i].second--;
-                }
-                i++;
-            }
-        }
-
-        // material
-        if (materials[spheres[sphere_id].material_id].nb_users == 1) {
-            // delete the material if the sphere was its last user
-            materials.erase(materials.begin() + spheres[sphere_id].material_id);
-            for (int s = 0; s < spheres.size(); s++) {
-                if (s != sphere_id && spheres[s].material_id >= spheres[sphere_id].material_id) {
-                    spheres[s].material_id--;
+void linked_spheres_group::delete_sphere(const std::span<int>& spheres_id) {
+    
+    for (auto it = spheres_id.rbegin(); it != spheres_id.rend(); ++it) {
+        int id = *it;
+        if (spheres.size() > 1) {
+            // update cones
+            int i = 0;
+            while (i < cones.size()) {
+                if (cones[i].sphere_id1 == id || cones[i].sphere_id2 == id) {
+                    world->remove(cones[i].cone);
+                    cones.erase(cones.begin() + i);
+                } 
+                else {
+                    if (cones[i].sphere_id1 > id) {
+                        cones[i].sphere_id1--;
+                    }
+                    if (cones[i].sphere_id2 > id) {
+                        cones[i].sphere_id2--;
+                    }
+                    i++;
                 }
             }
-        } else {
-            materials[spheres[sphere_id].material_id].nb_users--;
-        }
 
-        spheres.erase(spheres.begin() + sphere_id);
+            // update links
+            i = 0;
+            while (i < links.size()) {
+                if (links[i].first == id || links[i].second == id) {
+                    links.erase(links.begin() + i);
+                } 
+                else {
+                    if (links[i].first > id) {
+                        links[i].first--;
+                    }
+                    if (links[i].second > id) {
+                        links[i].second--;
+                    }
+                    i++;
+                }
+            }
+
+            // material
+            if (materials[spheres[id].material_id].nb_users == 1) {
+                // delete the material if the sphere was its last user
+                materials.erase(materials.begin() + spheres[id].material_id);
+                for (int s = 0; s < spheres.size(); s++) {
+                    if (s != id && spheres[s].material_id >= spheres[id].material_id) {
+                        spheres[s].material_id--;
+                    }
+                }
+            } 
+            else {
+                materials[spheres[id].material_id].nb_users--;
+            }
+            spheres.erase(spheres.begin() + id);
+        }
     }
 }
 
@@ -311,7 +310,7 @@ void linked_spheres_group::select_sphere(int id_selected) {
                 cones[i].cone->set_selected(1);
             }
         }
-        else if (cones[i].sphere_id2 == id_selected) {
+        if (cones[i].sphere_id2 == id_selected) {
             // cones[i].cone->set_selected(2);
             if (cones[i].cone->is_selected(1)) {
                 cones[i].cone->set_selected(3);
@@ -320,7 +319,7 @@ void linked_spheres_group::select_sphere(int id_selected) {
                 cones[i].cone->set_selected(2);
             }
         }
-        else if (!cones[i].cone->is_selected(1) && !cones[i].cone->is_selected(2) && cones[i].cone->is_selected(3)) {
+        if (!cones[i].cone->is_selected(1) && !cones[i].cone->is_selected(2) && cones[i].cone->is_selected(3)) {
             cones[i].cone->set_selected(0);
         }
         i++;
@@ -354,18 +353,12 @@ void linked_spheres_group::unselect_sphere(int id_selected){
 void linked_spheres_group::hover_sphere(int id_selected){
     int i = 0;
     while (i < cones.size()) {
-        if (cones[i].sphere_id1 == id_selected) {
-            if (not cones[i].cone->is_selected(1) && not cones[i].cone->is_selected(3)) {
-                cones[i].cone->set_selected(01);
-            }
+        cones[i].cone->set_hovered(0);
+        if (cones[i].sphere_id1 == id) {
+            cones[i].cone->set_hovered(1);
         }
-        else if (cones[i].sphere_id2 == id_selected) {
-            if (not cones[i].cone->is_selected(2) && not cones[i].cone->is_selected(3)) {
-                cones[i].cone->set_selected(02);
-            }
-        }
-        else {
-            cones[i].cone->set_selected(0);
+        if (cones[i].sphere_id2 == id) {
+            cones[i].cone->set_hovered(2);
         }
         i++;
     }

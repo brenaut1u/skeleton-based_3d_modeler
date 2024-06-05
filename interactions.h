@@ -2,6 +2,7 @@
 #define INTERACTIONS
 
 #include <iostream>
+#include <span>
 #include "linked_spheres_group.h"
 #include "save_load.h"
 #include "screen_segment.h"
@@ -19,7 +20,7 @@ public:
 
     void segment_cone_at_pos(int screen_pos_x, int screen_pos_y);
 
-    void delete_sphere(int sphere_id);
+    void delete_sphere(const std::span<int>& spheres_id);
 
     int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
         return std::get<0>(sphere_at_pos(screen_pos_x, screen_pos_y));
@@ -43,7 +44,7 @@ public:
 
     vec3 get_translation_vector_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
 
-    void move_spheres_on_screen(const vector<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
+    void move_spheres_on_screen(const std::span<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
 
     void rotate_spheres_around_axis(const vector<int>& spheres_id, vec3 axis, point3 axis_point, double angle);
 
