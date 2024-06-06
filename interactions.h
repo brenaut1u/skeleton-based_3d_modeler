@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <span>
+#include <future>
 #include "linked_spheres_group.h"
 #include "save_load.h"
 #include "screen_segment.h"
@@ -14,6 +15,7 @@ public:
     interactions(shared_ptr<linked_spheres_group> _spheres_group, shared_ptr<hittable_list> _world, camera* _cam) :
             spheres_group(_spheres_group), world(_world), cam(_cam) {
         cam_rot_center = point3(0.0, 0.25, -2.0);
+        beautiful_render_task = std::async(&camera::start_beautiful_render, cam, *world);
     }
 
     void add_sphere_at_pos(int screen_pos_x, int screen_pos_y);
@@ -91,12 +93,19 @@ public:
     }
     
     void add_link(int id1, int id2);
+
+    void start_beautiful_render(span3D beautiful_image);
+
+    bool is_beautful_render_ready() {
+        return cam->is_beautiful_render_ready();
+    }
     
 private:
     shared_ptr<linked_spheres_group> spheres_group;
     shared_ptr<hittable_list> world;
     camera* cam;
     point3 cam_rot_center;
+    std::future<bool> beautiful_render_task;
 
     tuple<int, hit_record> sphere_at_pos(int screen_pos_x, int screen_pos_y);
 

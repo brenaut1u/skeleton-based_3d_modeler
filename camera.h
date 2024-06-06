@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "interval.h"
 #include "color.h"
 #include "hittable.h"
@@ -11,6 +12,8 @@
 #include "span3D.h"
 #include "screen_segment.h"
 #include "hittable_list.h"
+
+using std::shared_ptr;
 
 #define MODE " "
 inline constexpr double ambient_occlusion = 0.5;
@@ -25,14 +28,19 @@ class camera {
   public:
     double aspect_ratio = 1.0;  // Ratio of image width over height
     int    image_width  = 100;  // Rendered image width in pixel count
-    int    samples_per_pixel = 10;   // Count of random samples for each pixel
-    int    max_depth         = 10;   // Maximum number of ray bounces into scene
+    int    samples_per_pixel = 1;   // Count of random samples for each pixel
+    int    samples_per_pixel_beautiful_render = 50;
+    int    max_depth         = 1;   // Maximum number of ray bounces into scene
+    int    max_depth_beautiful_render = 10;
 
     camera(){}
     
-    camera(double _aspect_ratio, int _image_width, int _samples_per_pixel, int _max_depth) :
+    camera(double _aspect_ratio, int _image_width, int _samples_per_pixel, int _max_depth,
+           int _samples_per_pixel_beautiful_render, int _max_depth_beautiful_render) :
                                     aspect_ratio(_aspect_ratio), image_width(_image_width),
-                                    samples_per_pixel(_samples_per_pixel), max_depth(_max_depth) {
+                                    samples_per_pixel(_samples_per_pixel), max_depth(_max_depth),
+                                    samples_per_pixel_beautiful_render(_samples_per_pixel_beautiful_render),
+                                    max_depth_beautiful_render(_max_depth_beautiful_render) {
         initialize();
     }
 
@@ -57,6 +65,12 @@ class camera {
     void move_camera_sideways(double delta_pos_x, double delta_pos_y);
 
     void move_camera_forward(double delta_pos);
+
+    bool start_beautiful_render(const hittable_list& world, span3D beautiful_image); // returns true if the render was completed successfully, false if the render was interrupted
+
+    void stop_beautiful_render() {continue_beautiful_render = false;}
+
+    bool is_beautiful_render_ready() {return beautiful_render_ready;}
 
     point3 get_center() const {
         return center;
@@ -89,6 +103,9 @@ class camera {
 
     vec3   pixel_delta_u;  // Offset to pixel to the right
     vec3   pixel_delta_v;  // Offset to pixel below
+
+    bool continue_beautiful_render = true; // used to stop the render
+    bool beautiful_render_ready = false;
 
     void initialize();
 

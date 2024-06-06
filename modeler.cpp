@@ -59,7 +59,7 @@ struct modeler
         // it should be initialized before initializing interactions
         // a set camera in interactions will be useful later (move viewpoint
         // in the scene : translate and rotate)
-        cam = camera(16.0 / 9.0, 400, 1, 1);
+        cam = camera(16.0 / 9.0, 400, 1, 1, 50, 5);
         inter = interactions(spheres, world, &cam);
 
         // std::cout<<cam.image_width/cam.aspect_ratio<<"/n";
@@ -149,6 +149,14 @@ struct modeler
         else {
             cam.computePhong(*world, lights, numpyView(output));
         }
+    }
+
+    void computeImageSpanBeautifulRender(pyb::array_t<float> output) {
+        return inter.start_beautiful_render(numpyView(output));
+    }
+
+    bool isBeautifulRenderReady() {
+        return inter.is_beautful_render_ready();
     }
 
     //transform a numpy array into a span3D

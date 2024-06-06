@@ -161,6 +161,25 @@ void camera::move_camera_forward(double delta_pos) {
     pixel00_loc += delta_pos * v;
 }
 
+bool camera::start_beautiful_render(const hittable_list& world, span3D beautiful_image) {
+    beautiful_render_ready = false;
+    for (int j = 0; j < image_height; ++j) {
+        for (int i = 0; i < image_width; ++i) {
+            color pixel_color(0,0,0);
+            for (int sample = 0; sample < samples_per_pixel; ++sample) {
+                if (!continue_beautiful_render) {
+                    return false;
+                }
+                ray r = get_ray(i, j);
+                pixel_color += ray_color(r, max_depth, world);
+            }
+            color_pixel(beautiful_image, {i, j}, pixel_color);
+        }
+    }
+    beautiful_render_ready = true;
+    return true;
+}
+
 void camera::initialize() {
     image_height = static_cast<int>(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;

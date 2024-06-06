@@ -144,3 +144,9 @@ tuple<int, hit_record> interactions::cone_at_pos(int screen_pos_x, int screen_po
 void interactions::add_link(int id1, int id2) {
     spheres_group->add_link(id1, id2);
 }
+
+void interactions::start_beautiful_render(span3D beautiful_image) {
+    cam->stop_beautiful_render();
+    beautiful_render_task.get();
+    cam->start_beautiful_render(*world, beautiful_image);
+}
