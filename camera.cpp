@@ -1,8 +1,11 @@
 #include <future>
+//#include <thread>
 #include "draw.h"
 #include "camera.h"
 
-void camera::render_file(const hittable& world) {
+//const auto processor_count = std::thread::hardware_concurrency();
+
+void camera::render_file(const hittable_list& world) {
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
     for (int j = 0; j < image_height; ++j) {
@@ -20,7 +23,7 @@ void camera::render_file(const hittable& world) {
     std::clog << "\rDone.                 \n";
 }
 
-std::vector<vec3> camera::render(const hittable& world) {
+std::vector<vec3> camera::render(const hittable_list& world) {
     std::vector<vec3> rendered_image;
 
     for (int j = 0; j < image_height; ++j) {
@@ -37,7 +40,7 @@ std::vector<vec3> camera::render(const hittable& world) {
     return rendered_image;
 }
 
-void camera::render_phong_file(const hittable& world, const std::vector<light>& lights) {
+void camera::render_phong_file(const hittable_list& world, const std::vector<light>& lights) {
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
     for (int j = 0; j < image_height; ++j) {
@@ -56,7 +59,7 @@ void camera::render_phong_file(const hittable& world, const std::vector<light>& 
     std::clog << "\rDone.                 \n";
 }
 
-std::vector<vec3> camera::render_phong(const hittable& world, const std::vector<light>& lights) {
+std::vector<vec3> camera::render_phong(const hittable_list& world, const std::vector<light>& lights) {
     std::vector<vec3> rendered_image;
 
     for (int j = 0; j < image_height; ++j) {
@@ -73,7 +76,7 @@ std::vector<vec3> camera::render_phong(const hittable& world, const std::vector<
     return rendered_image;
 }
 
-void camera::computePhong_partial(const hittable& world, const std::vector<light>& lights, span3D image, int start_x, int end_x, int start_y, int end_y) {
+void camera::computePhong_partial(const hittable_list& world, const std::vector<light>& lights, span3D image, int start_x, int end_x, int start_y, int end_y) {
     for (int j = start_y; j < end_y; ++j) {
         for (int i = start_x; i < end_x; ++i) {
             color pixel_color(0,0,0);
@@ -86,11 +89,21 @@ void camera::computePhong_partial(const hittable& world, const std::vector<light
     }
 }
 
-void camera::computePhong(const hittable& world, const std::vector<light>& lights, span3D image) {
+void camera::computePhong(const hittable_list& world, const std::vector<light>& lights, span3D image) {
+//    std::cout << processor_count << std::endl;
+//
+//    for (int i = 0; i < processor_count; i++) {
+//        std::future<void> task = std::async(&camera::computePhong_partial, this, world, lights, image, 0, (int) (((float) i / (processor_count - 1)) * image_width), 0, image_height);
+//    }
+// First attempt to create as many threads as there are cores, but then the render is VERY slow...
+
     std::future<void> task1 = std::async(&camera::computePhong_partial, this, world, lights, image, 0, image_width / 2, 0, image_height / 2);
+    std::future<void> task2 = std::async(&camera::computePhong_partial, this, world, lights, image, image_width / 2, image_width, 0, image_height / 2);
+    std::future<void> task3 = std::async(&camera::computePhong_partial, this, world, lights, image, image_width / 2, image_width, image_height / 2, image_height);
+    std::future<void> task4 = std::async(&camera::computePhong_partial, this, world, lights, image, 0, image_width / 2, image_height / 2, image_height);
 }
 
-void camera::computePhong(const hittable& world, const std::vector<light>& lights, span3D image, const vector<screen_segment>& skeleton) {
+void camera::computePhong(const hittable_list& world, const std::vector<light>& lights, span3D image, const vector<screen_segment>& skeleton) {
     computePhong(world, lights, image);
 
     for (const auto& segment : skeleton) {

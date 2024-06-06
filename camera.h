@@ -36,19 +36,19 @@ class camera {
         initialize();
     }
 
-    void render_file(const hittable& world);
+    void render_file(const hittable_list& world);
 
-    std::vector<vec3> render(const hittable& world);
+    std::vector<vec3> render(const hittable_list& world);
 
-    void render_phong_file(const hittable& world, const std::vector<light>& lights);
+    void render_phong_file(const hittable_list& world, const std::vector<light>& lights);
 
-    std::vector<vec3> render_phong(const hittable& world, const std::vector<light>& lights);
+    std::vector<vec3> render_phong(const hittable_list& world, const std::vector<light>& lights);
 
-    void computePhong_partial(const hittable& world, const std::vector<light>& lights, span3D image, int start_x, int end_x, int start_y, int end_y);
+    void computePhong_partial(const hittable_list& world, const std::vector<light>& lights, span3D image, int start_x, int end_x, int start_y, int end_y);
 
-    void computePhong(const hittable& world, const std::vector<light>& lights, span3D image);
+    void computePhong(const hittable_list& world, const std::vector<light>& lights, span3D image);
 
-    void computePhong(const hittable& world, const std::vector<light>& lights, span3D image, const vector<screen_segment>& skeleton);
+    void computePhong(const hittable_list& world, const std::vector<light>& lights, span3D image, const vector<screen_segment>& skeleton);
 
     ray get_ray(int i, int j) const;
 
