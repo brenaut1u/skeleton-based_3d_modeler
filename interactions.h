@@ -4,18 +4,23 @@
 #include <iostream>
 #include <span>
 #include <future>
+#include <memory>
 #include "linked_spheres_group.h"
 #include "save_load.h"
 #include "screen_segment.h"
+
+using std::unique_ptr;
 
 class interactions {
 public:
     interactions(){}
 
-    interactions(shared_ptr<linked_spheres_group> _spheres_group, shared_ptr<hittable_list> _world, camera* _cam) :
+    interactions(shared_ptr<linked_spheres_group> _spheres_group, shared_ptr<hittable_list> _world, shared_ptr<camera> _cam) :
             spheres_group(_spheres_group), world(_world), cam(_cam) {
         cam_rot_center = point3(0.0, 0.25, -2.0);
     }
+
+    static unique_ptr<interactions> get_init_scene();
 
     void add_sphere_at_pos(int screen_pos_x, int screen_pos_y);
 
@@ -65,7 +70,7 @@ public:
         save_in_file(spheres_group.get(), filename);
     }
 
-    interactions load(string filename,camera& cam);
+    static unique_ptr<interactions> load(string filename, shared_ptr<camera> cam);
 
     shared_ptr<linked_spheres_group> get_spheres_group() const {
         return spheres_group;
@@ -75,7 +80,7 @@ public:
         return world;
     }
 
-    camera * get_cam() const {
+    shared_ptr<camera> get_cam() const {
         return cam;
     }
 
@@ -102,9 +107,9 @@ public:
 private:
     shared_ptr<linked_spheres_group> spheres_group;
     shared_ptr<hittable_list> world;
-    camera* cam;
+    shared_ptr<camera> cam;
     point3 cam_rot_center;
-    std::future<bool> beautiful_render_task;
+    std::future<void> beautiful_render_task;
 
     tuple<int, hit_record> sphere_at_pos(int screen_pos_x, int screen_pos_y);
 

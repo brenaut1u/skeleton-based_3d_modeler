@@ -8,6 +8,18 @@
 #include "save_load.h"
 #include "interactions.h"
 
+unique_ptr<interactions> interactions::get_init_scene() {
+    shared_ptr<hittable_list> world = make_shared<hittable_list>();
+    auto mat = make_shared<metal>(color(0.8, 0.6, 0.2), 0.5);
+
+    shared_ptr<linked_spheres_group> spheres = make_shared<linked_spheres_group>(world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, mat));
+    spheres -> add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, mat), 0);
+
+    shared_ptr<camera> cam = make_shared<camera>(16.0 / 9.0, 400, 1, 1, 20, 10);
+
+    return make_unique<interactions>(spheres, world, cam);
+}
+
 void interactions::add_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
     auto [sphere_id, rec] = sphere_at_pos(screen_pos_x, screen_pos_y);
     if (sphere_id != -1) {
@@ -118,14 +130,14 @@ void interactions::move_camera_sideways(double delta_pos_x, double delta_pos_y) 
     cam_rot_center += delta_pos_x * cam->get_viewport_u() + delta_pos_y * cam->get_viewport_v();
 }
 
-interactions interactions::load(string filename,camera& cam) {
+unique_ptr<interactions> interactions::load(string filename, shared_ptr<camera> cam) {
     try {
         auto [spheres, world] = load_from_file(filename);
-        return interactions(spheres, world, &cam);
+        return make_unique<interactions>(spheres, world, cam);
     }
     catch (const std::exception e) {
         std::cout<<"Error loading file\n";
-        return *this;
+        return interactions::get_init_scene();
     }
 }
 
@@ -147,6 +159,9 @@ void interactions::add_link(int id1, int id2) {
 
 void interactions::start_beautiful_render(span3D beautiful_image) {
     cam->stop_beautiful_render();
-    beautiful_render_task.get();
+    try {
+        beautiful_render_task.get();
+    }
+    catch(const std::exception e) {}
     beautiful_render_task = std::async(&camera::start_beautiful_render, cam, *world, beautiful_image);
 }

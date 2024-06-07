@@ -66,7 +66,7 @@ class camera {
 
     void move_camera_forward(double delta_pos);
 
-    bool start_beautiful_render(const hittable_list& world, span3D beautiful_image); // returns true if the render was completed successfully, false if the render was interrupted
+    void start_beautiful_render(const hittable_list& world, span3D beautiful_image); // returns true if the render was completed successfully, false if the render was interrupted
 
     void stop_beautiful_render() {continue_beautiful_render = false;}
 

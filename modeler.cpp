@@ -4,10 +4,14 @@
 #include <nanobind/stl/string.h>
 #include <nanobind/stl/vector.h>*/
 #include <vector>
+#include <memory>
 #include <pybind11/numpy.h>
+
+using std::unique_ptr;
 
 namespace pyb = pybind11;
 
+#include <memory>
 #include "span3D.h"
 #include "hittable_list.h"
 #include "sphere.h"
@@ -20,6 +24,8 @@ namespace pyb = pybind11;
 #include "cone.h"
 #include "interactions.h"
 
+using std::unique_ptr;
+using std::shared_ptr;
 
 #include <pybind11/numpy.h>
 
@@ -29,66 +35,41 @@ struct modeler
 {
     shared_ptr<hittable_list> world;
     shared_ptr<linked_spheres_group> spheres;
-    camera cam;
+    shared_ptr<camera> cam;
     std::vector<vec3> imageVector;
     std::vector<light> lights;
-    interactions inter;
+    unique_ptr<interactions> inter;
     int indexLinkedSphere;
 
     void initializedWorld()
     {
-        world = make_shared<hittable_list>();
-        auto mat = make_shared<metal>(color(0.8, 0.6, 0.2), 0.5);
+        inter = interactions::get_init_scene();
+        world = inter->get_world();
+        spheres = inter->get_spheres_group();
+        cam = inter->get_cam();
 
-        // CZ You were initializing temporary variable (hiding the attribut of the structure
-        // in the current scope) :
-        // linked_spheres_group spheres = ...
-        // type + identifier => never refer to an existing variable or attributs
-        spheres = make_shared<linked_spheres_group>(world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, mat));
-        spheres -> add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, mat), 0);
-
-        // CZ : no real reason to change the lights during updates,
-        // however, it could be in a dedicated function
         light white_light = new_light(point3(-1.0, 0.5, -1.0));
-        light red_light = new_colored_light(point3(0.0, 0.5, -1), point3(0.7, 0.2, 0.2));
-        light blue_light = new_colored_light(point3(1.0, -0.25, -1), point3(0.0, 0.0, 0.8));
         lights = std::vector<light>{white_light};
-        // std::vector<light> lights {white_light, red_light, blue_light};
-
-        // CZ : warning, requires "interactions" copies the camera,
-        // it should be initialized before initializing interactions
-        // a set camera in interactions will be useful later (move viewpoint
-        // in the scene : translate and rotate)
-        cam = camera(16.0 / 9.0, 400, 1, 1, 50, 5);
-        inter = interactions(spheres, world, &cam);
-
-        // std::cout<<cam.image_width/cam.aspect_ratio<<"/n";
-        //computeImageSpan(output);
-    }
-
-    void computeImage()
-    {
-        imageVector = cam.render_phong(*world, lights);
     }
 
     void addSphere(int screen_pos_x, int screen_pos_y)
     {
-        inter.add_sphere_at_pos(screen_pos_x, screen_pos_y);
+        inter->add_sphere_at_pos(screen_pos_x, screen_pos_y);
     }
 
     void segmentCone(int screen_pos_x, int screen_pos_y)
     {
-        inter.segment_cone_at_pos(screen_pos_x, screen_pos_y);
+        inter->segment_cone_at_pos(screen_pos_x, screen_pos_y);
     }
 
     void deleteSphere(pyb::array_t<float> sphere_id)
     {
-        inter.delete_sphere(numpyViewArray(sphere_id));
+        inter->delete_sphere(numpyViewArray(sphere_id));
     }
 
     int detectSphere(int screen_pos_x, int screen_pos_y)
     {
-        return inter.detect_sphere_at_pos(screen_pos_x, screen_pos_y);
+        return inter->detect_sphere_at_pos(screen_pos_x, screen_pos_y);
     }
 
     double getRed(int i)
@@ -108,35 +89,35 @@ struct modeler
 
     void change_radius(int sphere_id, double radius)
     {
-        return inter.change_radius(sphere_id, radius);
+        return inter->change_radius(sphere_id, radius);
     }
 
     void increase_radius(int sphere_id, double radius)
     {
-        return inter.increase_radius(sphere_id, radius);
+        return inter->increase_radius(sphere_id, radius);
     }
 
     void change_color(int sphere_id, int red, int green, int blue) {
-        return inter.change_color(sphere_id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
+        return inter->change_color(sphere_id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
     }
 
     void move_sphere_on_screen(pyb::array_t<float> sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
     {
-        return inter.move_spheres_on_screen(numpyViewArray(sphere_id), screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
+        return inter->move_spheres_on_screen(numpyViewArray(sphere_id), screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
     }
 
     void rotate_camera(double horizontal_angle, double vertical_angle)
     {
-        return inter.rotate_camera(horizontal_angle, vertical_angle);
+        return inter->rotate_camera(horizontal_angle, vertical_angle);
     }
 
     void move_camera_sideways(double delta_pos_x, double delta_pos_y) {
-        return inter.move_camera_sideways(delta_pos_x, delta_pos_y);
+        return inter->move_camera_sideways(delta_pos_x, delta_pos_y);
     }
 
     void move_camera_forward(double delta_pos)
     {
-        return inter.move_camera_forward(delta_pos);
+        return inter->move_camera_forward(delta_pos);
     }
 
     // compute the new image (load changes)
@@ -144,19 +125,19 @@ struct modeler
     void computeImageSpan(pyb::array_t<float> output, bool draw_skeleton)
     {
         if (draw_skeleton) {
-            cam.computePhong(*world, lights, numpyView(output), inter.get_skeleton_screen_coordinates());
+            cam->computePhong(*world, lights, numpyView(output), inter->get_skeleton_screen_coordinates());
         }
         else {
-            cam.computePhong(*world, lights, numpyView(output));
+            cam->computePhong(*world, lights, numpyView(output));
         }
     }
 
     void computeImageSpanBeautifulRender(pyb::array_t<float> output) {
-        return inter.start_beautiful_render(numpyView(output));
+        return inter->start_beautiful_render(numpyView(output));
     }
 
     bool isBeautifulRenderReady() {
-        return inter.is_beautful_render_ready();
+        return inter->is_beautful_render_ready();
     }
 
     //transform a numpy array into a span3D
@@ -188,33 +169,34 @@ struct modeler
 }
 
     void saveInFile(string fileName){
-        inter.save(fileName);
+        inter->save(fileName);
     }
 
     void load(string fileName){
-        inter = inter.load(fileName,cam);
-        spheres = inter.get_spheres_group();
-        world = inter.get_world();  
+        inter = inter->load(fileName, cam);
+        spheres = inter->get_spheres_group();
+        world = inter->get_world();
+        cam = inter->get_cam();
     }
 
     void select(int sphere_id)
     {
-        inter.select_sphere(sphere_id);
+        inter->select_sphere(sphere_id);
     }
 
     void unselect(int sphere_id)
     {
-        inter.unselect_sphere(sphere_id);
+        inter->unselect_sphere(sphere_id);
     }
 
     void hovered(int sphere_id)
     {
-        inter.hovered(sphere_id);
+        inter->hovered(sphere_id);
     }
 
     void addLink(int id1, int id2)
     {
-        inter.add_link(id1, id2);
+        inter->add_link(id1, id2);
     }
 };
 
@@ -243,7 +225,6 @@ PYBIND11_MODULE(main_modeler, m)
     pyb::class_<modeler>(m, "modeler")
         .def(pyb::init<>())
         .def("initializedWorld", &modeler::initializedWorld)
-        .def("computeImage", &modeler::computeImage)
         .def("getRed", &modeler::getRed)
         .def("getGreen", &modeler::getGreen)
         .def("getBlue", &modeler::getBlue)
@@ -259,6 +240,8 @@ PYBIND11_MODULE(main_modeler, m)
         .def("move_camera_sideways", &modeler::move_camera_sideways)
         .def("move_camera_forward", &modeler::move_camera_forward)
         .def("computeImageSpan", &modeler::computeImageSpan)
+        .def("computeImageSpanBeautifulRender", &modeler::computeImageSpanBeautifulRender)
+        .def("isBeautifulRenderReady", &modeler::isBeautifulRenderReady)
         .def("save",&modeler::saveInFile)
         .def("segment_cone",&modeler::segmentCone)
         .def("load",&modeler::load)

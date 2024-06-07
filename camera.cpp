@@ -97,10 +97,13 @@ void camera::computePhong(const hittable_list& world, const std::vector<light>& 
 //    }
 // First attempt to create as many threads as there are cores, but then the render is VERY slow...
 
-    std::future<void> task1 = std::async(&camera::computePhong_partial, this, world, lights, image, 0, image_width / 2, 0, image_height / 2);
-    std::future<void> task2 = std::async(&camera::computePhong_partial, this, world, lights, image, image_width / 2, image_width, 0, image_height / 2);
-    std::future<void> task3 = std::async(&camera::computePhong_partial, this, world, lights, image, image_width / 2, image_width, image_height / 2, image_height);
-    std::future<void> task4 = std::async(&camera::computePhong_partial, this, world, lights, image, 0, image_width / 2, image_height / 2, image_height);
+//    std::future<void> task1 = std::async(&camera::computePhong_partial, this, world, lights, image, 0, image_width / 2, 0, image_height / 2);
+//    std::future<void> task2 = std::async(&camera::computePhong_partial, this, world, lights, image, image_width / 2, image_width, 0, image_height / 2);
+//    std::future<void> task3 = std::async(&camera::computePhong_partial, this, world, lights, image, image_width / 2, image_width, image_height / 2, image_height);
+//    std::future<void> task4 = std::async(&camera::computePhong_partial, this, world, lights, image, 0, image_width / 2, image_height / 2, image_height);
+
+    std::future<void> task1 = std::async(&camera::computePhong_partial, this, world, lights, image, 0, image_width, 0, image_height);
+
 }
 
 void camera::computePhong(const hittable_list& world, const std::vector<light>& lights, span3D image, const vector<screen_segment>& skeleton) {
@@ -161,23 +164,25 @@ void camera::move_camera_forward(double delta_pos) {
     pixel00_loc += delta_pos * v;
 }
 
-bool camera::start_beautiful_render(const hittable_list& world, span3D beautiful_image) {
+void camera::start_beautiful_render(const hittable_list& world, span3D beautiful_image) {
     beautiful_render_ready = false;
+    continue_beautiful_render = true;
     for (int j = 0; j < image_height; ++j) {
         for (int i = 0; i < image_width; ++i) {
+            std::cout << 100 * ((float) j * (float) image_width + (float) i) / ((float) image_height * image_width) << "%" << std::endl;
             color pixel_color(0,0,0);
-            for (int sample = 0; sample < samples_per_pixel; ++sample) {
+            for (int sample = 0; sample < samples_per_pixel_beautiful_render; ++sample) {
                 if (!continue_beautiful_render) {
-                    return false;
+                    return;
                 }
                 ray r = get_ray(i, j);
-                pixel_color += ray_color(r, max_depth, world);
+                pixel_color += ray_color(r, max_depth_beautiful_render, world);
             }
             color_pixel(beautiful_image, {i, j}, pixel_color);
         }
     }
     beautiful_render_ready = true;
-    return true;
+    std::cout << "Done." << std::endl;
 }
 
 void camera::initialize() {

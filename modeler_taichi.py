@@ -37,6 +37,7 @@ m = 225
 
 
 pixels = np.ndarray((n,m,3), dtype='f')
+beautiful_render = np.ndarray((n,m,3), dtype='f')
 
 modeler1 = main_modeler.modeler()
 modeler1.initializedWorld()
@@ -45,6 +46,7 @@ gui = ti.ui.Window("Modeler", res=(4*n, 4*m),vsync=True)
 gui2 = gui.get_gui()
 canvas = gui.get_canvas()
 
+modeler1.computeImageSpanBeautifulRender(beautiful_render)
 
 array_selected_id = np.array([-1])
 
@@ -217,6 +219,12 @@ while gui.running:
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
 
     modeler1.computeImageSpan(pixels, show_skeleton)
-    canvas.set_image(pixels)
+    if modeler1.isBeautifulRenderReady():
+        canvas.set_image(beautiful_render)
+    else:
+        canvas.set_image(pixels)
+
+    # modeler1.computeImageSpan(pixels, show_skeleton)
+    # canvas.set_image(pixels)
 
     gui.show()
