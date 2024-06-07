@@ -127,7 +127,7 @@ void interactions::rotate_spheres_around_axis(const std::span<int>& spheres_id, 
     }
 }
 
-void interactions::rotate_spheres_around_camera_axis(const vector<int>& spheres_id, point3 axis_point, double angle) {
+void interactions::rotate_spheres_around_camera_axis(const std::span<int>& spheres_id, point3 axis_point, double angle) {
     vec3 axis = axis_point - phong_cam->get_center();
     rotate_spheres_around_axis(spheres_id, axis, axis_point, angle);
 }

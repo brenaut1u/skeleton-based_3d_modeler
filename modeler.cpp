@@ -103,7 +103,7 @@ struct modeler
     void change_color(pyb::array_t<int> sphere_id, int red, int green, int blue) {
         for (int id : numpyViewArray(sphere_id)){
             if (id != -1){
-                inter.change_color(id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
+                inter->change_color(id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
             }
         }
     }
@@ -187,7 +187,7 @@ struct modeler
         for (int id : numpyViewArray(sphere_id))
         {
             if (id != -1){
-                inter.select_sphere(id);
+                inter->select_sphere(id);
             }
         }
     }
@@ -197,7 +197,7 @@ struct modeler
         for (int id : numpyViewArray(sphere_id))
         {
             if (id != -1){
-                inter.unselect_sphere(id);
+                inter->unselect_sphere(id);
             }
         }
     }
@@ -215,7 +215,7 @@ struct modeler
     void rotateSphereCamera(pyb::array_t<int> sphere_id, double angle)
     {
         auto ids = numpyViewArray(sphere_id);
-        inter.rotate_spheres_around_camera_axis(ids, spheres->get_sphere_at(ids[0])->get_center(), angle);
+        inter->rotate_spheres_around_camera_axis(ids, spheres->get_sphere_at(ids[0])->get_center(), angle);
     }
 
     void rotateSphereAxis(pyb::array_t<int> sphere_id, double angle)
@@ -224,7 +224,7 @@ struct modeler
         auto A = spheres->get_sphere_at(ids[0])->get_center();
         auto B = spheres->get_sphere_at(ids[1])->get_center();
         auto axis = B - A;
-        inter.rotate_spheres_around_axis(ids, axis , spheres->get_sphere_at(ids[0])->get_center(), angle);
+        inter->rotate_spheres_around_axis(ids, axis , spheres->get_sphere_at(ids[0])->get_center(), angle);
     }
 };
 
