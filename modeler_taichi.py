@@ -58,7 +58,8 @@ while gui.running:
             mouse_clicked = True
             if hovered_id == -1 :
                 for id in array_selected_id:
-                    modeler1.unselect(id)
+                    if id!= -1 :
+                        modeler1.unselect(id)
                 array_selected_id = np.array([-1])
             elif gui.is_pressed('Control') and array_selected_id[0] != -1 :
                 if hovered_id not in array_selected_id :
@@ -70,7 +71,8 @@ while gui.running:
                         array_selected_id = np.array([-1])
             else : 
                 for id in array_selected_id:
-                    modeler1.unselect(id)
+                    if id!= -1 :
+                        modeler1.unselect(id)
                 array_selected_id = np.array([hovered_id])
                 
         elif gui.is_pressed('w'):
