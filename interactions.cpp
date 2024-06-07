@@ -148,5 +148,5 @@ void interactions::add_link(int id1, int id2) {
 void interactions::start_beautiful_render(span3D beautiful_image) {
     cam->stop_beautiful_render();
     beautiful_render_task.get();
-    cam->start_beautiful_render(*world, beautiful_image);
+    beautiful_render_task = std::async(&camera::start_beautiful_render, cam, *world, beautiful_image);
 }
