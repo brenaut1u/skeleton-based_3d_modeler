@@ -1,8 +1,5 @@
 #include <string>
 #include <pybind11/pybind11.h>
-/*#include <nanobind/nanobind.h>
-#include <nanobind/stl/string.h>
-#include <nanobind/stl/vector.h>*/
 #include <vector>
 #include <memory>
 #include <pybind11/numpy.h>
@@ -103,8 +100,12 @@ struct modeler
         return inter->increase_radius(sphere_id, radius);
     }
 
-    void change_color(int sphere_id, int red, int green, int blue) {
-        return inter->change_color(sphere_id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
+    void change_color(pyb::array_t<int> sphere_id, int red, int green, int blue) {
+        for (int id : numpyViewArray(sphere_id)){
+            if (id != -1){
+                inter.change_color(id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
+            }
+        }
     }
 
     void move_sphere_on_screen(pyb::array_t<float> sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
@@ -155,10 +156,6 @@ struct modeler
         // Accessing the shape and strides of the array
         auto shape = array.shape();
         auto strides = array.strides();
-
-        // std::cout<<shape[0]<<"   "<<shape[1]<<"   "<<shape[2]<<"/n";
-        // std::cout<<strides[0]<<"   "<<strides[1]<<"   "<<strides[2]<<"/n";
-
         return span3D(data, shape[0], shape[1], shape[2]);
     }
 
@@ -169,9 +166,8 @@ struct modeler
         auto buffer_info = array.request();
         if (buffer_info.ndim != 1)
             throw std::runtime_error("Not a 1D numpy array!");
-        std::span<int> span = std::span<int>(static_cast<int*>(buffer_info.ptr), buffer_info.size);
-
-        return span;
+        std::span<int> span = std::span<int>(static_cast<int*>(buffer_info.ptr), buffer_info.size);      
+        return span;    
     }
 
     void saveInFile(string fileName){
@@ -186,14 +182,24 @@ struct modeler
         beautiful_cam = inter->get_beautiful_cam();
     }
 
-    void select(int sphere_id)
+    void select(pyb::array_t<float> sphere_id)
     {
-        inter->select_sphere(sphere_id);
+        for (int id : numpyViewArray(sphere_id))
+        {
+            if (id != -1){
+                inter.select_sphere(id);
+            }
+        }
     }
 
-    void unselect(int sphere_id)
+    void unselect(pyb::array_t<float> sphere_id)
     {
-        inter->unselect_sphere(sphere_id);
+        for (int id : numpyViewArray(sphere_id))
+        {
+            if (id != -1){
+                inter.unselect_sphere(id);
+            }
+        }
     }
 
     void hovered(int sphere_id)
@@ -204,6 +210,21 @@ struct modeler
     void addLink(int id1, int id2)
     {
         inter->add_link(id1, id2);
+    }
+
+    void rotateSphereCamera(pyb::array_t<int> sphere_id, double angle)
+    {
+        auto ids = numpyViewArray(sphere_id);
+        inter.rotate_spheres_around_camera_axis(ids, spheres->get_sphere_at(ids[0])->get_center(), angle);
+    }
+
+    void rotateSphereAxis(pyb::array_t<int> sphere_id, double angle)
+    {
+        auto ids = numpyViewArray(sphere_id);
+        auto A = spheres->get_sphere_at(ids[0])->get_center();
+        auto B = spheres->get_sphere_at(ids[1])->get_center();
+        auto axis = B - A;
+        inter.rotate_spheres_around_axis(ids, axis , spheres->get_sphere_at(ids[0])->get_center(), angle);
     }
 };
 
@@ -235,5 +256,7 @@ PYBIND11_MODULE(main_modeler, m)
         .def("select",&modeler::select)
         .def("unselect",&modeler::unselect)
         .def("addLink",&modeler::addLink)
-        .def("hovered",&modeler::hovered);
+        .def("hovered",&modeler::hovered)
+        .def("rotateSphereCamera",&modeler::rotateSphereCamera)
+        .def("rotateSphereAxis",&modeler::rotateSphereAxis);
 }

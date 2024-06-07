@@ -27,6 +27,9 @@ void interactions::add_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
         shared_ptr<sphere> new_sphere = make_shared<sphere>(rec.p, 0.3, rec.mat);
         spheres_group->add_sphere(new_sphere, sphere_id);
     }
+    else {
+        segment_cone_at_pos(screen_pos_x, screen_pos_y);
+    }
 }
 
 void interactions::segment_cone_at_pos(int screen_pos_x, int screen_pos_y) {
@@ -113,11 +116,14 @@ void interactions::move_spheres_on_screen(const std::span<int>& spheres_id, int 
     }
 }
 
-void interactions::rotate_spheres_around_axis(const vector<int>& spheres_id, vec3 axis, point3 axis_point, double angle) {
+void interactions::rotate_spheres_around_axis(const std::span<int>& spheres_id, vec3 axis, point3 axis_point, double angle) {
     for (int sphere_id : spheres_id) {
         shared_ptr<sphere> sph = spheres_group->get_sphere_at(sphere_id);
         point3 sph_pos = sph->get_center();
-        sph->set_center(point_rotation(sph_pos, axis_point, axis, angle));
+        if (sph_pos != axis_point) {
+            sph->set_center(point_rotation(sph_pos, axis_point, axis, angle));
+            spheres_group->set_sphere_position(sphere_id, sph->get_center());
+        }
     }
 }
 
