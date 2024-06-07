@@ -14,6 +14,9 @@ void interactions::add_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
         shared_ptr<sphere> new_sphere = make_shared<sphere>(rec.p, 0.3, rec.mat);
         spheres_group->add_sphere(new_sphere, sphere_id);
     }
+    else {
+        segment_cone_at_pos(screen_pos_x, screen_pos_y);
+    }
 }
 
 void interactions::segment_cone_at_pos(int screen_pos_x, int screen_pos_y) {

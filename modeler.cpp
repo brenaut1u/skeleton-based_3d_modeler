@@ -116,8 +116,12 @@ struct modeler
         return inter.increase_radius(sphere_id, radius);
     }
 
-    void change_color(int sphere_id, int red, int green, int blue) {
-        return inter.change_color(sphere_id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
+    void change_color(pyb::array_t<int> sphere_id, int red, int green, int blue) {
+        for (int id : numpyViewArray(sphere_id)){
+            if (id != -1){
+                inter.change_color(id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
+            }
+        }
     }
 
     void move_sphere_on_screen(pyb::array_t<float> sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
@@ -185,14 +189,24 @@ struct modeler
         world = inter.get_world();  
     }
 
-    void select(int sphere_id)
+    void select(pyb::array_t<float> sphere_id)
     {
-        inter.select_sphere(sphere_id);
+        for (int id : numpyViewArray(sphere_id))
+        {
+            if (id != -1){
+                inter.select_sphere(id);
+            }
+        }
     }
 
-    void unselect(int sphere_id)
+    void unselect(pyb::array_t<float> sphere_id)
     {
-        inter.unselect_sphere(sphere_id);
+        for (int id : numpyViewArray(sphere_id))
+        {
+            if (id != -1){
+                inter.unselect_sphere(id);
+            }
+        }
     }
 
     void hovered(int sphere_id)
@@ -209,6 +223,15 @@ struct modeler
     {
         auto ids = numpyViewArray(sphere_id);
         inter.rotate_spheres_around_camera_axis(ids, spheres->get_sphere_at(ids[0])->get_center(), angle);
+    }
+
+    void rotateSphereAxis(pyb::array_t<int> sphere_id, double angle)
+    {
+        auto ids = numpyViewArray(sphere_id);
+        auto A = spheres->get_sphere_at(ids[0])->get_center();
+        auto B = spheres->get_sphere_at(ids[1])->get_center();
+        auto axis = B - A;
+        inter.rotate_spheres_around_axis(ids, axis , spheres->get_sphere_at(ids[0])->get_center(), angle);
     }
 };
 
@@ -243,5 +266,6 @@ PYBIND11_MODULE(main_modeler, m)
         .def("unselect",&modeler::unselect)
         .def("addLink",&modeler::addLink)
         .def("hovered",&modeler::hovered)
-        .def("rotateSphereCamera",&modeler::rotateSphereCamera);
+        .def("rotateSphereCamera",&modeler::rotateSphereCamera)
+        .def("rotateSphereAxis",&modeler::rotateSphereAxis);
 }

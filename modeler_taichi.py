@@ -7,37 +7,21 @@ import numpy as np
 from sys import platform
 
 
-def calculate_angle(pos1, pos2, pos3):
-    a = np.array(pos1)
-    b = np.array(pos2)
-    c = np.array(pos3)
-
-    ba = a - b
-    bc = c - b
-
-    q = (np.linalg.norm(ba) * np.linalg.norm(bc))
-    if q != 0:
-        cosine_angle = np.dot(ba, bc) / q
-        angle = np.arccos(cosine_angle)
-    else :
-        angle = 0
-    return np.degrees(angle)
-
+# Check if the OS is compatible with the use of both tkinter and taichi
 use_tk = True
 if platform == "darwin":
     use_tk = False
-
 if use_tk:
     from tkinter import filedialog
     from tkinter import colorchooser
     from tkinter import simpledialog
 
-
+# Initialize the taichi environment
 ti.init(arch=ti.gpu)
 n = 400
 m = 225
 
-
+# Create the canvas and the modeler
 pixels = np.ndarray((n,m,3), dtype='f')
 
 modeler1 = main_modeler.modeler()
@@ -47,108 +31,113 @@ gui = ti.ui.Window("Modeler", res=(4*n, 4*m),vsync=True)
 gui2 = gui.get_gui()
 canvas = gui.get_canvas()
 
-last_center = -1
+# Initialize some parameters
 array_selected_id = np.array([-1])
-
 hovered_id = -1
 origin = (-1,-1)
-
-show_skeleton = False
-selected_id_past = -1
-
 old_pos = (0, 0)
+show_skeleton = False
+
+
 
 
 while gui.running:
-    #gui.get_event()
+    # Get the position of the cursor
     pos = gui.get_cursor_pos()
-
-    hovered_id = modeler1.detect(int(pos[0]*n),int((1-pos[1])*m))
-
     mouse_clicked = False
-   
+
+    # Check if the cursor is hovering over a sphere
+    hovered_id = modeler1.detect(int(pos[0]*n),int((1-pos[1])*m))
     modeler1.hovered(hovered_id)
+    
 
     if gui.get_event(ti.ui.PRESS) :
+        # Check if the left mouse button is clicked
         if gui.event.key == ti.GUI.LMB :
-            origin = (pos[0],pos[1])
+            # If it is, set the mouse_clicked variable to True
             mouse_clicked = True
+            # and store the position of the cursor
+            origin = (pos[0],pos[1])
+            
+            # If we hover nothing, that means we unselect everything
             if hovered_id == -1 :
-                for id in array_selected_id:
-                    if id!= -1 :
-                        modeler1.unselect(id)
+                #we unselect everything
+                modeler1.unselect(array_selected_id)
+                #we reset the array of selected id
                 array_selected_id = np.array([-1])
+            # If we press the control key, it means we want to select multiple spheres
             elif gui.is_pressed('Control') and array_selected_id[0] != -1 :
+                # If the hovered sphere is not already selected, we add it to the list
                 if hovered_id not in array_selected_id :
                     array_selected_id =  np.append(array_selected_id,hovered_id)
+                # If it is already selected, we remove it from the list
                 else : 
                     array_selected_id = array_selected_id[array_selected_id != hovered_id]
-                    modeler1.unselect(hovered_id)
-                    if len(array_selected_id) == 0 :
+                    modeler1.unselect(np.array([hovered_id]))
+                    if len(array_selected_id) == 0 :              
                         array_selected_id = np.array([-1])
+            # If we are not in one of the first two cases, we unselect the selected spheres and select the hovered one
             else : 
-                for id in array_selected_id:
-                    if id!= -1 :
-                        modeler1.unselect(id)
+                modeler1.unselect(array_selected_id)
                 array_selected_id = np.array([hovered_id])
+
+            # If we press 'q' (or 'a'), we add a sphere if possible at the position of the cursor
+            if gui.is_pressed('q') :
+                modeler1.add(int(pos[0]*n),int((1-pos[1])*m))
+
+        # If the 'c' button is pressed, we open a color picker to change the color of the selected spheres
+        elif gui.is_pressed('c') and array_selected_id[0] != -1:
+            if use_tk:
+                color = colorchooser.askcolor()
+                if color[0] != None:
+                    modeler1.changeColor(array_selected_id, color[0][0], color[0][1], color[0][2])
+            else:
+                print("Change color - Enter values between 0 and 255")
+                try:
+                    r = int(input("Red: "))
+                    g = int(input("Green: "))
+                    b = int(input("Blue: "))
+                    if (r in range(0, 256) and g in range(0, 256) and b in range(0, 256)):
+                        modeler1.changeColor(array_selected_id, r, g, b)
+                    else:
+                        print("Value incorrect")
+                except:
+                    print("Value incorrect")
                 
+        # Make the skeleton visible or not
         elif gui.is_pressed('w'):
             show_skeleton = not show_skeleton
 
-    for id in array_selected_id:
-        modeler1.select(id)        
+        # If the 'd' button is pressed, we delete the selected spheres
+        elif gui.is_pressed('d') and array_selected_id[0] != -1:
+            array_selected_id = np.sort(array_selected_id)
+            modeler1.unselect(array_selected_id)
+            modeler1.delete(array_selected_id)
+            array_selected_id = np.array([-1])
 
-    if mouse_clicked :
-        if array_selected_id[0] != -1 :
-            if gui.is_pressed('q'):
-                modeler1.add(int(pos[0]*n),int((1-pos[1])*m))
+        # If the 'f' button is pressed, we add a link between the selected spheres
+        elif gui.is_pressed('f') :
+            modeler1.addLink(array_selected_id[0],array_selected_id[1])
 
-            # elif not gui.is_pressed('r'):
-            #         origin = (pos[0],pos[1])
-            #     # elif list_selected_id[0] != -1 :
-            #     #     ray = ((pos[0]-origin[0])**2+(pos[1]-origin[1])**2)**(1/2)*4
-            #     #     modeler1.increaseRadius(list_selected_id[0],-(origin[0]-pos[0])/n*100)
-        else :
-            if gui.is_pressed('q'):
-                modeler1.segment_cone(int(pos[0]*n),int((1-pos[1])*m))
         
-    elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('c') and array_selected_id[0] != -1:
-        if use_tk:
-            color = colorchooser.askcolor()
-            if color[0] != None:
-                for id in array_selected_id:
-                    modeler1.changeColor(id, color[0][0], color[0][1], color[0][2])
-        else:
-            print("Change color - Enter values between 0 and 255")
-            try:
-                r = int(input("Red: "))
-                g = int(input("Green: "))
-                b = int(input("Blue: "))
-
-                if (r in range(0, 256) and g in range(0, 256) and b in range(0, 256)):
-                    for id in array_selected_id:
-                        modeler1.changeColor(id, r,g,b)
-                else:
-                               ("Value incorrect")
-            except:
-                print("Value incorrect")
-    
-    elif gui.is_pressed('d') and array_selected_id[0] != -1:
-        array_selected_id = np.sort(array_selected_id)
-        for i in range(len(array_selected_id)-1,0,-1):
-            modeler1.unselect(array_selected_id[i])
-        modeler1.delete(array_selected_id)
-        array_selected_id = np.array([-1])
-
-    elif gui.is_pressed('f') :
-        modeler1.addLink(array_selected_id[0],array_selected_id[1])
-
-    elif gui.is_pressed('a'):
-        modeler1.rotateSphereCamera(array_selected_id,0.2)
+        
+    # We change the appearance of the selected spheres
+    modeler1.select(array_selected_id)     
+        
+    # If these buttons are pressed, we rotate the spheres around the calera axis or around a vertex
+    if gui.is_pressed('a'):
+        if (array_selected_id.size > 1):
+            modeler1.rotateSphereCamera(array_selected_id,0.2)
     elif gui.is_pressed('s'):
-        modeler1.rotateSphereCamera(array_selected_id,-0.2)
+        if (array_selected_id.size > 1):
+            modeler1.rotateSphereCamera(array_selected_id,-0.2)
+    elif gui.is_pressed('p'):
+        if (array_selected_id.size > 2):
+            modeler1.rotateSphereAxis(array_selected_id,0.2)
 
+    # If the 'r' button is pressed, we change the radius of the selected spheres
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') and array_selected_id[0] != -1:
+        # It can be done by entering a value
         if gui.is_pressed('Shift') :
             if use_tk :
                 title = "Radius"    
@@ -167,6 +156,7 @@ while gui.running:
                         print("Value incorrect")
                 except:
                     print("Value incorrect")
+        # Or by moving the mouse
         else : 
             for id in array_selected_id:
                 modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)        
@@ -174,7 +164,7 @@ while gui.running:
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1: 
         modeler1.move_sphere(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
 
-    #rotate the camera around a fixed point
+    # This part is used to move the camera
     if gui.is_pressed(ti.GUI.LEFT) :
         if gui.is_pressed(ti.GUI.CTRL) :
             modeler1.move_camera_sideways(-0.05, 0.0)
@@ -199,7 +189,8 @@ while gui.running:
             modeler1.move_camera_sideways(0.0, 0.05)
         else :
             modeler1.rotate_camera(0,-0.1)
-    #save and load functions
+    
+    # If 's' or 'l' is pressed, it saves and loads a scene
     elif gui.is_pressed(ti.GUI.SHIFT) :
         if gui.is_pressed('s') :
             if use_tk:
@@ -216,14 +207,10 @@ while gui.running:
             if filename != '':
                 modeler1.load(filename)
 
-    elif gui.get_event(ti.ui.RELEASE) and not gui.is_pressed('Control') :
-        if (gui.event.key == 'LMB') :
-            for id in array_selected_id :
-                modeler1.unselect(id)
-            array_selected_id = np.array([-1])
-
+    # Before ending this lopp, we store the position of the cursor
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
 
+    # We compute the image and display it
     modeler1.computeImageSpan(pixels, show_skeleton)
     canvas.set_image(pixels)
 
