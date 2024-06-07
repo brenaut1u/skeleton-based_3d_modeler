@@ -32,6 +32,28 @@ class cone : public hittable {
         center2 += delta_center;
     }
 
+    void set_selected(int new_selected) {
+        selected = new_selected;
+    }
+
+    bool is_selected(int id_selected) const {
+        if (selected == id_selected || selected == 3) {
+            return true;
+        }
+        return false;
+    }
+
+    void set_hovered(int new_hovered) {
+        hovered = new_hovered;
+    }
+
+    bool is_hovered(int id_hovered) const {
+        if (hovered == id_hovered) {
+            return true;
+        }
+        return false;
+    }
+
     void set_radius1(double new_radius) {
         radius1 = new_radius;
         radius1 = max(radius1,0.0);
@@ -67,6 +89,8 @@ class cone : public hittable {
     double radius2;
     shared_ptr<material> mat1;
     shared_ptr<material> mat2;
+    int selected = 0;
+    int hovered = 0;
 };
 
 static shared_ptr<cone> cone_from_spheres(shared_ptr<sphere> sphere1, shared_ptr<sphere> sphere2, shared_ptr<material> mat1, shared_ptr<material> mat2) {

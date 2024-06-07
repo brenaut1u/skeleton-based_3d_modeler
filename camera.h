@@ -1,16 +1,19 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <iostream>
+#include <vector>
+#include <memory>
 #include "interval.h"
 #include "color.h"
 #include "hittable.h"
 #include "material.h"
 #include "light.h"
 #include "span3D.h"
+#include "screen_segment.h"
+#include "hittable_list.h"
 
-
-#include <iostream>
-#include <vector>
+using std::shared_ptr;
 
 #define MODE " "
 inline constexpr double ambient_occlusion = 0.5;
@@ -19,8 +22,8 @@ class camera {
   public:
     double aspect_ratio = 1.0;  // Ratio of image width over height
     int    image_width  = 100;  // Rendered image width in pixel count
-    int    samples_per_pixel = 10;   // Count of random samples for each pixel
-    int    max_depth         = 10;   // Maximum number of ray bounces into scene
+    int    samples_per_pixel = 1;   // Count of random samples for each pixel
+    int    max_depth         = 1;   // Maximum number of ray bounces into scene
 
     camera(){}
     
@@ -29,16 +32,6 @@ class camera {
                                     samples_per_pixel(_samples_per_pixel), max_depth(_max_depth) {
         initialize();
     }
-
-    void render_file(const hittable& world);
-
-    std::vector<vec3> render(const hittable& world);
-
-    void render_phong_file(const hittable& world, const std::vector<light>& lights);
-
-    std::vector<vec3> render_phong(const hittable& world, const std::vector<light>& lights);
-
-    void computePhong(const hittable& world, const std::vector<light>& lights, span3D image);
 
     ray get_ray(int i, int j) const;
 
@@ -64,7 +57,7 @@ class camera {
         return viewport_v;
     }
 
-  private:
+  protected:
     int    image_height;   // Rendered image height
     point3 center;         // Camera center
     point3 pixel00_loc;    // Location of pixel 0, 0 (top left corner)
@@ -83,10 +76,6 @@ class camera {
     void initialize();
 
     vec3 pixel_sample_square() const;
-
-    color ray_color(const ray& r, int depth, const hittable& world) const;
-    
-    color ray_color_with_point_lights(const ray& r, int depth, const hittable& world, const std::vector<light>& lights) const;
 };
 
 #endif

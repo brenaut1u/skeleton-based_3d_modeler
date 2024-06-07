@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <span>
 
 using std::vector;
 using std::pair;
@@ -18,6 +19,7 @@ using std::to_string;
 struct sphere_ref {
     shared_ptr<sphere> sphere;
     int material_id;
+    bool is_selected;
 };
 
 struct cone_ref {
@@ -60,13 +62,27 @@ public:
         }
     }
 
+    vector<pair<int, int>> get_links() const {
+        return links;
+    }
+
+    void select_sphere(int id_selected) ;
+
+    void unselect_sphere(int id_selected) ;
+
+    void hover_sphere(int id_selected) ;
+
+    bool is_sphere_selected(int id) {
+        return spheres[id].is_selected;
+    }
+
     void add_sphere(shared_ptr<sphere> new_sphere);
 
     void add_sphere(shared_ptr<sphere> new_sphere, int linked_to);
 
     void add_sphere_split_cone(int cone_id, point3 p, vec3 n, shared_ptr<material> mat);
 
-    void delete_sphere(int sphere_id);
+    void delete_sphere(const std::span<int>& spheres_id);
 
     void unlink(int id1, int id2);
 
@@ -89,6 +105,8 @@ public:
     void delete_isolated_spheres();
 
     string save();
+
+    void update_ids(const std::span<int>& spheres_id);
 
 private:
     vector<pair<int, int>> links;
