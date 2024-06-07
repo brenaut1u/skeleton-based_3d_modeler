@@ -15,7 +15,6 @@ public:
     interactions(shared_ptr<linked_spheres_group> _spheres_group, shared_ptr<hittable_list> _world, camera* _cam) :
             spheres_group(_spheres_group), world(_world), cam(_cam) {
         cam_rot_center = point3(0.0, 0.25, -2.0);
-        beautiful_render_task = std::async(&camera::start_beautiful_render, cam, *world);
     }
 
     void add_sphere_at_pos(int screen_pos_x, int screen_pos_y);
