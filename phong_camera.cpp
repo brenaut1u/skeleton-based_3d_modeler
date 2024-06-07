@@ -22,12 +22,9 @@ void phong_camera::render_file(const hittable_list& world, const std::vector<lig
 }
 
 void phong_camera::render(const hittable_list& world, const std::vector<light>& lights, span3D image) {
-//    std::future<void> task1 = std::async(&camera::computePhong_partial, this, world, lights, image, 0, image_width / 2, 0, image_height / 2);
-//    std::future<void> task2 = std::async(&camera::computePhong_partial, this, world, lights, image, image_width / 2, image_width, 0, image_height / 2);
-//    std::future<void> task3 = std::async(&camera::computePhong_partial, this, world, lights, image, image_width / 2, image_width, image_height / 2, image_height);
-//    std::future<void> task4 = std::async(&camera::computePhong_partial, this, world, lights, image, 0, image_width / 2, image_height / 2, image_height);
-
-    std::future<void> task1 = std::async(&phong_camera::render_partial, this, world, lights, image, 0, image_width, 0, image_height);
+    std::future<void> task1 = std::async(&phong_camera::render_partial, this, world, lights, image, 0, image_width / 3, 0, image_height);
+    std::future<void> task2 = std::async(&phong_camera::render_partial, this, world, lights, image, image_width / 3, 2 * image_width / 3, 0, image_height);
+    std::future<void> task3 = std::async(&phong_camera::render_partial, this, world, lights, image, 2 * image_width / 3, image_width, 0, image_height);
 }
 
 void phong_camera::render(const hittable_list& world, const std::vector<light>& lights, span3D image, const vector<screen_segment>& skeleton) {

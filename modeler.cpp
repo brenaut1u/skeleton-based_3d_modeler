@@ -20,7 +20,6 @@ namespace pyb = pybind11;
 #include "color.h"
 #include "hittable_list.h"
 #include "material.h"
-#include "sphere.h"
 #include "cone.h"
 #include "interactions.h"
 
@@ -124,7 +123,7 @@ struct modeler
 
     // compute the new image (load changes)
 
-    void computeImageSpan(pyb::array_t<float> output, bool draw_skeleton)
+    void computePhongRender(pyb::array_t<float> output, bool draw_skeleton)
     {
         if (draw_skeleton) {
             phong_cam->render(*world, lights, numpyView(output), inter->get_skeleton_screen_coordinates());
@@ -134,7 +133,7 @@ struct modeler
         }
     }
 
-    void computeImageSpanBeautifulRender(pyb::array_t<float> output) {
+    void computeBeautifulRender(pyb::array_t<float> output) {
         return inter->start_beautiful_render(numpyView(output));
     }
 
@@ -159,16 +158,16 @@ struct modeler
     }
 
     std::span<int> numpyViewArray(pyb::array_t<int> array){
-    if (!array.ptr())
-        throw std::runtime_error("Invalid numpy array!");
+        if (!array.ptr())
+            throw std::runtime_error("Invalid numpy array!");
 
-    auto buffer_info = array.request();
-    if (buffer_info.ndim != 1)
-        throw std::runtime_error("Not a 1D numpy array!");
-    std::span<int> span = std::span<int>(static_cast<int*>(buffer_info.ptr), buffer_info.size);
-    
-    return span;
-}
+        auto buffer_info = array.request();
+        if (buffer_info.ndim != 1)
+            throw std::runtime_error("Not a 1D numpy array!");
+        std::span<int> span = std::span<int>(static_cast<int*>(buffer_info.ptr), buffer_info.size);
+
+        return span;
+    }
 
     void saveInFile(string fileName){
         inter->save(fileName);
@@ -203,26 +202,6 @@ struct modeler
     }
 };
 
-void compute(float *res, int n_x, int n_y)
-{
-    // write first pixel
-    res[0 + n_y * (n_x - 1) * 3] = 1.0; // n*m*c + n*y +x
-    res[1 + n_y * (n_x - 1) * 3] = 2.0; // n*m*c + n*y +x
-    res[2 + n_y * (n_x - 1) * 3] = 3.0; // n*m*c + n*y +x
-
-    //    for (size_t idx = 0; idx < buf1.shape[0]; idx++)
-    //        ptr3[idx] = ptr1[idx] + ptr2[idx];
-    // ecrire une classe qui fait l'équivalent de ndspan
-    // prend le py array et
-    // class multi dimesntionnal view
-    //     take pointer to data and dimensions
-    //     operator()(int x, int y, int z) -> double&
-
-    // span3d numpyView(pyb::array_t<float> output)
-}
-
-
-
 PYBIND11_MODULE(main_modeler, m)
 {
     pyb::class_<modeler>(m, "modeler")
@@ -242,8 +221,8 @@ PYBIND11_MODULE(main_modeler, m)
         .def("rotate_camera", &modeler::rotate_camera)
         .def("move_camera_sideways", &modeler::move_camera_sideways)
         .def("move_camera_forward", &modeler::move_camera_forward)
-        .def("computeImageSpan", &modeler::computeImageSpan)
-        .def("computeImageSpanBeautifulRender", &modeler::computeImageSpanBeautifulRender)
+        .def("computePhongRender", &modeler::computePhongRender)
+        .def("computeBeautifulRender", &modeler::computeBeautifulRender)
         .def("isBeautifulRenderReady", &modeler::isBeautifulRenderReady)
         .def("save",&modeler::saveInFile)
         .def("segment_cone",&modeler::segmentCone)

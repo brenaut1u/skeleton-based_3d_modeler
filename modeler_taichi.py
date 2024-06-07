@@ -37,7 +37,7 @@ m = 225
 
 
 pixels = np.ndarray((n,m,3), dtype='f')
-beautiful_render = np.ndarray((4*n, 4*m, 3), dtype='f')
+beautiful_render = np.ndarray((2*n, 2*m, 3), dtype='f')
 
 modeler1 = main_modeler.modeler()
 modeler1.initializedWorld()
@@ -46,7 +46,7 @@ gui = ti.ui.Window("Modeler", res=(4*n, 4*m),vsync=True)
 gui2 = gui.get_gui()
 canvas = gui.get_canvas()
 
-modeler1.computeImageSpanBeautifulRender(beautiful_render)
+modeler1.computeBeautifulRender(beautiful_render)
 
 array_selected_id = np.array([-1])
 
@@ -100,6 +100,7 @@ while gui.running:
         if array_selected_id[0] != -1 :
             if gui.is_pressed('q'):
                 modeler1.add(int(pos[0]*n),int((1-pos[1])*m))
+                modeler1.computeBeautifulRender(beautiful_render)
 
             # elif not gui.is_pressed('r'):
             #         origin = (pos[0],pos[1])
@@ -109,6 +110,7 @@ while gui.running:
         else :
             if gui.is_pressed('q'):
                 modeler1.segment_cone(int(pos[0]*n),int((1-pos[1])*m))
+                modeler1.computeBeautifulRender(beautiful_render)
         
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('c') and array_selected_id[0] != -1:
         if use_tk:
@@ -116,6 +118,7 @@ while gui.running:
             if color[0] != None:
                 for id in array_selected_id:
                     modeler1.changeColor(id, color[0][0], color[0][1], color[0][2])
+            modeler1.computeBeautifulRender(beautiful_render)
         else:
             print("Change color - Enter values between 0 and 255")
             try:
@@ -126,10 +129,12 @@ while gui.running:
                 if (r in range(0, 256) and g in range(0, 256) and b in range(0, 256)):
                     for id in array_selected_id:
                         modeler1.changeColor(id, r,g,b)
+                    modeler1.computeBeautifulRender(beautiful_render)
                 else:
-                               ("Value incorrect")
+                    print("Value incorrect")
             except:
                 print("Value incorrect")
+
     
     elif gui.is_pressed('d') and array_selected_id[0] != -1:
         array_selected_id = np.sort(array_selected_id)
@@ -137,9 +142,11 @@ while gui.running:
             modeler1.unselect(array_selected_id[i])
         modeler1.delete(array_selected_id)
         array_selected_id = np.array([-1])
+        modeler1.computeBeautifulRender(beautiful_render)
 
     elif gui.is_pressed('f') :
         modeler1.addLink(array_selected_id[0],array_selected_id[1])
+        modeler1.computeBeautifulRender(beautiful_render)
 
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') and array_selected_id[0] != -1:
         if gui.is_pressed('Shift') :
@@ -149,6 +156,7 @@ while gui.running:
                 radius = simpledialog.askfloat(title, prompt)
                 for id in array_selected_id:
                     modeler1.changeRadius(id, radius)
+                modeler1.computeBeautifulRender(beautiful_render)
             else : 
                 print("Change radius - Enter values between 0 and 1")
                 try:
@@ -156,6 +164,7 @@ while gui.running:
                     if 0 < radius and radius < 10:
                         for id in array_selected_id:
                             modeler1.changeRadius(id, radius)
+                        modeler1.computeBeautifulRender(beautiful_render)
                     else:
                         print("Value incorrect")
                 except:
@@ -163,10 +172,12 @@ while gui.running:
         else : 
             for id in array_selected_id:
                 modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)
+            modeler1.computeBeautifulRender(beautiful_render)
             
 
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1: 
         modeler1.move_sphere(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
+        modeler1.computeBeautifulRender(beautiful_render)
 
     #rotate the camera around a fixed point
     if gui.is_pressed(ti.GUI.LEFT) :
@@ -174,11 +185,13 @@ while gui.running:
             modeler1.move_camera_sideways(-0.05, 0.0)
         else:
             modeler1.rotate_camera(-0.1,0)
+        modeler1.computeBeautifulRender(beautiful_render)
     elif gui.is_pressed(ti.GUI.RIGHT) :
         if gui.is_pressed(ti.GUI.CTRL) :
             modeler1.move_camera_sideways(0.05, 0.0)
         else:
             modeler1.rotate_camera(0.1,0)
+        modeler1.computeBeautifulRender(beautiful_render)
     elif gui.is_pressed(ti.GUI.UP) :
         if gui.is_pressed(ti.GUI.SHIFT) :
             modeler1.move_camera_forward(0.1)
@@ -186,6 +199,7 @@ while gui.running:
             modeler1.move_camera_sideways(0.0, -0.05)
         else :
             modeler1.rotate_camera(0,0.1)
+        modeler1.computeBeautifulRender(beautiful_render)
     elif gui.is_pressed(ti.GUI.DOWN) :
         if gui.is_pressed(ti.GUI.SHIFT) :
             modeler1.move_camera_forward(-0.1)
@@ -193,6 +207,7 @@ while gui.running:
             modeler1.move_camera_sideways(0.0, 0.05)
         else :
             modeler1.rotate_camera(0,-0.1)
+        modeler1.computeBeautifulRender(beautiful_render)
     #save and load functions
     elif gui.is_pressed(ti.GUI.SHIFT) :
         if gui.is_pressed('s') :
@@ -209,6 +224,7 @@ while gui.running:
                 filename = input("Open - Enter filename: ")
             if filename != '':
                 modeler1.load(filename)
+                modeler1.computeBeautifulRender(beautiful_render)
 
     elif gui.get_event(ti.ui.RELEASE) and not gui.is_pressed('Control') :
         if (gui.event.key == 'LMB') :
@@ -218,13 +234,13 @@ while gui.running:
 
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
 
-    modeler1.computeImageSpan(pixels, show_skeleton)
     if modeler1.isBeautifulRenderReady():
         canvas.set_image(beautiful_render)
     else:
+        modeler1.computePhongRender(pixels, show_skeleton)
         canvas.set_image(pixels)
 
-    # modeler1.computeImageSpan(pixels, show_skeleton)
+    # modeler1.computePhongRender(pixels, show_skeleton)
     # canvas.set_image(pixels)
 
     gui.show()

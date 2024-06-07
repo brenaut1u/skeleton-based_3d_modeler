@@ -16,7 +16,7 @@ unique_ptr<interactions> interactions::get_init_scene() {
     spheres -> add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, mat), 0);
 
     shared_ptr<phong_camera> phong_cam = make_shared<phong_camera>(16.0 / 9.0, 400, 1, 1);
-    shared_ptr<beautiful_camera> beautiful_cam = make_shared<beautiful_camera>(16.0 / 9.0, 1600, 20, 5);
+    shared_ptr<beautiful_camera> beautiful_cam = make_shared<beautiful_camera>(16.0 / 9.0, 800, 25, 5);
 
 
 
