@@ -6,6 +6,23 @@ import numpy as np
 
 from sys import platform
 
+
+def calculate_angle(pos1, pos2, pos3):
+    a = np.array(pos1)
+    b = np.array(pos2)
+    c = np.array(pos3)
+
+    ba = a - b
+    bc = c - b
+
+    q = (np.linalg.norm(ba) * np.linalg.norm(bc))
+    if q != 0:
+        cosine_angle = np.dot(ba, bc) / q
+        angle = np.arccos(cosine_angle)
+    else :
+        angle = 0
+    return np.degrees(angle)
+
 use_tk = True
 if platform == "darwin":
     use_tk = False
@@ -30,7 +47,7 @@ gui = ti.ui.Window("Modeler", res=(4*n, 4*m),vsync=True)
 gui2 = gui.get_gui()
 canvas = gui.get_canvas()
 
-
+last_center = -1
 array_selected_id = np.array([-1])
 
 hovered_id = -1
@@ -126,8 +143,10 @@ while gui.running:
     elif gui.is_pressed('f') :
         modeler1.addLink(array_selected_id[0],array_selected_id[1])
 
-    elif gui.is_pressed('t') :
+    elif gui.is_pressed('a'):
         modeler1.rotateSphereCamera(array_selected_id,0.2)
+    elif gui.is_pressed('s'):
+        modeler1.rotateSphereCamera(array_selected_id,-0.2)
 
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') and array_selected_id[0] != -1:
         if gui.is_pressed('Shift') :

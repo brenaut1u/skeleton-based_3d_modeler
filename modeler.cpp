@@ -243,5 +243,5 @@ PYBIND11_MODULE(main_modeler, m)
         .def("unselect",&modeler::unselect)
         .def("addLink",&modeler::addLink)
         .def("hovered",&modeler::hovered)
-        .def("rotateSphereCamera",&modeler::rotateSphereCamera);
+        .def("rotateSphereCamera",&modeler::rotateSphereCamera)
 }

@@ -102,7 +102,6 @@ void interactions::rotate_spheres_around_axis(const std::span<int>& spheres_id, 
         if (sph_pos != axis_point) {
             sph->set_center(point_rotation(sph_pos, axis_point, axis, angle));
             spheres_group->set_sphere_position(sphere_id, sph->get_center());
-            std::cout << "len after : " << (sph->get_center() - axis_point).length() << std::endl;  
         }
     }
 }
