@@ -116,8 +116,12 @@ struct modeler
         return inter.increase_radius(sphere_id, radius);
     }
 
-    void change_color(int sphere_id, int red, int green, int blue) {
-        return inter.change_color(sphere_id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
+    void change_color(pyb::array_t<int> sphere_id, int red, int green, int blue) {
+        for (int id : numpyViewArray(sphere_id)){
+            if (id != -1){
+                inter.change_color(id, color((double) red / 255.0, (double) green / 255.0, (double) blue / 255.0));
+            }
+        }
     }
 
     void move_sphere_on_screen(pyb::array_t<float> sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
@@ -160,24 +164,20 @@ struct modeler
         // Accessing the shape and strides of the array
         auto shape = array.shape();
         auto strides = array.strides();
-
-        // std::cout<<shape[0]<<"   "<<shape[1]<<"   "<<shape[2]<<"/n";
-        // std::cout<<strides[0]<<"   "<<strides[1]<<"   "<<strides[2]<<"/n";
-
         return span3D(data, shape[0], shape[1], shape[2]);
     }
 
     std::span<int> numpyViewArray(pyb::array_t<int> array){
-    if (!array.ptr())
-        throw std::runtime_error("Invalid numpy array!");
+        if (!array.ptr())
+            throw std::runtime_error("Invalid numpy array!");
 
-    auto buffer_info = array.request();
-    if (buffer_info.ndim != 1)
-        throw std::runtime_error("Not a 1D numpy array!");
-    std::span<int> span = std::span<int>(static_cast<int*>(buffer_info.ptr), buffer_info.size);
-    
-    return span;
-}
+        auto buffer_info = array.request();
+        if (buffer_info.ndim != 1)
+            throw std::runtime_error("Not a 1D numpy array!");
+        std::span<int> span = std::span<int>(static_cast<int*>(buffer_info.ptr), buffer_info.size);
+        
+        return span;    
+    }
 
     void saveInFile(string fileName){
         inter.save(fileName);
@@ -189,14 +189,24 @@ struct modeler
         world = inter.get_world();  
     }
 
-    void select(int sphere_id)
+    void select(pyb::array_t<float> sphere_id)
     {
-        inter.select_sphere(sphere_id);
+        for (int id : numpyViewArray(sphere_id))
+        {
+            if (id != -1){
+                inter.select_sphere(id);
+            }
+        }
     }
 
-    void unselect(int sphere_id)
+    void unselect(pyb::array_t<float> sphere_id)
     {
-        inter.unselect_sphere(sphere_id);
+        for (int id : numpyViewArray(sphere_id))
+        {
+            if (id != -1){
+                inter.unselect_sphere(id);
+            }
+        }
     }
 
     void hovered(int sphere_id)
@@ -208,25 +218,23 @@ struct modeler
     {
         inter.add_link(id1, id2);
     }
+
+    void rotateSphereCamera(pyb::array_t<int> sphere_id, double angle)
+    {
+        auto ids = numpyViewArray(sphere_id);
+        inter.rotate_spheres_around_camera_axis(ids, spheres->get_sphere_at(ids[0])->get_center(), angle);
+    }
+
+    void rotateSphereAxis(pyb::array_t<int> sphere_id, double angle)
+    {
+        auto ids = numpyViewArray(sphere_id);
+        auto A = spheres->get_sphere_at(ids[0])->get_center();
+        auto B = spheres->get_sphere_at(ids[1])->get_center();
+        auto axis = B - A;
+        inter.rotate_spheres_around_axis(ids, axis , spheres->get_sphere_at(ids[0])->get_center(), angle);
+    }
 };
 
-void compute(float *res, int n_x, int n_y)
-{
-    // write first pixel
-    res[0 + n_y * (n_x - 1) * 3] = 1.0; // n*m*c + n*y +x
-    res[1 + n_y * (n_x - 1) * 3] = 2.0; // n*m*c + n*y +x
-    res[2 + n_y * (n_x - 1) * 3] = 3.0; // n*m*c + n*y +x
-
-    //    for (size_t idx = 0; idx < buf1.shape[0]; idx++)
-    //        ptr3[idx] = ptr1[idx] + ptr2[idx];
-    // ecrire une classe qui fait l'équivalent de ndspan
-    // prend le py array et
-    // class multi dimesntionnal view
-    //     take pointer to data and dimensions
-    //     operator()(int x, int y, int z) -> double&
-
-    // span3d numpyView(pyb::array_t<float> output)
-}
 
 
 
@@ -257,5 +265,7 @@ PYBIND11_MODULE(main_modeler, m)
         .def("select",&modeler::select)
         .def("unselect",&modeler::unselect)
         .def("addLink",&modeler::addLink)
-        .def("hovered",&modeler::hovered);
+        .def("hovered",&modeler::hovered)
+        .def("rotateSphereCamera",&modeler::rotateSphereCamera)
+        .def("rotateSphereAxis",&modeler::rotateSphereAxis);
 }
