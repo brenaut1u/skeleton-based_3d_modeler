@@ -14,6 +14,8 @@ endif()
 add_subdirectory(extern/pybind11)
 
 add_library(skeleton_modeler STATIC
+        beautiful_camera.cpp
+        beautiful_camera.h
         camera.cpp
         camera.h
         color.cpp
@@ -35,6 +37,8 @@ add_library(skeleton_modeler STATIC
         linked_spheres_group.h
         material.cpp
         material.h
+        phong_camera.cpp
+        phong_camera.h
         ray.h
         rtweekend.h
         sphere.cpp

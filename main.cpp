@@ -7,7 +7,7 @@
 
 int main() {
     unique_ptr<interactions> inter = interactions::get_init_scene();
-    shared_ptr<camera> cam = inter->get_cam();
+    shared_ptr<camera> cam = inter->get_phong_cam();
     shared_ptr<hittable_list> world = inter->get_world();
 
     //cam->render_phong_file(*world, lights);

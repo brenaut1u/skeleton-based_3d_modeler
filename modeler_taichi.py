@@ -37,7 +37,7 @@ m = 225
 
 
 pixels = np.ndarray((n,m,3), dtype='f')
-beautiful_render = np.ndarray((n,m,3), dtype='f')
+beautiful_render = np.ndarray((4*n, 4*m, 3), dtype='f')
 
 modeler1 = main_modeler.modeler()
 modeler1.initializedWorld()

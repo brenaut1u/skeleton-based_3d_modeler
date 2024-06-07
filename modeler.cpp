@@ -35,7 +35,8 @@ struct modeler
 {
     shared_ptr<hittable_list> world;
     shared_ptr<linked_spheres_group> spheres;
-    shared_ptr<camera> cam;
+    shared_ptr<phong_camera> phong_cam;
+    shared_ptr<beautiful_camera> beautiful_cam;
     std::vector<vec3> imageVector;
     std::vector<light> lights;
     unique_ptr<interactions> inter;
@@ -46,7 +47,8 @@ struct modeler
         inter = interactions::get_init_scene();
         world = inter->get_world();
         spheres = inter->get_spheres_group();
-        cam = inter->get_cam();
+        phong_cam = inter->get_phong_cam();
+        beautiful_cam = inter->get_beautiful_cam();
 
         light white_light = new_light(point3(-1.0, 0.5, -1.0));
         lights = std::vector<light>{white_light};
@@ -125,10 +127,10 @@ struct modeler
     void computeImageSpan(pyb::array_t<float> output, bool draw_skeleton)
     {
         if (draw_skeleton) {
-            cam->computePhong(*world, lights, numpyView(output), inter->get_skeleton_screen_coordinates());
+            phong_cam->render(*world, lights, numpyView(output), inter->get_skeleton_screen_coordinates());
         }
         else {
-            cam->computePhong(*world, lights, numpyView(output));
+            phong_cam->render(*world, lights, numpyView(output));
         }
     }
 
@@ -137,7 +139,7 @@ struct modeler
     }
 
     bool isBeautifulRenderReady() {
-        return inter->is_beautful_render_ready();
+        return inter->is_beautiful_render_ready();
     }
 
     //transform a numpy array into a span3D
@@ -173,10 +175,11 @@ struct modeler
     }
 
     void load(string fileName){
-        inter = inter->load(fileName, cam);
+        inter = inter->load(fileName, phong_cam, beautiful_cam);
         spheres = inter->get_spheres_group();
         world = inter->get_world();
-        cam = inter->get_cam();
+        phong_cam = inter->get_phong_cam();
+        beautiful_cam = inter->get_beautiful_cam();
     }
 
     void select(int sphere_id)
