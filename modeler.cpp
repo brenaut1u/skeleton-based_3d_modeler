@@ -36,6 +36,11 @@ struct modeler
     shared_ptr<linked_spheres_group> spheres;
     shared_ptr<phong_camera> phong_cam;
     shared_ptr<beautiful_camera> beautiful_cam;
+
+    double aspect_ratio = 16.0 / 9.0;
+    int phong_image_width = 400;
+    int beautiful_image_width = 800;
+
     std::vector<vec3> imageVector;
     std::vector<light> lights;
     unique_ptr<interactions> inter;
@@ -43,7 +48,7 @@ struct modeler
 
     void initializedWorld()
     {
-        inter = interactions::get_init_scene();
+        inter = interactions::get_init_scene(aspect_ratio, phong_image_width, beautiful_image_width);
         world = inter->get_world();
         spheres = inter->get_spheres_group();
         phong_cam = inter->get_phong_cam();

@@ -23,7 +23,7 @@ public:
         cam_rot_center = point3(0.0, 0.25, -2.0);
     }
 
-    static unique_ptr<interactions> get_init_scene();
+    static unique_ptr<interactions> get_init_scene(double aspect_ratio, int phong_image_width, int beautiful_image_width);
 
     void add_sphere_at_pos(int screen_pos_x, int screen_pos_y);
 
