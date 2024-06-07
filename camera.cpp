@@ -12,32 +12,15 @@ void camera::render_file(const hittable_list& world) {
         std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
         for (int i = 0; i < image_width; ++i) {
             color pixel_color(0,0,0);
-            for (int sample = 0; sample < samples_per_pixel; ++sample) {
+            for (int sample = 0; sample < samples_per_pixel_beautiful_render; ++sample) {
                 ray r = get_ray(i, j);
-                pixel_color += ray_color(r, max_depth, world);
+                pixel_color += ray_color(r, max_depth_beautiful_render, world);
             }
-            write_color(std::cout, pixel_color, samples_per_pixel);
+            write_color(std::cout, pixel_color, samples_per_pixel_beautiful_render);
         }
     }
 
     std::clog << "\rDone.                 \n";
-}
-
-std::vector<vec3> camera::render(const hittable_list& world) {
-    std::vector<vec3> rendered_image;
-
-    for (int j = 0; j < image_height; ++j) {
-        std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
-        for (int i = 0; i < image_width; ++i) {
-            color pixel_color(0,0,0);
-            for (int sample = 0; sample < samples_per_pixel; ++sample) {
-                ray r = get_ray(i, j);
-                pixel_color += ray_color(r, max_depth, world);
-            }
-            rendered_image.push_back(pixel_color);
-        }
-    }
-    return rendered_image;
 }
 
 void camera::render_phong_file(const hittable_list& world, const std::vector<light>& lights) {
@@ -48,7 +31,7 @@ void camera::render_phong_file(const hittable_list& world, const std::vector<lig
         for (int i = 0; i < image_width; ++i) {
             color pixel_color(0,0,0);
             for (int sample = 0; sample < samples_per_pixel; ++sample) {
-                ray r = get_ray(i, j);
+                ray r = get_ray_phong(i, j);
                 ray_color_with_point_lights(r, max_depth, world, lights);
                 pixel_color += ray_color_with_point_lights(r, max_depth, world, lights);
             }
@@ -59,32 +42,15 @@ void camera::render_phong_file(const hittable_list& world, const std::vector<lig
     std::clog << "\rDone.                 \n";
 }
 
-std::vector<vec3> camera::render_phong(const hittable_list& world, const std::vector<light>& lights) {
-    std::vector<vec3> rendered_image;
-
-    for (int j = 0; j < image_height; ++j) {
-        std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
-        for (int i = 0; i < image_width; ++i) {
-            color pixel_color(0,0,0);
-            for (int sample = 0; sample < samples_per_pixel; ++sample) {
-                ray r = get_ray(i, j);
-                pixel_color += ray_color_with_point_lights(r, max_depth, world, lights);
-            }
-            rendered_image.push_back(pixel_color);
-        }
-    }
-    return rendered_image;
-}
-
 void camera::computePhong_partial(const hittable_list& world, const std::vector<light>& lights, span3D image, int start_x, int end_x, int start_y, int end_y) {
     for (int j = start_y; j < end_y; ++j) {
         for (int i = start_x; i < end_x; ++i) {
             color pixel_color(0,0,0);
             for (int sample = 0; sample < samples_per_pixel; ++sample) {
-                ray r = get_ray(i, j);
+                ray r = get_ray_phong(i, j);
                 pixel_color += ray_color_with_point_lights(r, max_depth, world, lights);
             }
-            color_pixel(image, {i, j}, pixel_color);
+            color_pixel(image, {i, j}, pixel_color / samples_per_pixel);
         }
     }
 }
@@ -134,6 +100,18 @@ ray camera::get_ray(int i, int j) const {
     return ray(ray_origin, ray_direction);
 }
 
+ray camera::get_ray_phong(int i, int j) const {
+    // Get a randomly sampled camera ray for the pixel at location i,j.
+
+    auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
+    auto pixel_sample = pixel_center + pixel_sample_square_phong();
+
+    auto ray_origin = center;
+    auto ray_direction = pixel_sample - ray_origin;
+
+    return ray(ray_origin, ray_direction);
+}
+
 void camera::rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center) {
     // horizontal rotation
     vec3 h_axis = vec3(0.0, 1.0, 0.0);
@@ -169,7 +147,6 @@ void camera::start_beautiful_render(const hittable_list& world, span3D beautiful
     continue_beautiful_render = true;
     for (int j = 0; j < image_height; ++j) {
         for (int i = 0; i < image_width; ++i) {
-            std::cout << 100 * ((float) j * (float) image_width + (float) i) / ((float) image_height * image_width) << "%" << std::endl;
             color pixel_color(0,0,0);
             for (int sample = 0; sample < samples_per_pixel_beautiful_render; ++sample) {
                 if (!continue_beautiful_render) {
@@ -178,7 +155,9 @@ void camera::start_beautiful_render(const hittable_list& world, span3D beautiful
                 ray r = get_ray(i, j);
                 pixel_color += ray_color(r, max_depth_beautiful_render, world);
             }
-            color_pixel(beautiful_image, {i, j}, pixel_color);
+            color_pixel(beautiful_image, {i, j}, pixel_color / samples_per_pixel_beautiful_render);
+            std::cout << 100 * ((float) j * (float) image_width + (float) i) / ((float) image_height * image_width) << "%"
+                        << " R: " << pixel_color.x() << " G: " << pixel_color.y() << " B: " << pixel_color.z() << std::endl;
         }
     }
     beautiful_render_ready = true;
@@ -211,6 +190,13 @@ void camera::initialize() {
 }
 
 vec3 camera::pixel_sample_square() const {
+    // Returns a random point in the square surrounding a pixel at the origin.
+    auto px = (samples_per_pixel_beautiful_render > 1) * (-0.5 + random_double());
+    auto py = (samples_per_pixel_beautiful_render > 1) * (-0.5 + random_double());
+    return (px * pixel_delta_u) + (py * pixel_delta_v);
+}
+
+vec3 camera::pixel_sample_square_phong() const {
     // Returns a random point in the square surrounding a pixel at the origin.
     auto px = (samples_per_pixel > 1) * (-0.5 + random_double());
     auto py = (samples_per_pixel > 1) * (-0.5 + random_double());

@@ -60,6 +60,8 @@ class camera {
 
     ray get_ray(int i, int j) const;
 
+    ray get_ray_phong(int i, int j) const;
+
     void rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center);
 
     void move_camera_sideways(double delta_pos_x, double delta_pos_y);
@@ -110,6 +112,8 @@ class camera {
     void initialize();
 
     vec3 pixel_sample_square() const;
+
+    vec3 pixel_sample_square_phong() const;
 
     color ray_color(const ray& r, int depth, const hittable& world) const;
     

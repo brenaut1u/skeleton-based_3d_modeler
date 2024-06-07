@@ -15,7 +15,7 @@ unique_ptr<interactions> interactions::get_init_scene() {
     shared_ptr<linked_spheres_group> spheres = make_shared<linked_spheres_group>(world, make_shared<sphere>(point3(-1.5, 0.25, -2.0), 0.2, mat));
     spheres -> add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, mat), 0);
 
-    shared_ptr<camera> cam = make_shared<camera>(16.0 / 9.0, 400, 1, 1, 20, 10);
+    shared_ptr<camera> cam = make_shared<camera>(16.0 / 9.0, 400, 1, 1, 200, 5);
 
     return make_unique<interactions>(spheres, world, cam);
 }
