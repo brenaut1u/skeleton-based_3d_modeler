@@ -14,6 +14,19 @@ vec3& vec3::operator*=(double t) {
     return *this;
 }
 
+bool vec3::operator==(const vec3 &v) const {
+    if (e[0] != v.e[0]) {
+        return false;
+    }
+    if (e[1] != v.e[1]) {
+        return false;
+    }
+    if (e[2] != v.e[2]) {
+        return false;
+    }
+    return true;
+}
+
 bool vec3::near_zero() const {
     // Return true if the vector is close to zero in all dimensions.
     auto s = 1e-8;
@@ -38,6 +51,11 @@ vec3 random_on_hemisphere(const vec3& normal) {
 
 point3 point_rotation(point3 p, point3 axis_point, vec3 axis, double angle) {
     vec3 v = p - axis_point;
-    vec3 v_rot = vector_rotation(v, axis, angle);
+    double len = v.length();
+    vec3 v_rot = unit_vector(vector_rotation(v, axis, angle))*len;
     return axis_point + v_rot;
+}
+
+vec3 round_vector(const vec3& v) {
+    return { round(v.x()), round(v.y()), round(v.z()) };
 }

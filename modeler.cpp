@@ -160,24 +160,20 @@ struct modeler
         // Accessing the shape and strides of the array
         auto shape = array.shape();
         auto strides = array.strides();
-
-        // std::cout<<shape[0]<<"   "<<shape[1]<<"   "<<shape[2]<<"/n";
-        // std::cout<<strides[0]<<"   "<<strides[1]<<"   "<<strides[2]<<"/n";
-
         return span3D(data, shape[0], shape[1], shape[2]);
     }
 
     std::span<int> numpyViewArray(pyb::array_t<int> array){
-    if (!array.ptr())
-        throw std::runtime_error("Invalid numpy array!");
+        if (!array.ptr())
+            throw std::runtime_error("Invalid numpy array!");
 
-    auto buffer_info = array.request();
-    if (buffer_info.ndim != 1)
-        throw std::runtime_error("Not a 1D numpy array!");
-    std::span<int> span = std::span<int>(static_cast<int*>(buffer_info.ptr), buffer_info.size);
-    
-    return span;
-}
+        auto buffer_info = array.request();
+        if (buffer_info.ndim != 1)
+            throw std::runtime_error("Not a 1D numpy array!");
+        std::span<int> span = std::span<int>(static_cast<int*>(buffer_info.ptr), buffer_info.size);
+        
+        return span;    
+    }
 
     void saveInFile(string fileName){
         inter.save(fileName);
@@ -208,25 +204,14 @@ struct modeler
     {
         inter.add_link(id1, id2);
     }
+
+    void rotateSphereCamera(pyb::array_t<int> sphere_id, double angle)
+    {
+        auto ids = numpyViewArray(sphere_id);
+        inter.rotate_spheres_around_camera_axis(ids, spheres->get_sphere_at(ids[0])->get_center(), angle);
+    }
 };
 
-void compute(float *res, int n_x, int n_y)
-{
-    // write first pixel
-    res[0 + n_y * (n_x - 1) * 3] = 1.0; // n*m*c + n*y +x
-    res[1 + n_y * (n_x - 1) * 3] = 2.0; // n*m*c + n*y +x
-    res[2 + n_y * (n_x - 1) * 3] = 3.0; // n*m*c + n*y +x
-
-    //    for (size_t idx = 0; idx < buf1.shape[0]; idx++)
-    //        ptr3[idx] = ptr1[idx] + ptr2[idx];
-    // ecrire une classe qui fait l'équivalent de ndspan
-    // prend le py array et
-    // class multi dimesntionnal view
-    //     take pointer to data and dimensions
-    //     operator()(int x, int y, int z) -> double&
-
-    // span3d numpyView(pyb::array_t<float> output)
-}
 
 
 
@@ -257,5 +242,6 @@ PYBIND11_MODULE(main_modeler, m)
         .def("select",&modeler::select)
         .def("unselect",&modeler::unselect)
         .def("addLink",&modeler::addLink)
-        .def("hovered",&modeler::hovered);
+        .def("hovered",&modeler::hovered)
+        .def("rotateSphereCamera",&modeler::rotateSphereCamera);
 }

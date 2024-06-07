@@ -95,15 +95,19 @@ void interactions::move_spheres_on_screen(const std::span<int>& spheres_id, int 
     }
 }
 
-void interactions::rotate_spheres_around_axis(const vector<int>& spheres_id, vec3 axis, point3 axis_point, double angle) {
+void interactions::rotate_spheres_around_axis(const std::span<int>& spheres_id, vec3 axis, point3 axis_point, double angle) {
     for (int sphere_id : spheres_id) {
         shared_ptr<sphere> sph = spheres_group->get_sphere_at(sphere_id);
         point3 sph_pos = sph->get_center();
-        sph->set_center(point_rotation(sph_pos, axis_point, axis, angle));
+        if (sph_pos != axis_point) {
+            sph->set_center(point_rotation(sph_pos, axis_point, axis, angle));
+            spheres_group->set_sphere_position(sphere_id, sph->get_center());
+            std::cout << "len after : " << (sph->get_center() - axis_point).length() << std::endl;  
+        }
     }
 }
 
-void interactions::rotate_spheres_around_camera_axis(const vector<int>& spheres_id, point3 axis_point, double angle) {
+void interactions::rotate_spheres_around_camera_axis(const std::span<int>& spheres_id, point3 axis_point, double angle) {
     vec3 axis = axis_point - cam->get_center();
     rotate_spheres_around_axis(spheres_id, axis, axis_point, angle);
 }

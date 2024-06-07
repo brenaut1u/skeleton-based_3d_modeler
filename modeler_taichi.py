@@ -126,6 +126,9 @@ while gui.running:
     elif gui.is_pressed('f') :
         modeler1.addLink(array_selected_id[0],array_selected_id[1])
 
+    elif gui.is_pressed('t') :
+        modeler1.rotateSphereCamera(array_selected_id,0.2)
+
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') and array_selected_id[0] != -1:
         if gui.is_pressed('Shift') :
             if use_tk :
@@ -147,8 +150,7 @@ while gui.running:
                     print("Value incorrect")
         else : 
             for id in array_selected_id:
-                modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)
-            
+                modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)        
 
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1: 
         modeler1.move_sphere(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
