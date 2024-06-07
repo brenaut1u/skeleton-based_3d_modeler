@@ -23,6 +23,7 @@ m = 225
 
 # Create the canvas and the modeler
 pixels = np.ndarray((n,m,3), dtype='f')
+beautiful_render = np.ndarray((2*n, 2*m, 3), dtype='f')
 
 modeler1 = main_modeler.modeler()
 modeler1.initializedWorld()
@@ -31,7 +32,8 @@ gui = ti.ui.Window("Modeler", res=(4*n, 4*m),vsync=True)
 gui2 = gui.get_gui()
 canvas = gui.get_canvas()
 
-# Initialize some parameters
+modeler1.computeBeautifulRender(beautiful_render)
+
 array_selected_id = np.array([-1])
 hovered_id = -1
 origin = (-1,-1)
@@ -84,6 +86,7 @@ while gui.running:
             # If we press 'q' (or 'a'), we add a sphere if possible at the position of the cursor
             if gui.is_pressed('q') :
                 modeler1.add(int(pos[0]*n),int((1-pos[1])*m))
+                modeler1.computeBeautifulRender(beautiful_render)
 
         # If the 'c' button is pressed, we open a color picker to change the color of the selected spheres
         elif gui.is_pressed('c') and array_selected_id[0] != -1:
@@ -91,6 +94,7 @@ while gui.running:
                 color = colorchooser.askcolor()
                 if color[0] != None:
                     modeler1.changeColor(array_selected_id, color[0][0], color[0][1], color[0][2])
+                    modeler1.computeBeautifulRender(beautiful_render)
             else:
                 print("Change color - Enter values between 0 and 255")
                 try:
@@ -99,6 +103,7 @@ while gui.running:
                     b = int(input("Blue: "))
                     if (r in range(0, 256) and g in range(0, 256) and b in range(0, 256)):
                         modeler1.changeColor(array_selected_id, r, g, b)
+                        modeler1.computeBeautifulRender(beautiful_render)
                     else:
                         print("Value incorrect")
                 except:
@@ -114,12 +119,12 @@ while gui.running:
             modeler1.unselect(array_selected_id)
             modeler1.delete(array_selected_id)
             array_selected_id = np.array([-1])
+            modeler1.computeBeautifulRender(beautiful_render)
 
         # If the 'f' button is pressed, we add a link between the selected spheres
         elif gui.is_pressed('f') :
             modeler1.addLink(array_selected_id[0],array_selected_id[1])
-
-        
+            modeler1.computeBeautifulRender(beautiful_render)     
         
     # We change the appearance of the selected spheres
     modeler1.select(array_selected_id)     
@@ -128,12 +133,15 @@ while gui.running:
     if gui.is_pressed('a'):
         if (array_selected_id.size > 1):
             modeler1.rotateSphereCamera(array_selected_id,0.2)
+            modeler1.computeBeautifulRender(beautiful_render)
     elif gui.is_pressed('s'):
         if (array_selected_id.size > 1):
             modeler1.rotateSphereCamera(array_selected_id,-0.2)
+            modeler1.computeBeautifulRender(beautiful_render)
     elif gui.is_pressed('p'):
         if (array_selected_id.size > 2):
             modeler1.rotateSphereAxis(array_selected_id,0.2)
+            modeler1.computeBeautifulRender(beautiful_render)
 
     # If the 'r' button is pressed, we change the radius of the selected spheres
     elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') and array_selected_id[0] != -1:
@@ -145,6 +153,7 @@ while gui.running:
                 radius = simpledialog.askfloat(title, prompt)
                 for id in array_selected_id:
                     modeler1.changeRadius(id, radius)
+                modeler1.computeBeautifulRender(beautiful_render)
             else : 
                 print("Change radius - Enter values between 0 and 1")
                 try:
@@ -152,6 +161,7 @@ while gui.running:
                     if 0 < radius and radius < 10:
                         for id in array_selected_id:
                             modeler1.changeRadius(id, radius)
+                        modeler1.computeBeautifulRender(beautiful_render)
                     else:
                         print("Value incorrect")
                 except:
@@ -159,10 +169,12 @@ while gui.running:
         # Or by moving the mouse
         else : 
             for id in array_selected_id:
-                modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)        
+                modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)
+            modeler1.computeBeautifulRender(beautiful_render)
 
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1: 
         modeler1.move_sphere(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
+        modeler1.computeBeautifulRender(beautiful_render)
 
     # This part is used to move the camera
     if gui.is_pressed(ti.GUI.LEFT) :
@@ -170,11 +182,13 @@ while gui.running:
             modeler1.move_camera_sideways(-0.05, 0.0)
         else:
             modeler1.rotate_camera(-0.1,0)
+        modeler1.computeBeautifulRender(beautiful_render)
     elif gui.is_pressed(ti.GUI.RIGHT) :
         if gui.is_pressed(ti.GUI.CTRL) :
             modeler1.move_camera_sideways(0.05, 0.0)
         else:
             modeler1.rotate_camera(0.1,0)
+        modeler1.computeBeautifulRender(beautiful_render)
     elif gui.is_pressed(ti.GUI.UP) :
         if gui.is_pressed(ti.GUI.SHIFT) :
             modeler1.move_camera_forward(0.1)
@@ -182,6 +196,7 @@ while gui.running:
             modeler1.move_camera_sideways(0.0, -0.05)
         else :
             modeler1.rotate_camera(0,0.1)
+        modeler1.computeBeautifulRender(beautiful_render)
     elif gui.is_pressed(ti.GUI.DOWN) :
         if gui.is_pressed(ti.GUI.SHIFT) :
             modeler1.move_camera_forward(-0.1)
@@ -189,6 +204,7 @@ while gui.running:
             modeler1.move_camera_sideways(0.0, 0.05)
         else :
             modeler1.rotate_camera(0,-0.1)
+        modeler1.computeBeautifulRender(beautiful_render)
     
     # If 's' or 'l' is pressed, it saves and loads a scene
     elif gui.is_pressed(ti.GUI.SHIFT) :
@@ -206,12 +222,18 @@ while gui.running:
                 filename = input("Open - Enter filename: ")
             if filename != '':
                 modeler1.load(filename)
+                modeler1.computeBeautifulRender(beautiful_render)
 
     # Before ending this lopp, we store the position of the cursor
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
 
-    # We compute the image and display it
-    modeler1.computeImageSpan(pixels, show_skeleton)
-    canvas.set_image(pixels)
+    if modeler1.isBeautifulRenderReady():
+        canvas.set_image(beautiful_render)
+    else:
+        modeler1.computePhongRender(pixels, show_skeleton)
+        canvas.set_image(pixels)
+
+    # modeler1.computePhongRender(pixels, show_skeleton)
+    # canvas.set_image(pixels)
 
     gui.show()

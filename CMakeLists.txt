@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.15...3.27)
 
 SET(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 find_package(Python 3.8 COMPONENTS Interpreter Development REQUIRED)
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -13,6 +14,8 @@ endif()
 add_subdirectory(extern/pybind11)
 
 add_library(skeleton_modeler STATIC
+        beautiful_camera.cpp
+        beautiful_camera.h
         camera.cpp
         camera.h
         color.cpp
@@ -34,6 +37,8 @@ add_library(skeleton_modeler STATIC
         linked_spheres_group.h
         material.cpp
         material.h
+        phong_camera.cpp
+        phong_camera.h
         ray.h
         rtweekend.h
         sphere.cpp
