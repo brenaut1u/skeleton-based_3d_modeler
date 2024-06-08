@@ -177,7 +177,10 @@ while gui.running:
             modeler1.computeBeautifulRender(beautiful_render)
 
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('Control') and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1: 
-        modeler1.move_spheres(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
+        if gui.is_pressed('k') :
+            modeler1.move_spheres_ik(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
+        else :
+            modeler1.move_spheres(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
         modeler1.computeBeautifulRender(beautiful_render)
 
     # This part is used to move the camera
