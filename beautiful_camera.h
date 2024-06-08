@@ -18,12 +18,15 @@ public:
 
     void stop_beautiful_render() {continue_beautiful_render = false;}
 
-    bool is_beautiful_render_ready() {
+    bool is_beautiful_render_ready() const {
         return beautiful_render_ready;}
+
+    float get_render_status() const {return render_status;}
 
 private:
     bool continue_beautiful_render = true; // used to stop the render
     bool beautiful_render_ready = false;
+    float render_status;
 
     color ray_color(const ray& r, int depth, const hittable& world) const;
 };

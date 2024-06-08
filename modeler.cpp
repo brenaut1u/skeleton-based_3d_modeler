@@ -137,10 +137,10 @@ struct modeler
     void computePhongRender(pyb::array_t<float> output, bool draw_skeleton)
     {
         if (draw_skeleton) {
-            phong_cam->render(*world, lights, numpyView(output), inter->get_skeleton_screen_coordinates());
+            phong_cam->render(*world, lights, numpyView(output), beautiful_cam->get_render_status(), inter->get_skeleton_screen_coordinates());
         }
         else {
-            phong_cam->render(*world, lights, numpyView(output));
+            phong_cam->render(*world, lights, numpyView(output), beautiful_cam->get_render_status());
         }
     }
 
