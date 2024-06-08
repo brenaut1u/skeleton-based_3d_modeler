@@ -1,7 +1,7 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include "../ray.h"
+#include "ray.h"
 #include "color.h"
 #include "../scene_objects/hittable.h"
 #include <vector>

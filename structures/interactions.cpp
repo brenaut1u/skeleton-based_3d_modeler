@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../ray.h"
+#include "../utilities/ray.h"
 #include "../camera/camera.h"
 #include "../scene_objects/hittable_list.h"
 #include "linked_spheres_group.h"

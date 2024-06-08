@@ -39,7 +39,7 @@ add_library(skeleton_modeler STATIC
         utilities/material.h
         camera/phong_camera.cpp
         camera/phong_camera.h
-        ray.h
+        utilities/ray.h
         utilities/rtweekend.h
         scene_objects/sphere.cpp
         scene_objects/sphere.h
