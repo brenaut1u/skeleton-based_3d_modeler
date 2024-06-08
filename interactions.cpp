@@ -110,23 +110,21 @@ vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_po
         ray r = phong_cam->get_ray(screen_pos_x, screen_pos_y);
         bool hit = sph->hit(r, interval(0.001, infinity), rec, false);
 
-        if (hit) {
-            point3 la = phong_cam->get_center();
-            point3 lb = rec.p;
-            point3 p0 = phong_cam->get_pixel00_loc();
-            vec3 p01 = phong_cam->get_viewport_u();
-            vec3 p02 = phong_cam->get_viewport_v();
+        point3 la = phong_cam->get_center();
+        point3 lb = hit ? rec.p : sph->get_center();
+        point3 p0 = phong_cam->get_pixel00_loc();
+        vec3 p01 = phong_cam->get_viewport_u();
+        vec3 p02 = phong_cam->get_viewport_v();
 
-            double t = line_plane_intersection(la, lb - la, p0, p01, p02);
-            point3 pos_on_screen = p0 + ((double) new_screen_pos_x / phong_cam->image_width) * p01
-                                   +
-                                   ((double) new_screen_pos_y /
-                                    (static_cast<int>(phong_cam->image_width / phong_cam->aspect_ratio))) *
-                                   p02;
-            point3 new_pos = (pos_on_screen - la * (1 - t)) / t;
+        double t = line_plane_intersection(la, lb - la, p0, p01, p02);
+        point3 pos_on_screen = p0 + ((double) new_screen_pos_x / phong_cam->image_width) * p01
+                               +
+                               ((double) new_screen_pos_y /
+                                (static_cast<int>(phong_cam->image_width / phong_cam->aspect_ratio))) *
+                               p02;
+        point3 new_pos = (pos_on_screen - la * (1 - t)) / t;
 
-            return new_pos - lb;
-        }
+        return new_pos - lb;
     }
     return {0.0, 0.0, 0.0};
 }
