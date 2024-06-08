@@ -55,7 +55,7 @@ while gui.running:
 
     if gui.get_event(ti.ui.PRESS) :
         # Check if the left mouse button is clicked
-        if gui.event.key == ti.GUI.LMB :
+        if gui.event.key == ti.GUI.LMB and not gui.is_pressed('k'):
             # If it is, set the mouse_clicked variable to True
             mouse_clicked = True
             # and store the position of the cursor
@@ -172,9 +172,14 @@ while gui.running:
                 modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)
             modeler1.computeBeautifulRender(beautiful_render)
 
-    elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1: 
-        modeler1.move_sphere(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
+    elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('k') and array_selected_id[0] != -1:
+        modeler1.move_spheres_ik(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
         modeler1.computeBeautifulRender(beautiful_render)
+
+    elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1:
+        modeler1.move_spheres(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
+        modeler1.computeBeautifulRender(beautiful_render)
+
 
     # This part is used to move the camera
     if gui.is_pressed(ti.GUI.LEFT) :

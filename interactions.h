@@ -58,6 +58,8 @@ public:
 
     void move_spheres_on_screen(const std::span<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
 
+    void move_spheres_ik(const std::span<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y);
+
     void rotate_spheres_around_axis(const std::span<int>& spheres_id, vec3 axis, point3 axis_point, double angle);
 
     void rotate_spheres_around_camera_axis(const std::span<int>& spheres_id, point3 axis_point, double angle);

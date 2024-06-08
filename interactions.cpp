@@ -130,15 +130,69 @@ vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_po
 }
 
 void interactions::move_spheres_on_screen(const std::span<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
-    //the move is related to the last sphere of the list
+    // The move is related to the last sphere of the list
     if (!spheres_id.empty()) {
-        vec3 v = get_translation_vector_on_screen(spheres_id[spheres_id.size()-1], screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
+        vec3 v = get_translation_vector_on_screen(spheres_id[spheres_id.size()-1], screen_pos_x, screen_pos_y,
+                                                  new_screen_pos_x, new_screen_pos_y);
         for (int id: spheres_id) {
             shared_ptr<sphere> sph = spheres_group->get_sphere_at(id);
             spheres_group->set_sphere_position(id, sph->get_center() + v);
         }
     }
     update_skeleton_screen_coordinates();
+}
+
+void interactions::move_spheres_ik(const std::span<int>& spheres_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
+    // The move is related to the first sphere. The last sphere is moved to new_screen_pos and
+    // the second sphere's position is calculated by inverse kinematics. The remaining spheres move like the last one,
+    // which allow, for example, to move a complete hand with fingers.
+
+    int nb_spheres = spheres_id.size();
+    if (nb_spheres >= 3) {
+        shared_ptr<sphere> sph1 = spheres_group->get_sphere_at(spheres_id[0]);
+        shared_ptr<sphere> sph2 = spheres_group->get_sphere_at(spheres_id[1]);
+        shared_ptr<sphere> sph3 = spheres_group->get_sphere_at(spheres_id[nb_spheres - 1]);
+
+        vec3 v12 = sph1->get_center() - sph2->get_center();
+        vec3 v23 = sph2->get_center() - sph3->get_center();
+
+        double r12 = v12.length();
+        double r23 = v23.length();
+
+        vec3 sph3_move = get_translation_vector_on_screen(spheres_id[nb_spheres - 1],screen_pos_x, screen_pos_y,new_screen_pos_x, new_screen_pos_y);
+        point3 sph3_new_pos = sph3->get_center() + sph3_move;
+
+        vec3 new_v13 = sph3_new_pos - sph1->get_center();
+
+        if ((sph3_new_pos - sph1->get_center()).length() <= r12 + r23) {
+            // if sph3 is not too far away from sph1 for a solution to exist
+            vec3 u = unit_vector(new_v13);
+            vec3 v = unit_vector(v12 - u * dot(u, v12));
+
+            if (v == u) {
+                // in case the three spheres are aligned
+                u = u != vec3{0.0, 1.0, 0.0} ? vec3{0.0, 1.0, 0.0} : vec3{1.0, 0.0, 0.0};
+            }
+
+            double h = dot(new_v13, new_v13);
+            double w = h + r12 * r12 - r23 * r23;
+            double s = max(4.0 * r12 * r12 * h - w * w, 0.0);
+
+            double du = (w * dot(new_v13, u) - dot(new_v13, v) * sqrt(s)) * 0.5 / h;
+            double dv = (w * dot(new_v13, v) + dot(new_v13, u) * sqrt(s)) * 0.5 / h;
+
+            // moving second sphere (eg: the elbow)
+            spheres_group->set_sphere_position(spheres_id[1], sph1->get_center() + du * u - dv * v);
+
+            // moving last sphere and all the others (eg: the hand and the fingers)
+            for (int i = 2; i < spheres_id.size(); i++) {
+                shared_ptr<sphere> sph = spheres_group->get_sphere_at(spheres_id[i]);
+                spheres_group->set_sphere_position(spheres_id[i], sph->get_center() + sph3_move);
+            }
+
+            update_skeleton_screen_coordinates();
+        }
+    }
 }
 
 void interactions::rotate_spheres_around_axis(const std::span<int>& spheres_id, vec3 axis, point3 axis_point, double angle) {
