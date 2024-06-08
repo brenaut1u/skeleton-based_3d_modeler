@@ -190,6 +190,7 @@ struct modeler
                 inter->select_sphere(id);
             }
         }
+        inter->update_skeleton_screen_coordinates();
     }
 
     void unselect(pyb::array_t<float> sphere_id)
@@ -200,6 +201,7 @@ struct modeler
                 inter->unselect_sphere(id);
             }
         }
+        inter->update_skeleton_screen_coordinates();
     }
 
     void hovered(int sphere_id)

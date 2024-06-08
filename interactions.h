@@ -21,6 +21,7 @@ public:
                  shared_ptr<phong_camera> _phong_cam, shared_ptr<beautiful_camera> _beautiful_cam) :
             spheres_group(_spheres_group), world(_world), phong_cam(_phong_cam), beautiful_cam(_beautiful_cam) {
         cam_rot_center = point3(0.0, 0.25, -2.0);
+        update_skeleton_screen_coordinates();
     }
 
     static unique_ptr<interactions> get_init_scene(double aspect_ratio, int phong_image_width, int beautiful_image_width);
@@ -31,13 +32,15 @@ public:
 
     void delete_sphere(const std::span<int>& spheres_id);
 
-    int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
-        return std::get<0>(sphere_at_pos(screen_pos_x, screen_pos_y));
-    }
+    int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y);
 
     pair<int, int> world_to_screen_pos(point3 p);
 
-    vector<screen_segment> get_skeleton_screen_coordinates();
+    void update_skeleton_screen_coordinates();
+
+    vector<screen_segment> get_skeleton_screen_coordinates() const {
+        return skeleton_screen_coordinates;
+    }
 
     void change_radius(int sphere_id, double radius){
         spheres_group->change_sphere_radius(sphere_id, radius);
@@ -113,9 +116,8 @@ private:
     shared_ptr<phong_camera> phong_cam;
     shared_ptr<beautiful_camera> beautiful_cam;
     point3 cam_rot_center; // the point around which the camera rotates
+    vector<screen_segment> skeleton_screen_coordinates; // the screen coordinates of the centers of the spheres
     std::future<void> beautiful_render_task;
-
-    tuple<int, hit_record> sphere_at_pos(int screen_pos_x, int screen_pos_y);
 
     tuple<int, hit_record> cone_at_pos(int screen_pos_x, int screen_pos_y);
 };

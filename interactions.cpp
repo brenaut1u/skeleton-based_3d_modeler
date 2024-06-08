@@ -8,6 +8,8 @@
 #include "save_load.h"
 #include "interactions.h"
 
+inline constexpr double camera_move_factor = 0.5; // The attenuation factor for camera displacement, to make it smaller
+
 unique_ptr<interactions> interactions::get_init_scene(double aspect_ratio, int phong_image_width, int beautiful_image_width) {
     shared_ptr<hittable_list> world = make_shared<hittable_list>();
     auto mat = make_shared<metal>(color(0.8, 0.6, 0.2), 0.5);
@@ -22,7 +24,8 @@ unique_ptr<interactions> interactions::get_init_scene(double aspect_ratio, int p
 }
 
 void interactions::add_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
-    auto [sphere_id, rec] = sphere_at_pos(screen_pos_x, screen_pos_y);
+    ray r = phong_cam->get_ray(screen_pos_x, screen_pos_y);
+    auto [sphere_id, rec] = spheres_group->find_hit_sphere(r, interval(0.001, infinity));
     if (sphere_id != -1) {
         shared_ptr<sphere> new_sphere = make_shared<sphere>(rec.p, 0.3, rec.mat);
         spheres_group->add_sphere(new_sphere, sphere_id);
@@ -30,6 +33,7 @@ void interactions::add_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
     else {
         segment_cone_at_pos(screen_pos_x, screen_pos_y);
     }
+    update_skeleton_screen_coordinates();
 }
 
 void interactions::segment_cone_at_pos(int screen_pos_x, int screen_pos_y) {
@@ -41,6 +45,27 @@ void interactions::segment_cone_at_pos(int screen_pos_x, int screen_pos_y) {
 
 void interactions::delete_sphere(const std::span<int>& spheres_id) {
     spheres_group->delete_sphere(spheres_id);
+    update_skeleton_screen_coordinates();
+}
+
+int interactions::detect_sphere_at_pos(int screen_pos_x, int screen_pos_y) {
+    ray r = phong_cam->get_ray(screen_pos_x, screen_pos_y);
+    auto [sphere_id, rec] = spheres_group->find_hit_sphere(r, interval(0.001, infinity));
+    if (sphere_id != -1) return sphere_id;
+
+    for (screen_segment seg : skeleton_screen_coordinates) {
+        if ((screen_pos_x - seg.first.x) * (screen_pos_x - seg.first.x)
+                + (screen_pos_y - seg.first.y) * (screen_pos_y - seg.first.y)
+                <= skeleton_circle_radius * skeleton_circle_radius) {
+            return seg.first_sphere_id;
+        }
+        if ((screen_pos_x - seg.second.x) * (screen_pos_x - seg.second.x)
+                + (screen_pos_y - seg.second.y) * (screen_pos_y - seg.second.y)
+                <= skeleton_circle_radius * skeleton_circle_radius) {
+            return seg.second_sphere_id;
+        }
+    }
+    return -1;
 }
 
 pair<int, int> interactions::world_to_screen_pos(point3 p) {
@@ -60,8 +85,8 @@ pair<int, int> interactions::world_to_screen_pos(point3 p) {
     return {screen_pos_x, screen_pos_y};
 }
 
-vector<screen_segment> interactions::get_skeleton_screen_coordinates() {
-    vector<screen_segment> skeleton_screen_coordinates;
+void interactions::update_skeleton_screen_coordinates() {
+    skeleton_screen_coordinates = vector<screen_segment>();
     for (const pair<int, int>& link : spheres_group->get_links()) {
         point3 c1 = spheres_group->get_sphere_at(link.first)->get_center();
         point3 c2 = spheres_group->get_sphere_at(link.second)->get_center();
@@ -71,10 +96,11 @@ vector<screen_segment> interactions::get_skeleton_screen_coordinates() {
             skeleton_screen_coordinates.push_back(screen_segment{screen_point{world_to_screen_pos(c1)},
                                                                  screen_point{world_to_screen_pos(c2)},
                                                                  spheres_group->is_sphere_selected(link.first),
-                                                                 spheres_group->is_sphere_selected(link.second)});
+                                                                 spheres_group->is_sphere_selected(link.second),
+                                                                 link.first,
+                                                                 link.second});
         }
     }
-    return skeleton_screen_coordinates;
 }
 
 vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y) {
@@ -114,6 +140,7 @@ void interactions::move_spheres_on_screen(const std::span<int>& spheres_id, int 
             spheres_group->set_sphere_position(id, sph->get_center() + v);
         }
     }
+    update_skeleton_screen_coordinates();
 }
 
 void interactions::rotate_spheres_around_axis(const std::span<int>& spheres_id, vec3 axis, point3 axis_point, double angle) {
@@ -125,16 +152,19 @@ void interactions::rotate_spheres_around_axis(const std::span<int>& spheres_id, 
             spheres_group->set_sphere_position(sphere_id, sph->get_center());
         }
     }
+    update_skeleton_screen_coordinates();
 }
 
 void interactions::rotate_spheres_around_camera_axis(const std::span<int>& spheres_id, point3 axis_point, double angle) {
     vec3 axis = axis_point - phong_cam->get_center();
     rotate_spheres_around_axis(spheres_id, axis, axis_point, angle);
+    update_skeleton_screen_coordinates();
 }
 
 void interactions::rotate_camera(double horizontal_angle, double vertical_angle) {
     phong_cam->rotate_camera(horizontal_angle, vertical_angle, cam_rot_center);
     beautiful_cam->rotate_camera(horizontal_angle, vertical_angle, cam_rot_center);
+    update_skeleton_screen_coordinates();
 }
 
 void interactions::move_camera_sideways(double delta_pos_x, double delta_pos_y) {
@@ -142,11 +172,12 @@ void interactions::move_camera_sideways(double delta_pos_x, double delta_pos_y) 
     // The move is adapted to the distance of the camera to the rotation center:
     // the smaller the distance, the smaller the displacement.
 
-    double dist_to_rot_center = (phong_cam->get_center() - cam_rot_center).length();
+    double dist_to_rot_center = (phong_cam->get_center() - cam_rot_center).length() * camera_move_factor;
     phong_cam->move_camera_sideways(delta_pos_x * dist_to_rot_center, delta_pos_y * dist_to_rot_center);
     beautiful_cam->move_camera_sideways(delta_pos_x * dist_to_rot_center, delta_pos_y * dist_to_rot_center);
     cam_rot_center += delta_pos_x * dist_to_rot_center * phong_cam->get_viewport_u()
                     + delta_pos_y * dist_to_rot_center * phong_cam->get_viewport_v();
+    update_skeleton_screen_coordinates();
 }
 
 void interactions::move_camera_forward(double delta_pos) {
@@ -154,9 +185,10 @@ void interactions::move_camera_forward(double delta_pos) {
     // The move is adapted to the distance of the camera to the rotation center:
     // the smaller the distance, the smaller the displacement.
 
-    double dist_to_rot_center = (phong_cam->get_center() - cam_rot_center).length();
+    double dist_to_rot_center = (phong_cam->get_center() - cam_rot_center).length() * camera_move_factor;
     phong_cam->move_camera_forward(delta_pos * dist_to_rot_center);
     beautiful_cam->move_camera_forward(delta_pos * dist_to_rot_center);
+    update_skeleton_screen_coordinates();
 }
 
 unique_ptr<interactions> interactions::load(string filename, shared_ptr<phong_camera> phong_cam, shared_ptr<beautiful_camera> beautiful_cam) {
@@ -170,12 +202,6 @@ unique_ptr<interactions> interactions::load(string filename, shared_ptr<phong_ca
     }
 }
 
-tuple<int, hit_record> interactions::sphere_at_pos(int screen_pos_x, int screen_pos_y) {
-    ray r = phong_cam->get_ray(screen_pos_x, screen_pos_y);
-    tuple<int, hit_record> find_sphere = spheres_group->find_hit_sphere(r, interval(0.001, infinity));
-    return find_sphere;
-}
-
 tuple<int, hit_record> interactions::cone_at_pos(int screen_pos_x, int screen_pos_y) {
     ray r = phong_cam->get_ray(screen_pos_x, screen_pos_y);
     tuple<int, hit_record> find_cone = spheres_group->find_hit_cone(r, interval(0.001, infinity));
@@ -184,6 +210,7 @@ tuple<int, hit_record> interactions::cone_at_pos(int screen_pos_x, int screen_po
 
 void interactions::add_link(int id1, int id2) {
     spheres_group->add_link(id1, id2);
+    update_skeleton_screen_coordinates();
 }
 
 void interactions::start_beautiful_render(span3D beautiful_image) {
