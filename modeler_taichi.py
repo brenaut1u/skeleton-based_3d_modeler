@@ -53,7 +53,7 @@ while gui.running:
     modeler1.hovered(hovered_id)
     
 
-    if gui.get_event(ti.ui.PRESS) :
+    if gui.get_event(ti.ui.PRESS) and not gui.is_pressed('k') and not gui.is_pressed('r'):
         # Check if the left mouse button is clicked
         if gui.event.key == ti.GUI.LMB :
             # If it is, set the mouse_clicked variable to True
@@ -148,7 +148,7 @@ while gui.running:
             modeler1.computeBeautifulRender(beautiful_render)
 
     # If the 'r' button is pressed, we change the radius of the selected spheres
-    elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('r') and array_selected_id[0] != -1:
+    elif gui.is_pressed('r') and array_selected_id[0] != -1:
         # It can be done by entering a value
         if gui.is_pressed('Shift') :
             if use_tk :
@@ -171,7 +171,7 @@ while gui.running:
                 except:
                     print("Value incorrect")
         # Or by moving the mouse
-        else : 
+        elif gui.is_pressed(ti.GUI.LMB)  : 
             for id in array_selected_id:
                 modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)
             modeler1.computeBeautifulRender(beautiful_render)
