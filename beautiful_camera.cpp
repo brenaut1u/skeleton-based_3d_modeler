@@ -26,7 +26,6 @@ void beautiful_camera::render(const hittable_list& world, span3D image) {
     continue_beautiful_render = true;
     for (int j = 0; j < image_height; ++j) {
         render_status = (float) j / image_height;
-        //if (int(render_status) == render_status) std::cout << render_status << "%"<< std::endl;
 
         for (int i = 0; i < image_width; ++i) {
             color pixel_color(0,0,0);
@@ -41,7 +40,6 @@ void beautiful_camera::render(const hittable_list& world, span3D image) {
         }
     }
     beautiful_render_ready = true;
-    std::cout << "Done." << std::endl;
 }
 
 color beautiful_camera::ray_color(const ray& r, int depth, const hittable& world) const {
