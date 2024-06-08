@@ -8,15 +8,18 @@
 inline constexpr double contour_thickness = 0.005;
 inline const color contour_color = color(1.0, 1.0, 0.0);
 
-bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
+bool cone::hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const {
+  // show_selec parameter determines whether we show the selection state in the hit_record
   bool hovered = false;
   bool contour = false;
   vec3 ro = r.origin();
   vec3 rd = unit_vector(r.direction());
   vec3 pa = center1;
   vec3 pb = center2;
-  auto ra = is_selected(1) || is_hovered(1) ? radius1 + contour_thickness * (center1 - r.origin()).length() : radius1;
-  auto rb = is_selected(2) || is_hovered(2) ? radius2 + contour_thickness * (center2 - r.origin()).length() : radius2;
+  auto ra = show_selec && (is_selected(1) || is_hovered(1))
+                    ? radius1 + contour_thickness * (center1 - r.origin()).length() : radius1;
+  auto rb = show_selec && (is_selected(2) || is_hovered(2))
+                    ? radius2 + contour_thickness * (center2 - r.origin()).length() : radius2;
 
   vec3 outward_normal;
   shared_ptr<material> mat;
@@ -39,7 +42,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
   double t;
 
     // sphere contours
-    if (is_selected(2) && h2 > 0.0) {
+    if (show_selec && is_selected(2) && h2 > 0.0) {
         double t_tmp = -m6 - sqrt( h2 );
 
         vec3 r_dir = unit_vector(r.direction());
@@ -53,7 +56,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
         }
         hovered = is_hovered(2);
     }
-    else if (is_selected(1) && h1 > 0.0) {
+    else if (show_selec && is_selected(1) && h1 > 0.0) {
         double t_tmp = -m3 - sqrt( h1 );
 
         vec3 r_dir = unit_vector(r.direction());
@@ -151,7 +154,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec) const {
     rec.set_face_normal(r, unit_vector(outward_normal));
     rec.mat = mat;
 
-    if (hovered){
+    if (show_selec && hovered){
         auto descr = mat->descriptor();
         color new_color = rec.mat->get_material_color();
         new_color = negative(new_color);

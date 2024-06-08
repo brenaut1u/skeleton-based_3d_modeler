@@ -14,7 +14,7 @@ class cone : public hittable {
     cone(point3 _center1, point3 _center2, double _radius1, double _radius2, shared_ptr<material> _mat1, shared_ptr<material> _mat2)
             : center1(_center1), center2(_center2), radius1(_radius1), radius2(_radius2), mat1(_mat1), mat2(_mat2) {}
 
-    bool hit(const ray& r, interval ray_t, hit_record& rec) const override;
+    bool hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const override;
 
     void set_center1(point3 new_center) {
         center1 = new_center;

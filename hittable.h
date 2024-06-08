@@ -21,7 +21,8 @@ class hittable {
   public:
     virtual ~hittable() = default;
 
-    virtual bool hit(const ray& r, interval ray_t, hit_record& rec) const = 0;
+    virtual bool hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const = 0;
+    // show_selec parameter determines whether we show the selection state in the hit_record
 };
 
 #endif

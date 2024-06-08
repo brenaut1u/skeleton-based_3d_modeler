@@ -1,6 +1,6 @@
 #include "sphere.h"
 
-bool sphere::hit(const ray& r, interval ray_t, hit_record& rec) const {
+bool sphere::hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const {
     vec3 ro = r.origin();
     vec3 rd = unit_vector(r.direction());
     vec3 ce = center;

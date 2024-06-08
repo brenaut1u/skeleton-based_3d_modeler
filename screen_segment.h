@@ -21,6 +21,8 @@ struct screen_segment {
     screen_point second;
     bool first_selected;
     bool second_selected;
+    int first_sphere_id;
+    int second_sphere_id;
 };
 
 #endif

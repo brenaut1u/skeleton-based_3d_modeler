@@ -141,7 +141,7 @@ tuple<int, hit_record> linked_spheres_group::find_hit_sphere(const ray& r, inter
 
     for (int i = 0; i < spheres.size(); i++) {
         hit_record tmp_rec;
-        if (spheres[i].sphere->hit(r, ray_t, tmp_rec)) {
+        if (spheres[i].sphere->hit(r, ray_t, tmp_rec, false)) {
             if (index == - 1 || tmp_rec.t < rec.t) {
                 rec = tmp_rec;
                 index = i;
@@ -163,7 +163,7 @@ tuple<int, hit_record> linked_spheres_group::find_hit_cone(const ray& r, interva
 
     for (int i = 0; i < cones.size(); i++) {
         hit_record tmp_rec;
-        if (cones[i].cone->hit(r, ray_t, tmp_rec)) {
+        if (cones[i].cone->hit(r, ray_t, tmp_rec, false)) {
             if (index == - 1 || tmp_rec.t < rec.t) {
                 rec = tmp_rec;
                 index = i;

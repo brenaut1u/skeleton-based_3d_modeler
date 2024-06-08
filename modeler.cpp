@@ -108,9 +108,14 @@ struct modeler
         }
     }
 
-    void move_sphere_on_screen(pyb::array_t<float> sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
+    void move_spheres_on_screen(pyb::array_t<float> sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
     {
         return inter->move_spheres_on_screen(numpyViewArray(sphere_id), screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
+    }
+
+    void move_spheres_ik(pyb::array_t<float> sphere_id, int screen_pos_x, int screen_pos_y, int new_screen_pos_x, int new_screen_pos_y)
+    {
+        return inter->move_spheres_ik(numpyViewArray(sphere_id), screen_pos_x, screen_pos_y, new_screen_pos_x, new_screen_pos_y);
     }
 
     void rotate_camera(double horizontal_angle, double vertical_angle)
@@ -132,10 +137,10 @@ struct modeler
     void computePhongRender(pyb::array_t<float> output, bool draw_skeleton)
     {
         if (draw_skeleton) {
-            phong_cam->render(*world, lights, numpyView(output), inter->get_skeleton_screen_coordinates());
+            phong_cam->render(*world, lights, numpyView(output), beautiful_cam->get_render_status(), inter->get_skeleton_screen_coordinates());
         }
         else {
-            phong_cam->render(*world, lights, numpyView(output));
+            phong_cam->render(*world, lights, numpyView(output), beautiful_cam->get_render_status());
         }
     }
 
@@ -190,6 +195,7 @@ struct modeler
                 inter->select_sphere(id);
             }
         }
+        inter->update_skeleton_screen_coordinates();
     }
 
     void unselect(pyb::array_t<float> sphere_id)
@@ -200,6 +206,7 @@ struct modeler
                 inter->unselect_sphere(id);
             }
         }
+        inter->update_skeleton_screen_coordinates();
     }
 
     void hovered(int sphere_id)
@@ -243,7 +250,8 @@ PYBIND11_MODULE(main_modeler, m)
         .def("delete", &modeler::deleteSphere)
         .def("detect", &modeler::detectSphere)
         .def_readwrite("index", &modeler::indexLinkedSphere)
-        .def("move_sphere", &modeler::move_sphere_on_screen)
+        .def("move_spheres", &modeler::move_spheres_on_screen)
+        .def("move_spheres_ik", &modeler::move_spheres_ik)
         .def("rotate_camera", &modeler::rotate_camera)
         .def("move_camera_sideways", &modeler::move_camera_sideways)
         .def("move_camera_forward", &modeler::move_camera_forward)

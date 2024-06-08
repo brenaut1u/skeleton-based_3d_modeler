@@ -24,10 +24,8 @@ void beautiful_camera::render_file(const hittable_list& world) {
 void beautiful_camera::render(const hittable_list& world, span3D image) {
     beautiful_render_ready = false;
     continue_beautiful_render = true;
-    float render_status;
     for (int j = 0; j < image_height; ++j) {
-        render_status = 100 * (float) j / image_height;
-        if (int(render_status) == render_status) std::cout << render_status << "%"<< std::endl;
+        render_status = (float) j / image_height;
 
         for (int i = 0; i < image_width; ++i) {
             color pixel_color(0,0,0);
@@ -42,7 +40,6 @@ void beautiful_camera::render(const hittable_list& world, span3D image) {
         }
     }
     beautiful_render_ready = true;
-    std::cout << "Done." << std::endl;
 }
 
 color beautiful_camera::ray_color(const ray& r, int depth, const hittable& world) const {
@@ -52,7 +49,7 @@ color beautiful_camera::ray_color(const ray& r, int depth, const hittable& world
     if (depth <= 0)
         return color(0,0,0);
 
-    if (world.hit(r, interval(0.001, infinity), rec)) {
+    if (world.hit(r, interval(0.001, infinity), rec, false)) {
         if (rec.mat->descriptor().first == "unlit") {
             return rec.mat->get_material_color();
         }
