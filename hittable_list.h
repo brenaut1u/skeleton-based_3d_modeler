@@ -25,7 +25,8 @@ class hittable_list : public hittable {
 
     void remove(shared_ptr<hittable> object);
 
-    bool hit(const ray& r, interval ray_t, hit_record& rec) const override;
+    bool hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const override;
+    // show_selec parameter determines whether we show the selection state in the hit_record
 
     int nb_objects() {
         return objects.size();

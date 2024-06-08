@@ -9,7 +9,7 @@ class sphere : public hittable {
     sphere(point3 _center, double _radius, shared_ptr<material> _material)
       : center(_center), radius(_radius), mat(_material) {}
 
-    bool hit(const ray& r, interval ray_t, hit_record& rec) const override;
+    bool hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const override;
 
     point3 get_center() const {
       return center;

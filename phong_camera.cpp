@@ -64,7 +64,7 @@ color phong_camera::ray_color(const ray& r, int depth, const hittable& world, co
     if (depth <= 0)
         return color(0,0,0);
 
-    if (world.hit(r, interval(0.001, infinity), rec)) {
+    if (world.hit(r, interval(0.001, infinity), rec, true)) {
         if (rec.mat->descriptor().first == "unlit") {
             return rec.mat->get_material_color();
         }

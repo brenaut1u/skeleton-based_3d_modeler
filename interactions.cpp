@@ -82,7 +82,7 @@ vec3 interactions::get_translation_vector_on_screen(int sphere_id, int screen_po
     if (sph) {
         hit_record rec;
         ray r = phong_cam->get_ray(screen_pos_x, screen_pos_y);
-        bool hit = sph->hit(r, interval(0.001, infinity), rec);
+        bool hit = sph->hit(r, interval(0.001, infinity), rec, false);
 
         if (hit) {
             point3 la = phong_cam->get_center();
