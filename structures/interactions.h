@@ -7,9 +7,9 @@
 #include <memory>
 #include "linked_spheres_group.h"
 #include "save_load.h"
-#include "phong_camera.h"
-#include "beautiful_camera.h"
-#include "screen_segment.h"
+#include "../camera/phong_camera.h"
+#include "../camera/beautiful_camera.h"
+#include "../image/screen_segment.h"
 
 using std::unique_ptr;
 

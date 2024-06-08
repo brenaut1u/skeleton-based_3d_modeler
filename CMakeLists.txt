@@ -14,42 +14,42 @@ endif()
 add_subdirectory(extern/pybind11)
 
 add_library(skeleton_modeler STATIC
-        beautiful_camera.cpp
-        beautiful_camera.h
-        camera.cpp
-        camera.h
-        color.cpp
-        color.h
-        cone.cpp
-        cone.h
-        draw.cpp
-        draw.h
-        hittable.cpp
-        hittable.h
-        hittable_list.cpp
-        hittable_list.h
-        interactions.cpp
-        interactions.h
-        interval.h
-        light.cpp
-        light.h
-        linked_spheres_group.cpp
-        linked_spheres_group.h
-        material.cpp
-        material.h
-        phong_camera.cpp
-        phong_camera.h
+        camera/beautiful_camera.cpp
+        camera/beautiful_camera.h
+        camera/camera.cpp
+        camera/camera.h
+        utilities/color.cpp
+        utilities/color.h
+        scene_objects/cone.cpp
+        scene_objects/cone.h
+        image/draw.cpp
+        image/draw.h
+        scene_objects/hittable.cpp
+        scene_objects/hittable.h
+        scene_objects/hittable_list.cpp
+        scene_objects/hittable_list.h
+        structures/interactions.cpp
+        structures/interactions.h
+        utilities/interval.h
+        scene_objects/light.cpp
+        scene_objects/light.h
+        structures/linked_spheres_group.cpp
+        structures/linked_spheres_group.h
+        utilities/material.cpp
+        utilities/material.h
+        camera/phong_camera.cpp
+        camera/phong_camera.h
         ray.h
-        rtweekend.h
-        sphere.cpp
-        sphere.h
-        vec3.cpp
-        vec3.h
-        save_load.cpp
-        save_load.h
-        screen_segment.h
-        span3D.cpp
-        span3D.h
+        utilities/rtweekend.h
+        scene_objects/sphere.cpp
+        scene_objects/sphere.h
+        utilities/vec3.cpp
+        utilities/vec3.h
+        structures/save_load.cpp
+        structures/save_load.h
+        image/screen_segment.h
+        image/span3D.cpp
+        image/span3D.h
 )
 
 # CZ add all files used by the bindings

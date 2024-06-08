@@ -1,9 +1,9 @@
 #include "hittable.h"
-#include "vec3.h"
+#include "../utilities/vec3.h"
 #include "sphere.h"
 #include "cone.h"
-#include "material.h"
-#include "color.h"
+#include "../utilities/material.h"
+#include "../utilities/color.h"
 
 inline constexpr double contour_thickness = 0.005;
 inline const color contour_color = color(1.0, 1.0, 0.0);

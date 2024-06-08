@@ -4,9 +4,9 @@
 #include <vector>
 #include <algorithm>
 #include "linked_spheres_group.h"
-#include "hittable_list.h"
-#include "color.h"
-#include "material.h"
+#include "../scene_objects/hittable_list.h"
+#include "../utilities/color.h"
+#include "../utilities/material.h"
 #include "save_load.h"
 
 using std::stod;

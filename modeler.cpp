@@ -9,16 +9,16 @@ using std::unique_ptr;
 namespace pyb = pybind11;
 
 #include <memory>
-#include "span3D.h"
-#include "hittable_list.h"
-#include "sphere.h"
-#include "hittable.h"
-#include "camera.h"
-#include "color.h"
-#include "hittable_list.h"
-#include "material.h"
-#include "cone.h"
-#include "interactions.h"
+#include "image/span3D.h"
+#include "scene_objects/hittable_list.h"
+#include "scene_objects/sphere.h"
+#include "scene_objects/hittable.h"
+#include "camera/camera.h"
+#include "utilities/color.h"
+#include "scene_objects/hittable_list.h"
+#include "utilities/material.h"
+#include "scene_objects/cone.h"
+#include "structures/interactions.h"
 
 using std::unique_ptr;
 using std::shared_ptr;

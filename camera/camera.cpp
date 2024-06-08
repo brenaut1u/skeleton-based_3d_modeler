@@ -1,4 +1,4 @@
-#include "draw.h"
+#include "../image/draw.h"
 #include "camera.h"
 
 ray camera::get_ray(int i, int j) const {

@@ -1,5 +1,5 @@
 #include <future>
-#include "draw.h"
+#include "../image/draw.h"
 #include "camera.h"
 #include "phong_camera.h"
 

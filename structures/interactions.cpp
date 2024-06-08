@@ -1,10 +1,10 @@
 #include <iostream>
-#include "ray.h"
-#include "camera.h"
-#include "hittable_list.h"
+#include "../ray.h"
+#include "../camera/camera.h"
+#include "../scene_objects/hittable_list.h"
 #include "linked_spheres_group.h"
-#include "sphere.h"
-#include "hittable.h"
+#include "../scene_objects/sphere.h"
+#include "../scene_objects/hittable.h"
 #include "save_load.h"
 #include "interactions.h"
 

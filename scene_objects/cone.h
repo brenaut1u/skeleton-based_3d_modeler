@@ -1,10 +1,10 @@
 #ifndef CONE_H
 #define CONE_H
 
-#include "vec3.h"
+#include "../utilities/vec3.h"
 #include "sphere.h"
-#include "color.h"
-#include "material.h"
+#include "../utilities/color.h"
+#include "../utilities/material.h"
 
 class cone : public hittable {
   public:

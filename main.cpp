@@ -1,9 +1,9 @@
-#include "camera.h"
-#include "color.h"
-#include "hittable_list.h"
-#include "light.h"
-#include "save_load.h"
-#include "interactions.h"
+#include "camera/camera.h"
+#include "utilities/color.h"
+#include "scene_objects/hittable_list.h"
+#include "scene_objects/light.h"
+#include "structures/save_load.h"
+#include "structures/interactions.h"
 
 int main() {
     // unique_ptr<interactions> inter = interactions::get_init_scene();

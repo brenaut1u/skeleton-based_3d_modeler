@@ -1,7 +1,7 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-#include "color.h"
+#include "../utilities/color.h"
 #include "span3D.h"
 #include "screen_segment.h"
 

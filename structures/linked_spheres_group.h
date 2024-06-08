@@ -1,10 +1,10 @@
 #ifndef LINKED_SPHERE_GROUP_H
 #define LINKED_SPHERE_GROUP_H
 
-#include "sphere.h"
-#include "cone.h"
-#include "hittable_list.h"
-#include "material.h"
+#include "../scene_objects/sphere.h"
+#include "../scene_objects/cone.h"
+#include "../scene_objects/hittable_list.h"
+#include "../utilities/material.h"
 
 #include <string>
 #include <vector>

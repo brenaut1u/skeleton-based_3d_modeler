@@ -1,8 +1,8 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "vec3.h"
-#include "rtweekend.h"
+#include "utilities/vec3.h"
+#include "utilities/rtweekend.h"
 
 class ray {
   public:

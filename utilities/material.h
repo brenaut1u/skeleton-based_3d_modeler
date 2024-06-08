@@ -1,9 +1,9 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include "ray.h"
+#include "../ray.h"
 #include "color.h"
-#include "hittable.h"
+#include "../scene_objects/hittable.h"
 #include <vector>
 #include <memory>
 

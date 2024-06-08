@@ -1,8 +1,8 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include "vec3.h"
-#include "color.h"
+#include "../utilities/vec3.h"
+#include "../utilities/color.h"
 
 struct light {
     vec3 pos;

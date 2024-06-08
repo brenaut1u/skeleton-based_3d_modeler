@@ -4,14 +4,14 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-#include "interval.h"
-#include "color.h"
-#include "hittable.h"
-#include "material.h"
-#include "light.h"
-#include "span3D.h"
-#include "screen_segment.h"
-#include "hittable_list.h"
+#include "../utilities/interval.h"
+#include "../utilities/color.h"
+#include "../scene_objects/hittable.h"
+#include "../utilities/material.h"
+#include "../scene_objects/light.h"
+#include "../image/span3D.h"
+#include "../image/screen_segment.h"
+#include "../scene_objects/hittable_list.h"
 
 using std::shared_ptr;
 
