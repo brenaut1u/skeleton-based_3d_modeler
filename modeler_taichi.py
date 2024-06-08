@@ -55,7 +55,7 @@ while gui.running:
 
     if gui.get_event(ti.ui.PRESS) :
         # Check if the left mouse button is clicked
-        if gui.event.key == ti.GUI.LMB and not gui.is_pressed('k'):
+        if gui.event.key == ti.GUI.LMB :
             # If it is, set the mouse_clicked variable to True
             mouse_clicked = True
             # and store the position of the cursor
@@ -63,25 +63,29 @@ while gui.running:
             
             # If we hover nothing, that means we unselect everything
             if hovered_id == -1 :
-                #we unselect everything
-                modeler1.unselect(array_selected_id)
-                #we reset the array of selected id
-                array_selected_id = np.array([-1])
-            # If we press the control key, it means we want to select multiple spheres
-            elif gui.is_pressed('Control') and array_selected_id[0] != -1 :
-                # If the hovered sphere is not already selected, we add it to the list
-                if hovered_id not in array_selected_id :
-                    array_selected_id =  np.append(array_selected_id,hovered_id)
-                # If it is already selected, we remove it from the list
+                if not gui.is_pressed('Control') :
+                    #we unselect everything
+                    modeler1.unselect(array_selected_id)
+                    #we reset the array of selected id
+                    array_selected_id = np.array([-1])
                 else : 
-                    array_selected_id = array_selected_id[array_selected_id != hovered_id]
-                    modeler1.unselect(np.array([hovered_id]))
-                    if len(array_selected_id) == 0 :              
-                        array_selected_id = np.array([-1])
-            # If we are not in one of the first two cases, we unselect the selected spheres and select the hovered one
-            else : 
-                modeler1.unselect(array_selected_id)
-                array_selected_id = np.array([hovered_id])
+                    continue
+            elif hovered_id != -1 :
+                # If we press the control key, it means we want to select multiple spheres
+                if gui.is_pressed('Control') and array_selected_id[0] != -1 :
+                    # If the hovered sphere is not already selected, we add it to the list
+                    if hovered_id not in array_selected_id :
+                        array_selected_id =  np.append(array_selected_id,hovered_id)
+                    # If it is already selected, we remove it from the list
+                    else : 
+                        array_selected_id = array_selected_id[array_selected_id != hovered_id]
+                        modeler1.unselect(np.array([hovered_id]))
+                        if len(array_selected_id) == 0 :              
+                            array_selected_id = np.array([-1])
+                # If we are not in one of the first two cases, we unselect the selected spheres and select the hovered one
+                else : 
+                    modeler1.unselect(array_selected_id)
+                    array_selected_id = np.array([hovered_id])
 
             # If we press 'q' (or 'a'), we add a sphere if possible at the position of the cursor
             if gui.is_pressed('q') :
@@ -172,14 +176,9 @@ while gui.running:
                 modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)
             modeler1.computeBeautifulRender(beautiful_render)
 
-    elif gui.is_pressed(ti.GUI.LMB) and gui.is_pressed('k') and array_selected_id[0] != -1:
-        modeler1.move_spheres_ik(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
-        modeler1.computeBeautifulRender(beautiful_render)
-
-    elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1:
+    elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('Control') and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1: 
         modeler1.move_spheres(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
         modeler1.computeBeautifulRender(beautiful_render)
-
 
     # This part is used to move the camera
     if gui.is_pressed(ti.GUI.LEFT) :
