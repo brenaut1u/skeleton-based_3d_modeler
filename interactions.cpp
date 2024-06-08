@@ -138,14 +138,25 @@ void interactions::rotate_camera(double horizontal_angle, double vertical_angle)
 }
 
 void interactions::move_camera_sideways(double delta_pos_x, double delta_pos_y) {
-    phong_cam->move_camera_sideways(delta_pos_x, delta_pos_y);
-    beautiful_cam->move_camera_sideways(delta_pos_x, delta_pos_y);
-    cam_rot_center += delta_pos_x * phong_cam->get_viewport_u() + delta_pos_y * phong_cam->get_viewport_v();
+    // Move the camera laterally or upwards/downwards.
+    // The move is adapted to the distance of the camera to the rotation center:
+    // the smaller the distance, the smaller the displacement.
+
+    double dist_to_rot_center = (phong_cam->get_center() - cam_rot_center).length();
+    phong_cam->move_camera_sideways(delta_pos_x * dist_to_rot_center, delta_pos_y * dist_to_rot_center);
+    beautiful_cam->move_camera_sideways(delta_pos_x * dist_to_rot_center, delta_pos_y * dist_to_rot_center);
+    cam_rot_center += delta_pos_x * dist_to_rot_center * phong_cam->get_viewport_u()
+                    + delta_pos_y * dist_to_rot_center * phong_cam->get_viewport_v();
 }
 
 void interactions::move_camera_forward(double delta_pos) {
-    phong_cam->move_camera_forward(delta_pos);
-    beautiful_cam->move_camera_forward(delta_pos);
+    // Move the camera forward or backward.
+    // The move is adapted to the distance of the camera to the rotation center:
+    // the smaller the distance, the smaller the displacement.
+
+    double dist_to_rot_center = (phong_cam->get_center() - cam_rot_center).length();
+    phong_cam->move_camera_forward(delta_pos * dist_to_rot_center);
+    beautiful_cam->move_camera_forward(delta_pos * dist_to_rot_center);
 }
 
 unique_ptr<interactions> interactions::load(string filename, shared_ptr<phong_camera> phong_cam, shared_ptr<beautiful_camera> beautiful_cam) {

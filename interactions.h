@@ -112,7 +112,7 @@ private:
     shared_ptr<hittable_list> world;
     shared_ptr<phong_camera> phong_cam;
     shared_ptr<beautiful_camera> beautiful_cam;
-    point3 cam_rot_center;
+    point3 cam_rot_center; // the point around which the camera rotates
     std::future<void> beautiful_render_task;
 
     tuple<int, hit_record> sphere_at_pos(int screen_pos_x, int screen_pos_y);
