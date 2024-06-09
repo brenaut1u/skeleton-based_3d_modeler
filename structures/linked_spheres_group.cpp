@@ -38,7 +38,7 @@ void linked_spheres_group::delete_sphere(const std::span<int>& spheres_id) {
     
     for (auto it = spheres_id.rbegin(); it != spheres_id.rend(); ++it) {
         int id = *it;
-        if (spheres.size() > 1) {
+        if (spheres.size() > 2) {
             // update cones
             int i = 0;
             while (i < cones.size()) {
