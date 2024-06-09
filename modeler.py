@@ -84,8 +84,9 @@ while gui.running:
                             array_selected_id = np.array([-1])
                 # If we are not in one of the first two cases, we unselect the selected spheres and select the hovered one
                 else : 
-                    modeler1.unselect(array_selected_id)
-                    array_selected_id = np.array([hovered_id])
+                    if hovered_id not in array_selected_id :
+                        modeler1.unselect(array_selected_id)
+                        array_selected_id = np.array([hovered_id])
 
             # If we press 'q' (or 'a'), we add a sphere if possible at the position of the cursor
             if gui.is_pressed('q') :
