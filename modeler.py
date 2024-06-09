@@ -53,7 +53,7 @@ while gui.running:
     modeler1.hovered(hovered_id)
     
 
-    if gui.get_event(ti.ui.PRESS) and not gui.is_pressed('k') and not gui.is_pressed('r'):
+    if gui.get_event(ti.ui.PRESS) and not gui.is_pressed('k') and not gui.is_pressed('r') and not gui.is_pressed('e'):
         # Check if the left mouse button is clicked
         if gui.event.key == ti.GUI.LMB :
             # If it is, set the mouse_clicked variable to True
@@ -147,6 +147,10 @@ while gui.running:
         if (array_selected_id.size > 2):
             modeler1.rotateSphereAxis(array_selected_id,0.2)
             modeler1.computeBeautifulRender(beautiful_render)
+    elif gui.is_pressed('o'):
+        if (array_selected_id.size > 2):
+            modeler1.rotateSphereAxis(array_selected_id,-0.2)
+            modeler1.computeBeautifulRender(beautiful_render)
 
     # If the 'r' button is pressed, we change the radius of the selected spheres
     elif gui.is_pressed('r') and array_selected_id[0] != -1:
@@ -180,7 +184,7 @@ while gui.running:
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('Control') and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1: 
         if gui.is_pressed('k') :
             modeler1.move_spheres_ik(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
-        elif hovered_id == array_selected_id[-1] :
+        elif gui.is_pressed('e'):
             modeler1.move_spheres(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
         modeler1.computeBeautifulRender(beautiful_render)
 
