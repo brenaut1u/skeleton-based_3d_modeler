@@ -18,7 +18,7 @@ unique_ptr<interactions> interactions::get_init_scene(double aspect_ratio, int p
     spheres -> add_sphere(make_shared<sphere>(point3(0.75, 0.25, -2.0), 0.8, mat), 0);
 
     shared_ptr<phong_camera> phong_cam = make_shared<phong_camera>(aspect_ratio, phong_image_width, 1, 1);
-    shared_ptr<beautiful_camera> beautiful_cam = make_shared<beautiful_camera>(aspect_ratio, beautiful_image_width, 25, 5);
+    shared_ptr<beautiful_camera> beautiful_cam = make_shared<beautiful_camera>(aspect_ratio, beautiful_image_width, 50, 5);
 
     return make_unique<interactions>(spheres, world, phong_cam, beautiful_cam);
 }
