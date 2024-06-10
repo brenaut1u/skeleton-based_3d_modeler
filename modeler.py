@@ -1,3 +1,6 @@
+# This file is the main file of the project. It allows the user to create, modify and delete spheres in a 3D environment.
+
+
 import build.main_modeler as main_modeler
 import taichi as ti
 import taichi.math as tm
@@ -181,6 +184,8 @@ while gui.running:
                 modeler1.increaseRadius(id,-(origin[0]-pos[0])/n*100)
             modeler1.computeBeautifulRender(beautiful_render)
 
+    # If the 'e' button is pressed, we move the selected spheres
+    # If the 'k' button is pressed, we move the selected spheres with inverse kinematics movements
     elif gui.is_pressed(ti.GUI.LMB) and not gui.is_pressed('Control') and not gui.is_pressed('q') and not gui.is_pressed('r') and array_selected_id[0] != -1: 
         if gui.is_pressed('k') :
             modeler1.move_spheres_ik(array_selected_id, old_pos[0], old_pos[1], int(pos[0]*n), int((1-pos[1])*m))
@@ -239,6 +244,7 @@ while gui.running:
     # Before ending this lopp, we store the position of the cursor
     old_pos = (int(pos[0]*n),int((1-pos[1])*m))
 
+    # If the beautiful render is ready, we display it
     if modeler1.isBeautifulRenderReady():
         canvas.set_image(beautiful_render)
     else:
