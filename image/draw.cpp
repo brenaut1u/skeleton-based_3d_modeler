@@ -8,7 +8,13 @@ using std::round;
 using std::min;
 using std::max;
 
+/**
+ * This file contains functions useful to draw on an image of type span3D.
+ */
+
 void color_pixel(span3D image, pair<int, int> pos, color color) {
+    // Colors image's pixel at pos, if pos is inside the image.
+
     int image_width = image.size_X();
     int image_height = image.size_Y();
 
@@ -20,7 +26,10 @@ void color_pixel(span3D image, pair<int, int> pos, color color) {
 }
 
 void draw_line(span3D image, screen_point start, screen_point end, int radius, color background_color, color border_color) {
-    // Bresenham's line algorithm
+    // Draws a line on image between positions start and end, using Bresenham's line algorithm.
+    // The line has thickness equal to 2 * radius. The border is 1px thick and is drawn using border_color,
+    // while the inside is drawn using background_color.
+
     if (abs(end.y - start.y) < abs(end.x - start.x)) {
         if (start.x > end.x) {
             draw_line_low(image, end, start, radius, background_color, border_color);
@@ -39,6 +48,7 @@ void draw_line(span3D image, screen_point start, screen_point end, int radius, c
     }
 }
 
+// This function is only used in draw_line, according to Bresenham's line algorithm
 void draw_line_low(span3D image, screen_point start, screen_point end, int radius, color background_color, color border_color) {
     int dx = end.x - start.x;
     int dy = end.y - start.y;
@@ -69,6 +79,7 @@ void draw_line_low(span3D image, screen_point start, screen_point end, int radiu
     }
 }
 
+// This function is only used in draw_line, according to Bresenham's line algorithm
 void draw_line_high(span3D image, screen_point start, screen_point end, int radius, color background_color, color border_color) {
     int dx = end.x - start.x;
     int dy = end.y - start.y;
@@ -100,6 +111,10 @@ void draw_line_high(span3D image, screen_point start, screen_point end, int radi
 }
 
 void draw_circle(span3D image, screen_point center, int radius, color background_color, color border_color) {
+    // Draw a circle on image, with the center position and radius given.
+    // The circle has an outline with a thickness of 1px, using border_color.
+    // The inside is drawn using background_color.
+
     for (int x = - radius; x <= radius; x++) {
         int thickness = round(sqrt(radius * radius - x * x));
 

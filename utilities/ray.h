@@ -4,6 +4,10 @@
 #include "vec3.h"
 #include "rtweekend.h"
 
+/**
+ * This class represents a ray, used for rendering and for selecting objects essentially.
+ */
+
 class ray {
   public:
     ray() {}

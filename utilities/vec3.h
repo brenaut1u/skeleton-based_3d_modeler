@@ -5,6 +5,10 @@
 #include <iostream>
 #include "rtweekend.h"
 
+/**
+ * A useful class and function for representing 3D vectors, with components of type double.
+ */
+
 using std::sqrt;
 
 class vec3 {

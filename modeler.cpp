@@ -18,6 +18,7 @@ namespace pyb = pybind11;
 #include "scene_objects/hittable_list.h"
 #include "utilities/material.h"
 #include "scene_objects/cone.h"
+#include "scene_objects/light.h"
 #include "structures/interactions.h"
 
 using std::unique_ptr;
@@ -39,7 +40,7 @@ struct modeler
     int beautiful_image_width = 800;
 
     std::vector<vec3> imageVector;
-    std::vector<light> lights;
+    std::vector<shared_ptr<light>> lights;
     unique_ptr<interactions> inter;
     int indexLinkedSphere;
 
@@ -51,8 +52,8 @@ struct modeler
         phong_cam = inter->get_phong_cam();
         beautiful_cam = inter->get_beautiful_cam();
 
-        light white_light = new_light(point3(-1.0, 0.5, -1.0));
-        lights = std::vector<light>{white_light};
+        shared_ptr<light> white_light = make_shared<vector_light>(vec3{0.0, 1.0, 0.0});
+        lights = std::vector<shared_ptr<light>>{white_light};
     }
 
     void addSphere(int screen_pos_x, int screen_pos_y)

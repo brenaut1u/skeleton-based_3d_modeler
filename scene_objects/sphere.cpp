@@ -1,5 +1,12 @@
 #include "sphere.h"
 
+/**
+ * The old sphere class, based on Peter Shirley's tutorial "Ray Tracing in One Weekend"
+ * (https://raytracing.github.io/books/RayTracingInOneWeekend.html)
+ * This class is no longer used. Single spheres are actually cones with two identical spheres, for simplicity
+ * in data management.
+ */
+
 bool sphere::hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const {
     vec3 ro = r.origin();
     vec3 rd = unit_vector(r.direction());

@@ -3,7 +3,16 @@
 #include "camera.h"
 #include "beautiful_camera.h"
 
+/**
+ * This class represents a camera that uses a normal, complete raytracing method, with recursive rays.
+ * The render is more realistic than phong_camera but takes more time.
+ * The render function can be called in an independent thread, and the class can communicate the render status.
+ */
+
 void beautiful_camera::render_file(const hittable_list& world) {
+    // This function outputs the computed image directly to the console in PPM format, and can therefore
+    // be used to store the image data in a file.
+
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
     for (int j = 0; j < image_height; ++j) {
@@ -22,6 +31,12 @@ void beautiful_camera::render_file(const hittable_list& world) {
 }
 
 void beautiful_camera::render(const hittable_list& world, span3D image) {
+    // This function computes the render and stores it in the given span3D image.
+    // Once the render is launched, the beautiful_render_ready and render_status attributes are
+    // regularly updated, which allows to know the render status from a different thread.
+    // The render is stopped when continue_beautiful_render becomes false, which allows
+    // to interrupt the render from a different thread using the stop_beautiful_render() method.
+
     beautiful_render_ready = false;
     continue_beautiful_render = true;
     for (int j = 0; j < image_height; ++j) {
@@ -43,6 +58,9 @@ void beautiful_camera::render(const hittable_list& world, span3D image) {
 }
 
 color beautiful_camera::ray_color(const ray& r, int depth, const hittable& world) const {
+    // This function returns the color found by the ray when intersecting an object.
+    // The recursion allows the ray to bounce over the object's surface, creating shadows and reflection.
+
     hit_record rec;
 
     // If we've exceeded the ray bounce limit, no more light is gathered.
@@ -57,15 +75,7 @@ color beautiful_camera::ray_color(const ray& r, int depth, const hittable& world
             ray scattered;
             color attenuation;
             if (rec.mat->scatter(r, rec, attenuation, scattered))
-                if (MODE == "normals") {
-                    vec3 N = rec.normal;
-                    return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
-                } else if (MODE == "distances") {
-                    float dist = (rec.p.length() - 1) / 2;
-                    return color(dist, dist, dist);
-                } else {
-                    return attenuation * ray_color(scattered, depth - 1, world);
-                }
+                return attenuation * ray_color(scattered, depth - 1, world);
             return color(0, 0, 0);
         }
     }

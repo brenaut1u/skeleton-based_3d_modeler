@@ -4,6 +4,13 @@
 #include "hittable.h"
 #include "../utilities/vec3.h"
 
+/**
+ * The old sphere class, based on Peter Shirley's tutorial "Ray Tracing in One Weekend"
+ * (https://raytracing.github.io/books/RayTracingInOneWeekend.html)
+ * This class is no longer used. Single spheres are actually cones with two identical spheres, for simplicity
+ * in data management.
+ */
+
 class sphere : public hittable {
   public:
     sphere(point3 _center, double _radius, shared_ptr<material> _material)

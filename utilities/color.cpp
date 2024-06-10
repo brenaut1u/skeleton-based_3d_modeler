@@ -4,6 +4,9 @@
 #include <iostream>
 
 void write_color(std::ostream &out, color pixel_color, int samples_per_pixel) {
+    // Writes color to console, correcting it using gamma correction.
+    // Useful for render to file.
+
     auto r = pixel_color.x();
     auto g = pixel_color.y();
     auto b = pixel_color.z();
@@ -26,6 +29,7 @@ void write_color(std::ostream &out, color pixel_color, int samples_per_pixel) {
         << static_cast<int>(256 * intensity.clamp(b)) << '\n';
 }
 
-    color negative(color c){
-        return color(1.0 - c.x(), 1.0 - c.y(), 1.0 - c.z());
-    }
+color negative(color c){
+    // Returns the negative of the color
+    return color(1.0 - c.x(), 1.0 - c.y(), 1.0 - c.z());
+}

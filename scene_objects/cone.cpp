@@ -5,41 +5,60 @@
 #include "../utilities/material.h"
 #include "../utilities/color.h"
 
+/**
+ * This class represents a sphere-cone, that is a cone with rounded extremities made of two spheres.
+ * The cone is defined by the two sphere's center position, and their radius. These properties can be modified.
+ * The two spheres can have different materials. The material at each point in-between is a blend of the two materials.
+ * The spheres can be show their hover and selection status.
+ * If a sphere is hovered, its color becomes the negative of the base color.
+ * If a sphere is selected, a thin contour appears around it.
+ */
+
 inline constexpr double contour_thickness = 0.005;
 inline const color contour_color = color(1.0, 1.0, 0.0);
 
 bool cone::hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const {
-  // show_selec parameter determines whether we show the selection state in the hit_record
-  bool hovered = false;
-  bool contour = false;
-  vec3 ro = r.origin();
-  vec3 rd = unit_vector(r.direction());
-  vec3 pa = center1;
-  vec3 pb = center2;
-  auto ra = show_selec && (is_selected(1) || is_hovered(1))
+    // Computes the information of the intersection point between the cone's surface and the ray.
+    // The material's color is determined by the point's position on the cone if the two spheres have
+    // different colors, and by the hover and selection state.
+    // The show_selec parameter allows to enable or disable whether we show the hover/selection state or not
+    // (useful for beautiful render, when we do not want to see it).
+    // The equations are based on https://iquilezles.org/articles/intersectors/
+
+    bool hovered = false;
+    bool contour = false;
+    vec3 ro = r.origin();
+    vec3 rd = unit_vector(r.direction());
+    vec3 pa = center1;
+    vec3 pb = center2;
+
+    // When the sphere is selected, the radius is slightly increased to show an external outline.
+    // This radius increase depends on the sphere's distance to the camera, so the contour's thickness appears constant
+    // on screen.
+    auto ra = show_selec && (is_selected(1) || is_hovered(1))
                     ? radius1 + contour_thickness * (center1 - r.origin()).length() : radius1;
-  auto rb = show_selec && (is_selected(2) || is_hovered(2))
+    auto rb = show_selec && (is_selected(2) || is_hovered(2))
                     ? radius2 + contour_thickness * (center2 - r.origin()).length() : radius2;
 
-  vec3 outward_normal;
-  shared_ptr<material> mat;
+    vec3 outward_normal;
+    shared_ptr<material> mat;
 
-  vec3  ba = pb - pa;
-  vec3  oa = ro - pa;
-  vec3  ob = ro - pb;
-  float rr = radius1 - radius2;
-  float m0 = dot(ba,ba);
-  float m1 = dot(ba,oa);
-  float m2 = dot(ba,rd);
-  float m3 = dot(rd,oa);
-  float m5 = dot(oa,oa);
-  float m6 = dot(ob,rd);
-  float m7 = dot(ob,ob);
+    vec3  ba = pb - pa;
+    vec3  oa = ro - pa;
+    vec3  ob = ro - pb;
+    float rr = radius1 - radius2;
+    float m0 = dot(ba,ba);
+    float m1 = dot(ba,oa);
+    float m2 = dot(ba,rd);
+    float m3 = dot(rd,oa);
+    float m5 = dot(oa,oa);
+    float m6 = dot(ob,rd);
+    float m7 = dot(ob,ob);
 
-  float h1 = m3*m3 - m5 + ra*ra;
-  float h2 = m6*m6 - m7 + rb*rb;
+    float h1 = m3*m3 - m5 + ra*ra;
+    float h2 = m6*m6 - m7 + rb*rb;
 
-  double t;
+    double t;
 
     // sphere contours
     if (show_selec && is_selected(2) && h2 > 0.0) {
@@ -70,13 +89,15 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) c
         }
         hovered = is_hovered(1);
     }
+
+    // sphere hovered: tested before the rest so the hover color is visible before the cone's body
     else if (is_hovered(2) && h2 > 0.0) {
         t = -m6 - sqrt( h2 );
         outward_normal = (ob+t*rd)/rb;
         mat = mat2;
         hovered = is_hovered(2);
     }
-    else if ( is_hovered(1) && h1 > 0.0) {
+    else if (is_hovered(1) && h1 > 0.0) {
         t = -m3 - sqrt( h1 );
         outward_normal = (oa+t*rd)/ra;
         mat = mat1;
@@ -115,6 +136,9 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) c
 
             // cone body
             if (y > 0.0 && y < d2) {
+                // The color is determined by intercepting the surface normal with the cone's central axis,
+                // which allows to have a smooth color gradient
+
                 outward_normal = unit_vector(d2 * (oa + t * rd) - ba * y);
 
                 point3 p = r.at(t / r.direction().length());
@@ -148,7 +172,7 @@ bool cone::hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) c
         }
     }
     if (t<0.001) return false;
-    
+
     rec.t = t / r.direction().length();
     rec.p = r.at(rec.t);
     rec.set_face_normal(r, unit_vector(outward_normal));

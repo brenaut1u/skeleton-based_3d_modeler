@@ -1,6 +1,12 @@
 #include "hittable_list.h"
 
+/**
+ * This class represents a list of hittable objects. It basically represents the world.
+ * It is used to iterate over all the objects in order to find the closest one intersected by a ray.
+ */
+
 void hittable_list::remove(shared_ptr<hittable> object) {
+    // Removes an object from the list
     int index = -1;
     for (int i = 0; i < objects.size(); i++) {
         if (objects[i] == object) {
@@ -12,7 +18,9 @@ void hittable_list::remove(shared_ptr<hittable> object) {
 }
 
 bool hittable_list::hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const {
-    // show_selec parameter determines whether we show the selection state in the hit_record
+    // Iterates over all the objects in the list in order to find the closest object intercepted by the ray.
+    // The show_selec parameter determines whether the selection state affects the hit_record.
+
     hit_record temp_rec;
     bool hit_anything = false;
     auto closest_so_far = ray_t.max;

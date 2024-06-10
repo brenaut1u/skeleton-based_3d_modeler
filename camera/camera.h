@@ -15,7 +15,15 @@
 
 using std::shared_ptr;
 
-#define MODE " "
+/**
+ * This class is the base class for phong_camera and beautiful_camera.
+ * The render is not implemented in this class because it depends on the type of camera (and it wouldn't have
+ * been useful to put a virtual render() here, since the render functions in phong_camera and beautiful_camera
+ * have different arguments.)
+ * Only the functions that are independent of the render method are present here, such as
+ * functions related to the camera's position and movement.
+ */
+
 inline constexpr double ambient_occlusion = 0.5;
 
 class camera {

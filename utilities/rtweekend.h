@@ -6,6 +6,9 @@
 #include <limits>
 #include <memory>
 
+/**
+ * This file contains some useful math utilities
+ */
 
 // Usings
 

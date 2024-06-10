@@ -9,6 +9,7 @@ using color = vec3;
 
 inline double linear_to_gamma(double linear_component)
 {
+    // Converts color component using gamma correction
     return sqrt(linear_component);
 }
 

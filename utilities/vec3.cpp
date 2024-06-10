@@ -1,5 +1,9 @@
 #include "vec3.h"
 
+/**
+ * A useful class and function for representing 3D vectors, with components of type double.
+ */
+
 vec3& vec3::operator+=(const vec3 &v) {
     e[0] += v.e[0];
     e[1] += v.e[1];

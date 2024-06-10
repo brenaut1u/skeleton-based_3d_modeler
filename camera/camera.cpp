@@ -1,6 +1,15 @@
 #include "../image/draw.h"
 #include "camera.h"
 
+/**
+ * This class is the base class for phong_camera and beautiful_camera.
+ * The render is not implemented in this class because it depends on the type of camera (and it wouldn't have
+ * been useful to put a virtual render() here, since the render functions in phong_camera and beautiful_camera
+ * have different arguments.)
+ * Only the functions that are independent of the render method are present here, such as
+ * functions related to the camera's position and movement.
+ */
+
 ray camera::get_ray(int i, int j) const {
     // Get a randomly sampled camera ray for the pixel at location i,j.
 
@@ -14,6 +23,9 @@ ray camera::get_ray(int i, int j) const {
 }
 
 void camera::rotate_camera(double horizontal_angle, double vertical_angle, point3 rot_center) {
+    // Rotates the camera with both a horizontal angle and a vertical angle, around the given center
+    // of rotation.
+
     // horizontal rotation
     vec3 h_axis = vec3(0.0, 1.0, 0.0);
     center = point_rotation(center, rot_center, h_axis, horizontal_angle);
@@ -32,18 +44,22 @@ void camera::rotate_camera(double horizontal_angle, double vertical_angle, point
 }
 
 void camera::move_camera_sideways(double delta_pos_x, double delta_pos_y) {
+    // Moves the camera either to the left or to the right (delta_pos_x), or upwards or downwards (delta_pos_y)
     center += delta_pos_x * viewport_u + delta_pos_y * viewport_v;
     pixel00_loc += delta_pos_x * viewport_u + delta_pos_y * viewport_v;
 }
 
 void camera::move_camera_forward(double delta_pos) {
-    point3 view_center = pixel00_loc + 0.5 * viewport_u + 0.5 * viewport_v;
+    // Moves the camera either forwards (delta_pos > 0) or backwards (delta_pos < 0)
+    point3 view_center = pixel00_loc + 0.5 * viewport_u + 0.5 * viewport_v; // The point in the middle of the viewport
     vec3 v = unit_vector(view_center - center);
     center += delta_pos * v;
     pixel00_loc += delta_pos * v;
 }
 
 void camera::initialize() {
+    // This function is called only once, after creation of the camera. It sets up the camera's properties.
+
     image_height = static_cast<int>(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;
 

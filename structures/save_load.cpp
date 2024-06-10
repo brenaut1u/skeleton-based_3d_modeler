@@ -9,10 +9,15 @@
 #include "../utilities/material.h"
 #include "save_load.h"
 
+/**
+ * These functions are used to save and load linked_spheres_groups from files
+ */
+
 using std::stod;
 using std::stoi;
 
 void save_in_file(linked_spheres_group* spheres_group, string filename) {
+    // Saves in file. If filename is incorrect, does nothing.
     std::ofstream file (filename);
     if (file.is_open())
     {
@@ -22,6 +27,7 @@ void save_in_file(linked_spheres_group* spheres_group, string filename) {
 }
 
 vector<string> split(string txt) {
+    // This function splits a string by removing whitespaces, and returns a vector of words
     vector<string> res;
     string curr;
     for (char c : txt) {
@@ -38,6 +44,9 @@ vector<string> split(string txt) {
 }
 
 pair<shared_ptr<linked_spheres_group>, shared_ptr<hittable_list>> load_from_file(string filename) {
+    // Loads from file. If filename is incorrect or if data in file doesn't match to a linked_spheres_group description,
+    // throws an error.
+
     std::ifstream file (filename);
     vector<shared_ptr<material>> materials;
     auto spheres_group = shared_ptr<linked_spheres_group>();
@@ -48,7 +57,7 @@ pair<shared_ptr<linked_spheres_group>, shared_ptr<hittable_list>> load_from_file
     bool first_sphere = true;
 
     if (!file.is_open()) {
-        std::cerr<<"file could not be found A" << std::endl;
+        std::cerr<<"Filename incorrect" << std::endl;
         throw std::exception();
     }
 
@@ -56,14 +65,10 @@ pair<shared_ptr<linked_spheres_group>, shared_ptr<hittable_list>> load_from_file
     {
         line.erase(std::remove(line.begin(), line.end(), '\r' ), line.end());
 
-        //std::cout<<line << std::endl;
-        //std::cout<<line.length() << std::endl;
         if (line == "materials" || line == "spheres" || line == "links") {
-            //std::cout<<"category" << std::endl;
             category = line;
         }
         else if (!line.empty()){
-            //std::cout<<line << std::endl;
             if (category == "materials") {
                 vector<string> l = split(line);
                 string mat_type = l[0];
@@ -75,7 +80,7 @@ pair<shared_ptr<linked_spheres_group>, shared_ptr<hittable_list>> load_from_file
                     materials.push_back(make_shared<metal>(col, stof(l[4])));
                 }
                 else {
-                    std::cerr<<"file could not be found b " << std::endl;
+                    std::cerr<<"error loading file" << std::endl;
                     throw std::exception();
                 }
             }
@@ -99,7 +104,7 @@ pair<shared_ptr<linked_spheres_group>, shared_ptr<hittable_list>> load_from_file
                 spheres_group -> add_link(stoi(l[0]), stoi(l[1]));
             }
             else {
-                std::cerr<<"file could not be found c" << std::endl;
+                std::cerr<<"error loading file" << std::endl;
                 throw std::exception();
             }
         }

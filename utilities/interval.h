@@ -1,6 +1,10 @@
 #ifndef INTERVAL_H
 #define INTERVAL_H
 
+/**
+ * This class contains useful methods to represent an interval ou double, including infinite numbers.
+ */
+
 #include "rtweekend.h"
 
 class interval {

@@ -6,6 +6,11 @@
 #include <memory>
 #include <vector>
 
+/**
+ * This class represents a list of hittable objects. It basically represents the world.
+ * It is used to iterate over all the objects in order to find the closest one intersected by a ray.
+ */
+
 using std::shared_ptr;
 using std::make_shared;
 
@@ -26,7 +31,6 @@ class hittable_list : public hittable {
     void remove(shared_ptr<hittable> object);
 
     bool hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const override;
-    // show_selec parameter determines whether we show the selection state in the hit_record
 
     int nb_objects() {
         return objects.size();

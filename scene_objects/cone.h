@@ -6,6 +6,15 @@
 #include "../utilities/color.h"
 #include "../utilities/material.h"
 
+/**
+ * This class represents a sphere-cone, that is a cone with rounded extremities made of two spheres.
+ * The cone is defined by the two sphere's center position, and their radius.
+ * The two spheres can have different materials. The material at each point in-between is a blend of the two materials.
+ * The spheres can be show their hover and selection status.
+ * If a sphere is hovered, its color becomes the negative of the base color.
+ * If a sphere is selected, a thin yellow contour appears around it.
+ */
+
 class cone : public hittable {
   public:
     cone(point3 _center1, point3 _center2, double _radius1, double _radius2, shared_ptr<material> _material)
@@ -37,10 +46,7 @@ class cone : public hittable {
     }
 
     bool is_selected(int id_selected) const {
-        if (selected == id_selected || selected == 3) {
-            return true;
-        }
-        return false;
+        return selected == id_selected || selected == 3;
     }
 
     void set_hovered(int new_hovered) {
@@ -48,30 +54,23 @@ class cone : public hittable {
     }
 
     bool is_hovered(int id_hovered) const {
-        if (hovered == id_hovered) {
-            return true;
-        }
-        return false;
+        return hovered == id_hovered;
     }
 
     void set_radius1(double new_radius) {
-        radius1 = new_radius;
-        radius1 = max(radius1,0.0);
+        radius1 = max(new_radius,0.0);
     }
 
     void set_radius2(double new_radius) {
-        radius2 = new_radius;
-        radius2 = max(radius2,0.0);
+        radius2 = max(new_radius,0.0);
     }
 
     void increase_radius1(double delta_radius) {
-        radius1 += delta_radius;
-        radius1 = max(radius1,0.0);
+        radius1 = max(radius1 + delta_radius,0.0);
     }
 
     void increase_radius2(double delta_radius) {
-        radius2 += delta_radius;
-        radius2 = max(radius2,0.0);
+        radius2 = max(radius2 + delta_radius,0.0);
     }
 
     void set_mat1(shared_ptr<material> mat) {
@@ -94,7 +93,8 @@ class cone : public hittable {
 };
 
 static shared_ptr<cone> cone_from_spheres(shared_ptr<sphere> sphere1, shared_ptr<sphere> sphere2, shared_ptr<material> mat1, shared_ptr<material> mat2) {
-  return make_shared<cone>(sphere1->get_center(), sphere2->get_center(), sphere1->get_radius(), sphere2->get_radius(), mat1, mat2);
+    // Creates a new cone from two spheres and two materials
+    return make_shared<cone>(sphere1->get_center(), sphere2->get_center(), sphere1->get_radius(), sphere2->get_radius(), mat1, mat2);
 }
 
 #endif

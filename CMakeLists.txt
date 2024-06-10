@@ -31,7 +31,6 @@ add_library(skeleton_modeler STATIC
         structures/interactions.cpp
         structures/interactions.h
         utilities/interval.h
-        scene_objects/light.cpp
         scene_objects/light.h
         structures/linked_spheres_group.cpp
         structures/linked_spheres_group.h

@@ -5,6 +5,10 @@
 #include "span3D.h"
 #include "screen_segment.h"
 
+/**
+ * This file contains functions useful to draw on an image of type span3D.
+ */
+
 using std::pair;
 
 void color_pixel(span3D image, pair<int, int> pos, color color);

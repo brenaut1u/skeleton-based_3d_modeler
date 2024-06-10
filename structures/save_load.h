@@ -7,6 +7,10 @@
 #include <vector>
 #include "linked_spheres_group.h"
 
+/**
+ * These functions are used to save and load linked_spheres_groups from files
+ */
+
 using std::stod;
 using std::stoi;
 
