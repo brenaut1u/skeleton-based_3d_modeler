@@ -13,6 +13,12 @@
 
 using std::unique_ptr;
 
+/*
+ * This class is used to interact with the scene. 
+ * It contains the linked_spheres_group, the world, the phong_camera and the beautiful_camera.
+ * Each function of this class is used to interact with the scene after the user input had been analyzed.
+*/
+
 class interactions {
 public:
     interactions(){}

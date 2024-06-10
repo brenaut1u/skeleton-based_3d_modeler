@@ -8,6 +8,12 @@
 #include "save_load.h"
 #include "interactions.h"
 
+/*
+ * This class is used to interact with the scene. 
+ * It contains the linked_spheres_group, the world, the phong_camera and the beautiful_camera.
+ * Each function of this class is used to interact with the scene after the user input had been analyzed.
+*/
+
 inline constexpr double camera_move_factor = 0.5; // The attenuation factor for camera displacement, to make it smaller
 
 unique_ptr<interactions> interactions::get_init_scene(double aspect_ratio, int phong_image_width, int beautiful_image_width) {
@@ -44,6 +50,8 @@ void interactions::segment_cone_at_pos(int screen_pos_x, int screen_pos_y) {
 }
 
 void interactions::delete_sphere(const std::span<int>& spheres_id) {
+    // Delete the selected spheres and the links between them in the linked_spheres_group
+    // We need to update the skeleton screen coordinates after the deletion
     spheres_group->delete_sphere(spheres_id);
     update_skeleton_screen_coordinates();
 }
@@ -196,21 +204,23 @@ void interactions::move_spheres_ik(const std::span<int>& spheres_id, int screen_
 }
 
 void interactions::rotate_spheres_around_axis(const std::span<int>& spheres_id, vec3 axis, point3 axis_point, double angle) {
-    for (int sphere_id : spheres_id) {
-        shared_ptr<sphere> sph = spheres_group->get_sphere_at(sphere_id);
-        point3 sph_pos = sph->get_center();
+    // Rotate the selected spheres around the axis defined by axis_point and axis
+    for (int sphere_id : spheres_id) { // we applied the rotation to each selected sphere
+        shared_ptr<sphere> sph = spheres_group->get_sphere_at(sphere_id); // get the sphere
+        point3 sph_pos = sph->get_center(); // get the sphere position
         if (sph_pos != axis_point) {
-            sph->set_center(point_rotation(sph_pos, axis_point, axis, angle));
-            spheres_group->set_sphere_position(sphere_id, sph->get_center());
+            sph->set_center(point_rotation(sph_pos, axis_point, axis, angle));  // apply the rotation
+            spheres_group->set_sphere_position(sphere_id, sph->get_center()); // update the sphere position in the sphere group
         }
     }
-    update_skeleton_screen_coordinates();
+    update_skeleton_screen_coordinates(); // update the skeleton screen coordinates
 }
 
 void interactions::rotate_spheres_around_camera_axis(const std::span<int>& spheres_id, point3 axis_point, double angle) {
-    vec3 axis = axis_point - phong_cam->get_center();
-    rotate_spheres_around_axis(spheres_id, axis, axis_point, angle);
-    update_skeleton_screen_coordinates();
+    // Rotate the selected spheres around the axis defined by the camera center and axis_point
+    vec3 axis = axis_point - phong_cam->get_center(); // axis is the vector from the camera center to axis_point
+    rotate_spheres_around_axis(spheres_id, axis, axis_point, angle); // call the general rotation function
+    update_skeleton_screen_coordinates(); // update the skeleton screen coordinates
 }
 
 void interactions::rotate_camera(double horizontal_angle, double vertical_angle) {

@@ -35,17 +35,23 @@ void linked_spheres_group::add_sphere_split_cone(int cone_id, point3 p, vec3 n, 
 }
 
 void linked_spheres_group::delete_sphere(const std::span<int>& spheres_id) {
-    
+    // We need to delete the spheres in reverse order to avoid changing the id of the spheres that we want to delete
+    // when we delete a sphere, we also delete the cones that are linked to it
+    // if the material of the sphere is not used by any other sphere, we delete it
+    // we also update the id of the spheres that are linked to the spheres that we delete
     for (auto it = spheres_id.rbegin(); it != spheres_id.rend(); ++it) {
-        int id = *it;
-        if (spheres.size() > 2) {
-            // update cones
+        int id = *it; // id of the sphere to delete
+        if (spheres.size() > 2) { // we need at least 2 spheres
             int i = 0;
-            while (i < cones.size()) {
+            // we need to check for all the cones if they are linked to the sphere to delete
+            // or if they have a sphere with a greater id than the id of the sphere to delete
+            while (i < cones.size()) { 
+                // delete the cones linked to the sphere
                 if (cones[i].sphere_id1 == id || cones[i].sphere_id2 == id) {
                     world->remove(cones[i].cone);
                     cones.erase(cones.begin() + i);
                 } 
+                // update the id of the remaining spheres, those who have an id greater than the id of the sphere to delete
                 else {
                     if (cones[i].sphere_id1 > id) {
                         cones[i].sphere_id1--;
@@ -57,12 +63,16 @@ void linked_spheres_group::delete_sphere(const std::span<int>& spheres_id) {
                 }
             }
 
-            // update links
+            // We need to check if the sphere is linked to another sphere
+            // if it is the case, we need to delete the link
             i = 0;
+            // We need to do the same for each link
             while (i < links.size()) {
+                // If the link is linked to the sphere to delete, we delete it
                 if (links[i].first == id || links[i].second == id) {
                     links.erase(links.begin() + i);
                 } 
+                // If the link is linked to a sphere with a greater id than the id of the sphere to delete
                 else {
                     if (links[i].first > id) {
                         links[i].first--;
@@ -74,19 +84,22 @@ void linked_spheres_group::delete_sphere(const std::span<int>& spheres_id) {
                 }
             }
 
-            // material
+            // We need to delete the material of the sphere if it is not used by any other sphere
             if (materials[spheres[id].material_id].nb_users == 1) {
-                // delete the material if the sphere was its last user
                 materials.erase(materials.begin() + spheres[id].material_id);
+                // We need to update the id of the material of the spheres 
+                // that have a material with a greater id than the id of the material of the sphere to delete
                 for (int s = 0; s < spheres.size(); s++) {
                     if (s != id && spheres[s].material_id >= spheres[id].material_id) {
                         spheres[s].material_id--;
                     }
                 }
             } 
+            // If the material is used by another sphere, we just decrement the number of users
             else {
                 materials[spheres[id].material_id].nb_users--;
             }
+            // Lastly, we delete the sphere from the spheres vector
             spheres.erase(spheres.begin() + id);
         }
     }
@@ -266,17 +279,6 @@ void linked_spheres_group::set_sphere_color(int id, color c) {
     }
 }
 
-//void linked_spheres_group::delete_isolated_spheres() {
-//    int sphere_id = 0;
-//    while (sphere_id < spheres.size()) {
-//        if (is_sphere_isolated(sphere_id)) {
-//            delete_sphere(sphere_id);
-//        }
-//        else {
-//            sphere_id++;
-//        }
-//    }
-//}
 
 bool linked_spheres_group::is_sphere_isolated(int sphere_id) {
     for (const pair<int, int> link : links) {
