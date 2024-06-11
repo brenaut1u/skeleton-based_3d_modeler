@@ -1,10 +1,9 @@
 #include "sphere.h"
 
 /**
- * The old sphere class, based on Peter Shirley's tutorial "Ray Tracing in One Weekend"
- * (https://raytracing.github.io/books/RayTracingInOneWeekend.html)
- * This class is no longer used. Single spheres are actually cones with two identical spheres, for simplicity
- * in data management.
+ * This class represents spheres. While spheres do not appear dirrectly on screen (even single spheres are actually
+ * cones with two identical spheres), the hit function is still used to detect a sphere at a given position on screen,
+ * for selection for example.
  */
 
 bool sphere::hit(const ray& r, interval ray_t, hit_record& rec, bool show_selec) const {
