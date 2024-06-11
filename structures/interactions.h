@@ -13,7 +13,7 @@
 
 using std::unique_ptr;
 
-/*
+/**
  * This class is used to interact with the scene. 
  * It contains the linked_spheres_group, the world, the phong_camera and the beautiful_camera.
  * Each function of this class is used to interact with the scene after the user input had been analyzed.
@@ -40,7 +40,7 @@ public:
 
     int detect_sphere_at_pos(int screen_pos_x, int screen_pos_y);
 
-    pair<int, int> world_to_screen_pos(point3 p);
+    screen_point world_to_screen_pos(point3 p);
 
     void update_skeleton_screen_coordinates();
 
@@ -48,12 +48,14 @@ public:
         return skeleton_screen_coordinates;
     }
 
-    void change_radius(int sphere_id, double radius){
-        spheres_group->change_sphere_radius(sphere_id, radius);
+    void set_radius(int sphere_id, double radius){
+        // Sets the sphere's radius at exact given value
+        spheres_group->set_sphere_radius(sphere_id, radius);
     }
 
-    void increase_radius(int sphere_id, double radius){
-        spheres_group->increase_sphere_radius(sphere_id, radius);
+    void increase_radius(int sphere_id, double delta_radius){
+        // Increases or decreases the sphere's radius by delta_radius
+        spheres_group->increase_sphere_radius(sphere_id, delta_radius);
     }
 
     void change_color(int sphere_id, color c) {
@@ -99,14 +101,17 @@ public:
     }
 
     void select_sphere(int sphere_id) {
+        // Marks the sphere as selected
         spheres_group->select_sphere(sphere_id);
     }
 
     void hovered(int sphere_id) {
+        // Marks the sphere as hovered by the mouse
         spheres_group->hover_sphere(sphere_id);
     }
 
     void unselect_sphere(int sphere_id) {
+        // Marks the sphere as unselected
         spheres_group->unselect_sphere(sphere_id);
     }
     

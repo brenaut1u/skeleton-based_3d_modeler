@@ -36,6 +36,21 @@ pair<string, vector<double>> metal::descriptor() const {
     return {mat_type, data};
 }
 
+bool are_same_materials(const shared_ptr<material>& mat1, const shared_ptr<material>& mat2) {
+    // Tests if mat1 and mat2 describe the same material
+    auto desc_mat1 = mat1->descriptor();
+    auto desc_mat2 = mat2->descriptor();
+    if (desc_mat1.first != desc_mat2.first) {
+        return false;
+    }
+    for (int i = 0; i < desc_mat1.second.size(); i++) {
+        if (desc_mat1.second.at(i) != desc_mat2.second.at(i)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 shared_ptr<material> blend_materials(const shared_ptr<material>& mat1, const shared_ptr<material>& mat2, double t) {
     // Blends two materials together, with proportions depending on t.
     // t = 0 means the resulting material will be mat1, and t = 1 means mat2.
@@ -88,7 +103,7 @@ shared_ptr<material> copy_material(const shared_ptr<material>& mat) {
     return nullptr;
 }
 
-shared_ptr<material> copy_material(const shared_ptr<material>& mat, const color& color) {
+shared_ptr<material> copy_material_change_color(const shared_ptr<material>& mat, const color& color) {
     // Returns a copy of the material while assigning it the desired color
     auto mat_descr = mat->descriptor();
     if (mat_descr.first == "lambertian") {

@@ -106,7 +106,7 @@ struct modeler
     // We set the radius of a sphere, calling the interaction function
     void change_radius(int sphere_id, double radius)
     {
-        inter->change_radius(sphere_id, radius);
+        inter->set_radius(sphere_id, radius);
     }
 
     // We increase the radius of a sphere, calling the interaction function

@@ -88,8 +88,8 @@ class cone : public hittable {
     double radius2;
     shared_ptr<material> mat1;
     shared_ptr<material> mat2;
-    int selected = 0;
-    int hovered = 0;
+    int selected = 0; // 0 if neither of the spheres are selected, 1 if sphere 1 is selected, 2 if sphere 2 is selected, 3 if both spheres are selected
+    int hovered = 0;  // 0 if neither of the spheres are selected, 1 if sphere 1 is selected, 2 if sphere 2 is selected
 };
 
 static shared_ptr<cone> cone_from_spheres(shared_ptr<sphere> sphere1, shared_ptr<sphere> sphere2, shared_ptr<material> mat1, shared_ptr<material> mat2) {

@@ -85,10 +85,12 @@ private:
     color albedo;
 };
 
+bool are_same_materials(const shared_ptr<material>& mat1, const shared_ptr<material>& mat2);
+
 shared_ptr<material> blend_materials(const shared_ptr<material>& mat1, const shared_ptr<material>& mat2, double t);
 
 shared_ptr<material> copy_material(const shared_ptr<material>& mat);
 
-shared_ptr<material> copy_material(const shared_ptr<material>& mat, const color& color);
+shared_ptr<material> copy_material_change_color(const shared_ptr<material>& mat, const color& color);
 
 #endif

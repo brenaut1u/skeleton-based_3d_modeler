@@ -1,27 +1,23 @@
 #include "linked_spheres_group.h"
 
 void linked_spheres_group::add_sphere(shared_ptr<sphere> new_sphere) {
-    int mat_id = -1;
-    for (int i = 0; i < materials.size() && mat_id == -1; i++) {
-        if (materials[i].mat == new_sphere->get_material()) {
-            mat_id = i;
-            materials[i].nb_users++;
-        }
-    }
-    if (mat_id == -1) {
-        materials.push_back({new_sphere->get_material(), 1});
-        mat_id = materials.size() - 1;
-    }
+    // Adds a sphere and updates the materials list
+    int mat_id = add_material(new_sphere->get_material());
     spheres.push_back({new_sphere, mat_id, false});
 }
 
 void linked_spheres_group::add_sphere(shared_ptr<sphere> new_sphere, int linked_to) {
+    // Adds a sphere to be linked to the already existing sphere whose id is given by linked_to parameter
     add_sphere(new_sphere);
     add_link(spheres.size() - 1, linked_to);
     add_link(spheres.size() - 1, spheres.size() - 1);
 }
 
 void linked_spheres_group::add_sphere_split_cone(int cone_id, point3 p, vec3 n, shared_ptr<material> mat) {
+    // Adds a sphere that splits a cone. The cone is split in such a way that its shape remains unaffected.
+    // This is performed by adding setting the new sphere's center at the interception point between the normal at point p
+    // and the cone's central axis.
+
     point3 c1 = spheres[cones[cone_id].sphere_id1].sphere->get_center();
     point3 c2 = spheres[cones[cone_id].sphere_id2].sphere->get_center();
     vec3 v = c2 - c1;
@@ -35,14 +31,18 @@ void linked_spheres_group::add_sphere_split_cone(int cone_id, point3 p, vec3 n, 
 }
 
 void linked_spheres_group::delete_sphere(const std::span<int>& spheres_id) {
-    // We need to delete the spheres in reverse order to avoid changing the id of the spheres that we want to delete
-    // when we delete a sphere, we also delete the cones that are linked to it
-    // if the material of the sphere is not used by any other sphere, we delete it
-    // we also update the id of the spheres that are linked to the spheres that we delete
+    // We need to delete the spheres in reverse order to avoid changing the id of the spheres that we want to delete.
+    // When we delete a sphere, we also delete the cones that are linked to it.
+    // If the material of the sphere is not used by any other sphere, we delete it.
+    // We also update the ids of the spheres that are linked to the spheres that we delete.
+    // If there are only two spheres in the scene, the deletion is not done because it would cause the deletion of
+    // all objects in the scene.
+
     for (auto it = spheres_id.rbegin(); it != spheres_id.rend(); ++it) {
         int id = *it; // id of the sphere to delete
         if (spheres.size() > 2) { // we need at least 2 spheres
             int i = 0;
+
             // we need to check for all the cones if they are linked to the sphere to delete
             // or if they have a sphere with a greater id than the id of the sphere to delete
             while (i < cones.size()) { 
@@ -106,16 +106,22 @@ void linked_spheres_group::delete_sphere(const std::span<int>& spheres_id) {
 }
 
 void linked_spheres_group::add_link(int id1, int id2) {
+    // Adds a link between sphere id1 and sphere id2.
+
     links.push_back({id1, id2});
     shared_ptr<cone> new_cone = cone_from_spheres(spheres[id1].sphere, spheres[id2].sphere, spheres[id1].sphere->get_material(), spheres[id2].sphere->get_material());
     cones.push_back(cone_ref {new_cone, id1, id2});
+
+    // Update the world
     world->add(new_cone);
     world->remove(spheres[id1].sphere); //to avoid having the old sphere (if it exists) at the same position as the new cone overlapping each other
     world->remove(spheres[id2].sphere);
 }
 
 void linked_spheres_group::unlink(int id1, int id2) {
-    // delete the link
+    // Deletes the link between sphere id1 and sphere id2
+
+    // Delete the link
     int i = 0;
     while (i < links.size()) {
         if ((links[i].first == id1 && links[i].second == id2) || (links[i].first == id2 && links[i].second == id1))  {
@@ -126,7 +132,7 @@ void linked_spheres_group::unlink(int id1, int id2) {
         }
     }
 
-    // delete the cone
+    // Delete the cone
     i = 0;
     while (i < cones.size()) {
         if ((cones[i].sphere_id1 == id1 && cones[i].sphere_id2 == id2) ||
@@ -140,7 +146,8 @@ void linked_spheres_group::unlink(int id1, int id2) {
     }
 }
 
-bool linked_spheres_group::linked(int id1, int id2) {
+bool linked_spheres_group::are_linked(int id1, int id2) {
+    // Tests if sphere id1 and sphere id2 are linked
     for (int i = 0; i < links.size(); i++) {
         if ((links[i].first == id1 && links[i].second == id2) || (links[i].first == id2 && links[i].second == id1))
             return true;
@@ -148,7 +155,31 @@ bool linked_spheres_group::linked(int id1, int id2) {
     return false;
 }
 
+int linked_spheres_group::add_material(shared_ptr<material> mat) {
+    // Adds a material to the materials list. If the material is already in the list,
+    // the matching material's number of users is incremented.
+    // Returns the id of the added material.
+    // In the current state of the project, we could disable the loop and just add the new material to the list,
+    // no matter if there is already another similar material in the list. However, this could be useful
+    // if future features were to be added, such as the modification of a material (eg: we have a red object made of
+    // multiple spheres, and we want everything to be blue. Then we only have to modify the shared material.)
+
+    for (int i = 0; i < materials.size(); i++) {
+        if (are_same_materials(materials[i].mat, mat)) {
+            materials[i].nb_users++;
+            return i;
+        }
+    }
+
+    materials.push_back({mat, 1});
+    return materials.size() - 1;
+}
+
 tuple<int, hit_record> linked_spheres_group::find_hit_sphere(const ray& r, interval ray_t) {
+    // Finds the sphere hit by the ray.
+    // If such a sphere exists, its id is returned with the intersection information (the hit_record).
+    // Else, return -1 and an empty hit_record.
+
     int index = -1;
     hit_record rec;
 
@@ -171,6 +202,10 @@ tuple<int, hit_record> linked_spheres_group::find_hit_sphere(const ray& r, inter
 }
 
 tuple<int, hit_record> linked_spheres_group::find_hit_cone(const ray& r, interval ray_t) {
+    // Finds the cone hit by the ray.
+    // If such a cone exists, its id is returned with the intersection information (the hit_record).
+    // Else, return -1 and an empty hit_record.
+
     int index = -1;
     hit_record rec;
 
@@ -192,8 +227,12 @@ tuple<int, hit_record> linked_spheres_group::find_hit_cone(const ray& r, interva
     }
 }
 
-void linked_spheres_group::change_sphere_radius(int id, double radius) {
+void linked_spheres_group::set_sphere_radius(int id, double radius) {
+    // Sets the sphere's radius at exact given value
+
     spheres.at(id).sphere->set_radius(radius);
+
+    // Updates the cones
     for (const cone_ref &c : cones) {
         if (c.sphere_id1 == id) {
             c.cone->set_radius1(radius);
@@ -204,20 +243,28 @@ void linked_spheres_group::change_sphere_radius(int id, double radius) {
     }
 }
 
-void linked_spheres_group::increase_sphere_radius(int id, double radius) {
-    spheres.at(id).sphere->increase_radius(radius);
+void linked_spheres_group::increase_sphere_radius(int id, double delta_radius) {
+    // Increases or decreases the sphere's radius by delta_radius
+
+    spheres.at(id).sphere->increase_radius(delta_radius);
+
+    // Updates the cones
     for (const cone_ref &c : cones) {
         if (c.sphere_id1 == id) {
-            c.cone->increase_radius1(radius);
+            c.cone->increase_radius1(delta_radius);
         }
         if (c.sphere_id2 == id) {
-            c.cone->increase_radius2(radius);
+            c.cone->increase_radius2(delta_radius);
         }
     }
 }
 
 void linked_spheres_group::set_sphere_position(int id, point3 pos) {
+    // Moves the sphere at the exact given position
+
     spheres[id].sphere->set_center(pos);
+
+    //Updates the cones
     for (const cone_ref &c : cones) {
         if (c.sphere_id1 == id) {
             c.cone->set_center1(pos);
@@ -229,6 +276,9 @@ void linked_spheres_group::set_sphere_position(int id, point3 pos) {
 }
 
 string linked_spheres_group::save() {
+    // Returns a string containing the scene's information.
+    // First, the string contains the list of the materials, then the list of the spheres, and finally the list of the links.
+
     string txt = "";
     txt += "materials\n";
     for (const material_ref &mat : materials) {
@@ -256,19 +306,27 @@ string linked_spheres_group::save() {
 }
 
 void linked_spheres_group::set_sphere_color(int id, color c) {
+    // Changes the color of the spheres and updates the materials list
+
+    // Creates the new material with the given color
     int mat_id = spheres[id].material_id;
-    shared_ptr<material> mat = copy_material(materials[mat_id].mat, c);
-    if (materials[mat_id].nb_users == 1) {
-        materials[mat_id] = {mat, 1};
-    }
-    else {
-        materials.push_back(material_ref{mat, 1});
-        spheres[id].material_id = materials.size() - 1;
-        materials[mat_id].nb_users--;
+    shared_ptr<material> mat = copy_material_change_color(materials[mat_id].mat, c);
+
+    // Updates the materials list
+    spheres[id].material_id = add_material(mat);
+    materials[mat_id].nb_users--;
+    if (materials[mat_id].nb_users == 0) {
+        materials.erase(materials.begin() + mat_id);
+        for (int s = 0; s < spheres.size(); s++) {
+            if (spheres[s].material_id > mat_id) {
+                spheres[s].material_id--;
+            }
+        }
     }
 
     spheres[id].sphere->set_mat(mat);
 
+    // Updates the cones
     for (const cone_ref &cone : cones) {
         if (cone.sphere_id1 == id) {
             cone.cone->set_mat1(mat);
@@ -279,89 +337,70 @@ void linked_spheres_group::set_sphere_color(int id, color c) {
     }
 }
 
-
-bool linked_spheres_group::is_sphere_isolated(int sphere_id) {
-    for (const pair<int, int> link : links) {
-        if (link.first == sphere_id || link.second == sphere_id) {
-            return false;
-        }
-    }
-    return true;
-}
-
-int linked_spheres_group::nb_sphere_links(int sphere_id) {
-    int nb_links = 0;
-    for (const pair<int, int> link : links) {
-        if (link.first == sphere_id || link.second == sphere_id) {
-            nb_links++;
-        }
-    }
-    return nb_links;
-}
-
 void linked_spheres_group::select_sphere(int id_selected) {
+    // Marks a sphere as selected
+
     spheres[id_selected].is_selected = true;
-    int i = 0;
-    while (i < cones.size()) {
-        if (cones[i].sphere_id1 == id_selected) {
-            // cones[i].cone->set_selected(1);
-            if (cones[i].cone->is_selected(2)) {
-                cones[i].cone->set_selected(3);
+
+    // Updates the cones
+    for (const auto& c : cones) {
+        if (c.sphere_id1 == id_selected) {
+            if (c.cone->is_selected(2)) {
+                c.cone->set_selected(3);
             }
-            else if (not cones[i].cone->is_selected(3)) { 
-                cones[i].cone->set_selected(1);
-            }
-        }
-        if (cones[i].sphere_id2 == id_selected) {
-            // cones[i].cone->set_selected(2);
-            if (cones[i].cone->is_selected(1)) {
-                cones[i].cone->set_selected(3);
-            }
-            else if (not cones[i].cone->is_selected(3)){ 
-                cones[i].cone->set_selected(2);
+            else if (not c.cone->is_selected(3)) {
+                c.cone->set_selected(1);
             }
         }
-        if (!cones[i].cone->is_selected(1) && !cones[i].cone->is_selected(2) && cones[i].cone->is_selected(3)) {
-            cones[i].cone->set_selected(0);
+        if (c.sphere_id2 == id_selected) {
+            if (c.cone->is_selected(1)) {
+                c.cone->set_selected(3);
+            }
+            else if (not c.cone->is_selected(3)){
+                c.cone->set_selected(2);
+            }
         }
-        i++;
+        if (!c.cone->is_selected(1) && !c.cone->is_selected(2) && c.cone->is_selected(3)) {
+            c.cone->set_selected(0);
+        }
     }
 }
 
 void linked_spheres_group::unselect_sphere(int id_selected){
+    // Marks a sphere as unselected
+
     spheres[id_selected].is_selected = false;
-    int i = 0;
-    while (i < cones.size()) {
-        if (cones[i].sphere_id1 == id_selected) {
-            if (cones[i].cone->is_selected(1)) {
-                cones[i].cone->set_selected(0);
+
+    // Updates the cones
+    for (const auto& c : cones) {
+        if (c.sphere_id1 == id_selected) {
+            if (c.cone->is_selected(1)) {
+                c.cone->set_selected(0);
             }
-            else if (cones[i].cone->is_selected(3)) {
-                cones[i].cone->set_selected(2);
-            }
-        }
-        else if (cones[i].sphere_id2 == id_selected) {
-            if (cones[i].cone->is_selected(2)) {
-                cones[i].cone->set_selected(0);
-            }
-            else if (cones[i].cone->is_selected(3)) {
-                cones[i].cone->set_selected(1);
+            else if (c.cone->is_selected(3)) {
+                c.cone->set_selected(2);
             }
         }
-        i++;
+        else if (c.sphere_id2 == id_selected) {
+            if (c.cone->is_selected(2)) {
+                c.cone->set_selected(0);
+            }
+            else if (c.cone->is_selected(3)) {
+                c.cone->set_selected(1);
+            }
+        }
     }
 }
 
-void linked_spheres_group::hover_sphere(int id_selected){
-    int i = 0;
-    while (i < cones.size()) {
-        cones[i].cone->set_hovered(0);
-        if (cones[i].sphere_id1 == id_selected) {
-            cones[i].cone->set_hovered(1);
+void linked_spheres_group::hover_sphere(int id_hovered){
+    // Marks all the spheres as not hovered except sphere id_hovered
+    for (const auto& c : cones) {
+        c.cone->set_hovered(0);
+        if (c.sphere_id1 == id_hovered) {
+            c.cone->set_hovered(1);
         }
-        if (cones[i].sphere_id2 == id_selected) {
-            cones[i].cone->set_hovered(2);
+        if (c.sphere_id2 == id_hovered) {
+            c.cone->set_hovered(2);
         }
-        i++;
     }
 }

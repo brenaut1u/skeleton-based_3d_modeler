@@ -70,7 +70,7 @@ public:
 
     void unselect_sphere(int id_selected) ;
 
-    void hover_sphere(int id_selected) ;
+    void hover_sphere(int id_hovered) ;
 
     bool is_sphere_selected(int id) {
         return spheres[id].is_selected;
@@ -88,13 +88,15 @@ public:
 
     void add_link(int id1, int id2);
 
-    bool linked(int id1, int id2);
+    bool are_linked(int id1, int id2);
+
+    int add_material(shared_ptr<material> mat);
 
     tuple<int, hit_record> find_hit_sphere(const ray& r, interval ray_t);
 
     tuple<int, hit_record> find_hit_cone(const ray& r, interval ray_t);
 
-    void change_sphere_radius(int id, double radius);
+    void set_sphere_radius(int id, double radius);
 
     void increase_sphere_radius(int id, double radius);
 
@@ -102,21 +104,14 @@ public:
 
     void set_sphere_color(int id, color c);
 
-    void delete_isolated_spheres();
-
     string save();
 
-    void update_ids(const std::span<int>& spheres_id);
-
 private:
-    vector<pair<int, int>> links;
+    vector<pair<int, int>> links; // the links between spheres
     vector<sphere_ref> spheres;
     vector<cone_ref> cones;
     shared_ptr<hittable_list> world;
     vector<material_ref> materials;
-
-    bool is_sphere_isolated(int sphere_id);
-    int nb_sphere_links(int sphere_id);
 };
 
 #endif
